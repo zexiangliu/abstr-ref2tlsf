@@ -19,4 +19,4 @@ The abstraction built in `run_example.m` is shown as follows:
 <img src="doc/eg.png" width="400">
 
 The spec is A = {s_1,s_2,s_3,s_4}, B = {}, C_1 = {s_1}, C_2 = {s_3,s_4}.
-One progress group exists, that is G = {s_3,s_4} under action set U = {e,f}.
+One progress group exists, that is G = {s_3,s_4} under action set U = {e,g}.
