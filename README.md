@@ -3,7 +3,7 @@
 
 This repo contains a simple tool to convert spec and abstraction written in the toolbox [ARCS](https://github.com/pettni/abstr-refinement) into the [TLSF](https://arxiv.org/abs/1604.02284) format.
 ## Usage
-* Download the [ARCS](https://github.com/pettni/abstr-refinement) and add the path of the toolbox to the environment of MATLAB.
+* Download the [ARCS](https://github.com/pettni/abstr-refinement) and add the toolbox folder (and sub-folders) to the search path of MATLAB.
 * Build your abstraction using the class `TransSyst` in ARCS.
 * Write down your spec in the form of `[]A && <>[]B && (&&_i []<>C_i)`.
 * Execute `abstr2TLSF.m` or `abstr2TLSF_brief.m` to convert the spec and the abstraction into the TLSF format:
