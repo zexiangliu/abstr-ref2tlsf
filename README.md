@@ -8,7 +8,7 @@ This repo contains a simple tool to convert spec and abstraction written in the 
 * Write down your spec in the form of `[]A && <>[]B && (&&_i []<>C_i)`.
 * Execute `abstr2TLSF.m` or `abstr2TLSF_brief.m` to convert the spec and the abstraction into the TLSF format:
   * Use `abstr2TLSF.m` for a more readable TLSF file.
-  * Use `abstr2TLSF_brief.m` for a more compact TLSF file. It can encode the index of the input and output variable in numerical systems rather than decimal numbers. You need to choose the `compress rate`, which indicates the numberical system used for encoding, e.g. `compress_rate = 2`means that the encoding uses binary number.
+  * Use `abstr2TLSF_brief.m` for a more compact TLSF file. It can encode the index of the input and output variable in numerical systems rather than decimal numbers. You need to choose the `compress rate`, which indicates the numerical system used for encoding, e.g. `compress_rate = 2`means that the encoding uses binary number.
 
 ## Example
 
