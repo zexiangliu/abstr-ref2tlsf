@@ -1,0 +1,63 @@
+INFO{
+TITLE: "Abstraction based Controller Synthesis"
+DESCRIPTION:"none"
+SEMANTICS:   Mealy,Strict
+TARGET:   Mealy
+}
+GLOBAL  {
+DEFINITIONS {
+enum STATE =
+s1: 00
+s2: 01
+s3: 10
+s4: 11
+}
+DEFINITIONS {
+enum ACTION =
+a1: 0000
+a2: 0001
+a3: 0010
+a4: 0011
+a5: 0100
+a6: 0101
+a7: 0110
+a8: 0111
+a9: 1000
+}
+}
+MAIN{
+INPUTS {
+STATE S;
+}
+OUTPUTS {
+ACTION A;
+}
+INITIALLY{
+}
+PRESET {
+}
+REQUIRE {
+(S==s1&&A==a1)->X(S==s1);
+(S==s1&&A==a2)->X(S==s2);
+(S==s2&&A==a3)->X(S==s1);
+(S==s2&&A==a4)->X(S==s4);
+(S==s4&&A==a5)->X(S==s2||S==s3);
+(S==s2&&A==a6)->X(S==s3);
+(S==s3&&A==a7)->X(S==s2||S==s4);
+(S==s3&&A==a8)->X(S==s3);
+(S==s4&&A==a9)->X(S==s4);
+}
+ASSUME {
+G F (!(S==s3||S==s4)|| !(A==a5||A==a7));
+}
+ASSERT {
+S==s1-> (A==a1||A==a2);
+S==s2-> (A==a3||A==a4||A==a6);
+S==s3-> (A==a7||A==a8);
+S==s4-> (A==a5||A==a9);
+}
+GUARANTEE {
+G F (S==s1);
+G F (S==s3||S==s4);
+}
+}

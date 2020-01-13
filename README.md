@@ -8,7 +8,7 @@ This repo contains a simple tool to convert spec and abstraction written in the 
 * Write down your spec in the form of `[]A && <>[]B && (&&_i []<>C_i)`.
 * Execute `abstr2TLSF.m` or `abstr2TLSF_brief.m` to convert the spec and the abstraction into the TLSF format:
   * Use `abstr2TLSF.m` for a more readable TLSF file.
-  * Use `abstr2TLSF_brief.m` for a more compact TLSF file. It can encode the index of the input and output variable in numerical systems rather than decimal numbers. You need to choose the `compress rate`, which indicates the numerical system used for encoding, e.g. `compress_rate = 2`means that the encoding uses binary number.
+  * Use `abstr2TLSF_brief.m` for a more compact TLSF file. It can encode the index of the input and output variable in number systems rather than decimal numbers. You need to choose the `compress rate`, which indicates the number system used for encoding, e.g. `compress_rate = 2`means that the encoding uses binary number.
 
 ## Example
 
@@ -20,3 +20,11 @@ The abstraction built in `run_example.m` is shown as follows:
 
 The spec is A = {s_1,s_2,s_3,s_4}, B = {}, C_1 = {s_1}, C_2 = {s_3,s_4}.
 One progress group exists, that is G = {s_3,s_4} under action set U = {e,g}.
+
+## Benchmarks 
+
+Several TLSF benchmarks converted from examples in ARCS are available in fold [benchmarks](benchmarks). 
+
+## Documentation
+
+More detailed descriptions for the code and examples in benchmarks can be found in [here](doc/TLSF_Examples_of_Abstraction_based_Control.pdf).
