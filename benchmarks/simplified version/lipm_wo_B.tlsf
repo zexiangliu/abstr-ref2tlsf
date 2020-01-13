@@ -1,0 +1,2270 @@
+INFO{
+TITLE: "Abstraction based Controller Synthesis"
+DESCRIPTION:"none"
+SEMANTICS:   Mealy,Strict
+TARGET:   Mealy
+}
+GLOBAL  {
+DEFINITIONS {
+enum STATE =
+s1: 00000000
+s2: 00000001
+s3: 00000010
+s4: 00000011
+s5: 00000100
+s6: 00000101
+s7: 00000110
+s8: 00000111
+s9: 00001000
+sA: 00001001
+sB: 00001010
+sC: 00001011
+sD: 00001100
+sE: 00001101
+sF: 00001110
+sG: 00001111
+sH: 00010000
+sI: 00010001
+sJ: 00010010
+sK: 00010011
+sL: 00010100
+sM: 00010101
+sN: 00010110
+sO: 00010111
+sP: 00011000
+sQ: 00011001
+sR: 00011010
+sS: 00011011
+sT: 00011100
+sU: 00011101
+sV: 00011110
+sW: 00011111
+sX: 00100000
+sY: 00100001
+sZ: 00100010
+sa: 00100011
+sb: 00100100
+sc: 00100101
+sd: 00100110
+se: 00100111
+sf: 00101000
+sg: 00101001
+sh: 00101010
+si: 00101011
+sj: 00101100
+sk: 00101101
+sl: 00101110
+sm: 00101111
+sn: 00110000
+so: 00110001
+sp: 00110010
+sq: 00110011
+sr: 00110100
+ss: 00110101
+st: 00110110
+su: 00110111
+sv: 00111000
+sw: 00111001
+sx: 00111010
+sy: 00111011
+sz: 00111100
+s10: 00111101
+s11: 00111110
+s12: 00111111
+s13: 01000000
+s14: 01000001
+s15: 01000010
+s16: 01000011
+s17: 01000100
+s18: 01000101
+s19: 01000110
+s1A: 01000111
+s1B: 01001000
+s1C: 01001001
+s1D: 01001010
+s1E: 01001011
+s1F: 01001100
+s1G: 01001101
+s1H: 01001110
+s1I: 01001111
+s1J: 01010000
+s1K: 01010001
+s1L: 01010010
+s1M: 01010011
+s1N: 01010100
+s1O: 01010101
+s1P: 01010110
+s1Q: 01010111
+s1R: 01011000
+s1S: 01011001
+s1T: 01011010
+s1U: 01011011
+s1V: 01011100
+s1W: 01011101
+s1X: 01011110
+s1Y: 01011111
+s1Z: 01100000
+s1a: 01100001
+s1b: 01100010
+s1c: 01100011
+s1d: 01100100
+s1e: 01100101
+s1f: 01100110
+s1g: 01100111
+s1h: 01101000
+s1i: 01101001
+s1j: 01101010
+s1k: 01101011
+s1l: 01101100
+s1m: 01101101
+s1n: 01101110
+s1o: 01101111
+s1p: 01110000
+s1q: 01110001
+s1r: 01110010
+s1s: 01110011
+s1t: 01110100
+s1u: 01110101
+s1v: 01110110
+s1w: 01110111
+s1x: 01111000
+s1y: 01111001
+s1z: 01111010
+s20: 01111011
+s21: 01111100
+s22: 01111101
+s23: 01111110
+s24: 01111111
+s25: 10000000
+s26: 10000001
+s27: 10000010
+s28: 10000011
+s29: 10000100
+s2A: 10000101
+s2B: 10000110
+s2C: 10000111
+s2D: 10001000
+s2E: 10001001
+s2F: 10001010
+s2G: 10001011
+s2H: 10001100
+s2I: 10001101
+s2J: 10001110
+s2K: 10001111
+s2L: 10010000
+s2M: 10010001
+s2N: 10010010
+s2O: 10010011
+s2P: 10010100
+s2Q: 10010101
+s2R: 10010110
+s2S: 10010111
+s2T: 10011000
+s2U: 10011001
+s2V: 10011010
+s2W: 10011011
+s2X: 10011100
+s2Y: 10011101
+s2Z: 10011110
+s2a: 10011111
+s2b: 10100000
+s2c: 10100001
+s2d: 10100010
+s2e: 10100011
+s2f: 10100100
+s2g: 10100101
+s2h: 10100110
+s2i: 10100111
+s2j: 10101000
+s2k: 10101001
+s2l: 10101010
+s2m: 10101011
+s2n: 10101100
+s2o: 10101101
+s2p: 10101110
+s2q: 10101111
+s2r: 10110000
+s2s: 10110001
+s2t: 10110010
+s2u: 10110011
+s2v: 10110100
+s2w: 10110101
+s2x: 10110110
+s2y: 10110111
+s2z: 10111000
+s30: 10111001
+s31: 10111010
+s32: 10111011
+s33: 10111100
+s34: 10111101
+s35: 10111110
+s36: 10111111
+s37: 11000000
+s38: 11000001
+s39: 11000010
+s3A: 11000011
+s3B: 11000100
+s3C: 11000101
+s3D: 11000110
+s3E: 11000111
+s3F: 11001000
+}
+DEFINITIONS {
+enum ACTION =
+a1: 0000
+a2: 0001
+a3: 0010
+a4: 0011
+a5: 0100
+a6: 0101
+a7: 0110
+a8: 0111
+a9: 1000
+aA: 1001
+aB: 1010
+aC: 1011
+aD: 1100
+aE: 1101
+aF: 1110
+}
+}
+MAIN{
+INPUTS {
+STATE S;
+}
+OUTPUTS {
+ACTION A;
+}
+INITIALLY{
+!(S==s1||S==s2||S==sB||S==sC||S==sL||S==sV||S==sf||S==sp||S==sz||S==s19||S==s26||S==s2G||S==s2Q||S==s2a||S==s2k||S==s2u||S==s33||S==s34||S==s3D||S==s3E||S==s3F);
+}
+PRESET {
+}
+REQUIRE {
+(S==s1&&A==a2)->X(S==s3F);
+(S==s2&&A==a2)->X(S==sz||S==s10||S==s19||S==s1A);
+(S==sB&&A==a2)->X(S==s3F);
+(S==sC&&A==a2)->X(S==s19||S==s1A||S==s1J||S==s1K||S==s1T||S==s1U);
+(S==sL&&A==a2)->X(S==s3F);
+(S==sM&&A==a2)->X(S==s1J||S==s1K||S==s1T||S==s1U||S==s1d||S==s1e);
+(S==sV&&A==a2)->X(S==s3F);
+(S==sW&&A==a2)->X(S==s1T||S==s1U||S==s1d||S==s1e||S==s1n||S==s1o);
+(S==sf&&A==a2)->X(S==s3F);
+(S==sg&&A==a2)->X(S==s1d||S==s1e||S==s1n||S==s1o||S==s1x||S==s1y);
+(S==sp&&A==a2)->X(S==s3F);
+(S==sq&&A==a2)->X(S==s1n||S==s1o||S==s1x||S==s1y||S==s27||S==s28);
+(S==sz&&A==a2)->X(S==s3F);
+(S==s10&&A==a2)->X(S==s1x||S==s1y||S==s1z||S==s27||S==s28||S==s29||S==s2H||S==s2I||S==s2J);
+(S==s19&&A==a2)->X(S==s3F);
+(S==s1A&&A==a2)->X(S==s28||S==s29||S==s2I||S==s2J||S==s2S||S==s2T);
+(S==s1J&&A==a2)->X(S==s27||S==s28||S==s2H||S==s2I||S==s2R||S==s2S);
+(S==s1K&&A==a2)->X(S==s2I||S==s2J||S==s2S||S==s2T||S==s2c||S==s2d);
+(S==s1T&&A==a2)->X(S==s2H||S==s2I||S==s2R||S==s2S||S==s2b||S==s2c);
+(S==s1U&&A==a2)->X(S==s2S||S==s2T||S==s2c||S==s2d||S==s2m||S==s2n);
+(S==s1d&&A==a2)->X(S==s2R||S==s2S||S==s2b||S==s2c||S==s2l||S==s2m);
+(S==s1e&&A==a2)->X(S==s2c||S==s2d||S==s2m||S==s2n||S==s2w||S==s2x);
+(S==s1n&&A==a2)->X(S==s2b||S==s2c||S==s2l||S==s2m||S==s2v||S==s2w);
+(S==s1o&&A==a2)->X(S==s2m||S==s2n||S==s2w||S==s2x||S==s36||S==s37);
+(S==s1x&&A==a2)->X(S==s2l||S==s2m||S==s2v||S==s2w||S==s35||S==s36);
+(S==s1y&&A==a2)->X(S==s3F);
+(S==s27&&A==a2)->X(S==s3F);
+(S==s28&&A==a2)->X(S==s3F);
+(S==s2H&&A==a2)->X(S==s3F);
+(S==s2I&&A==a2)->X(S==s3F);
+(S==s2R&&A==a2)->X(S==s3F);
+(S==s2S&&A==a2)->X(S==s3F);
+(S==s2b&&A==a2)->X(S==s3F);
+(S==s2c&&A==a2)->X(S==s3F);
+(S==s2l&&A==a2)->X(S==s3F);
+(S==s2m&&A==a2)->X(S==s3F);
+(S==s2v&&A==a2)->X(S==s3F);
+(S==s35&&A==a2)->X(S==s3F);
+(S==s1&&A==a3)->X(S==s3F);
+(S==s2&&A==a3)->X(S==sf||S==sg||S==sp||S==sq||S==sz||S==s10);
+(S==s3&&A==a3)->X(S==sq||S==sr||S==s10||S==s11||S==s1A||S==s1B);
+(S==s4&&A==a3)->X(S==s11||S==s12||S==s1B||S==s1C);
+(S==s5&&A==a3)->X(S==s12||S==s13||S==s1C||S==s1D||S==s1M||S==s1N);
+(S==sB&&A==a3)->X(S==s3F);
+(S==sC&&A==a3)->X(S==sp||S==sq||S==sz||S==s10||S==s19||S==s1A);
+(S==sD&&A==a3)->X(S==s10||S==s11||S==s1A||S==s1B||S==s1K||S==s1L);
+(S==sE&&A==a3)->X(S==s1B||S==s1C||S==s1L||S==s1M||S==s1V||S==s1W);
+(S==sF&&A==a3)->X(S==s1C||S==s1D||S==s1M||S==s1N||S==s1W||S==s1X);
+(S==sL&&A==a3)->X(S==s3F);
+(S==sM&&A==a3)->X(S==sz||S==s10||S==s19||S==s1A||S==s1J||S==s1K);
+(S==sN&&A==a3)->X(S==s1A||S==s1B||S==s1K||S==s1L||S==s1U||S==s1V);
+(S==sO&&A==a3)->X(S==s1L||S==s1M||S==s1V||S==s1W||S==s1f||S==s1g);
+(S==sP&&A==a3)->X(S==s1W||S==s1X||S==s1g||S==s1h);
+(S==sV&&A==a3)->X(S==s3F);
+(S==sW&&A==a3)->X(S==s19||S==s1A||S==s1J||S==s1K||S==s1T||S==s1U);
+(S==sX&&A==a3)->X(S==s1K||S==s1L||S==s1U||S==s1V||S==s1e||S==s1f);
+(S==sY&&A==a3)->X(S==s1V||S==s1W||S==s1f||S==s1g||S==s1p||S==s1q);
+(S==sZ&&A==a3)->X(S==s1g||S==s1h||S==s1q||S==s1r);
+(S==sf&&A==a3)->X(S==s3F);
+(S==sg&&A==a3)->X(S==s1J||S==s1K||S==s1T||S==s1U||S==s1d||S==s1e);
+(S==sh&&A==a3)->X(S==s1U||S==s1V||S==s1e||S==s1f||S==s1o||S==s1p);
+(S==si&&A==a3)->X(S==s1f||S==s1g||S==s1p||S==s1q||S==s1z||S==s20);
+(S==sj&&A==a3)->X(S==s1q||S==s1r||S==s20||S==s21);
+(S==sp&&A==a3)->X(S==s3F);
+(S==sq&&A==a3)->X(S==s1T||S==s1U||S==s1d||S==s1e||S==s1n||S==s1o);
+(S==sr&&A==a3)->X(S==s1e||S==s1f||S==s1o||S==s1p||S==s1y||S==s1z);
+(S==ss&&A==a3)->X(S==s1p||S==s1q||S==s1z||S==s20||S==s29||S==s2A);
+(S==st&&A==a3)->X(S==s20||S==s21||S==s2A||S==s2B);
+(S==sz&&A==a3)->X(S==s3F);
+(S==s10&&A==a3)->X(S==s1d||S==s1e||S==s1n||S==s1o||S==s1x||S==s1y);
+(S==s11&&A==a3)->X(S==s1o||S==s1p||S==s1q||S==s1y||S==s1z||S==s20||S==s28||S==s29||S==s2A);
+(S==s12&&A==a3)->X(S==s1z||S==s20||S==s21||S==s29||S==s2A||S==s2B||S==s2J||S==s2K||S==s2L);
+(S==s19&&A==a3)->X(S==s3F);
+(S==s1A&&A==a3)->X(S==s1n||S==s1o||S==s1p||S==s1x||S==s1y||S==s1z||S==s27||S==s28||S==s29);
+(S==s1B&&A==a3)->X(S==s1y||S==s1z||S==s20||S==s28||S==s29||S==s2A||S==s2I||S==s2J||S==s2K);
+(S==s1C&&A==a3)->X(S==s2A||S==s2B||S==s2K||S==s2L||S==s2U||S==s2V);
+(S==s1J&&A==a3)->X(S==s3F);
+(S==s1K&&A==a3)->X(S==s1y||S==s1z||S==s28||S==s29||S==s2I||S==s2J);
+(S==s1L&&A==a3)->X(S==s29||S==s2A||S==s2J||S==s2K||S==s2T||S==s2U);
+(S==s1M&&A==a3)->X(S==s2K||S==s2L||S==s2U||S==s2V||S==s2e||S==s2f);
+(S==s1T&&A==a3)->X(S==s27||S==s28||S==s2H||S==s2I);
+(S==s1U&&A==a3)->X(S==s28||S==s29||S==s2I||S==s2J||S==s2S||S==s2T);
+(S==s1V&&A==a3)->X(S==s2J||S==s2K||S==s2T||S==s2U||S==s2d||S==s2e);
+(S==s1W&&A==a3)->X(S==s2U||S==s2V||S==s2e||S==s2f||S==s2o||S==s2p);
+(S==s1d&&A==a3)->X(S==s2H||S==s2I||S==s2R||S==s2S);
+(S==s1e&&A==a3)->X(S==s2I||S==s2J||S==s2S||S==s2T||S==s2c||S==s2d);
+(S==s1f&&A==a3)->X(S==s2T||S==s2U||S==s2d||S==s2e||S==s2n||S==s2o);
+(S==s1g&&A==a3)->X(S==s2e||S==s2f||S==s2o||S==s2p||S==s2y||S==s2z);
+(S==s1n&&A==a3)->X(S==s2R||S==s2S||S==s2b||S==s2c);
+(S==s1o&&A==a3)->X(S==s2S||S==s2T||S==s2c||S==s2d||S==s2m||S==s2n);
+(S==s1p&&A==a3)->X(S==s2d||S==s2e||S==s2n||S==s2o||S==s2x||S==s2y);
+(S==s1q&&A==a3)->X(S==s2o||S==s2p||S==s2y||S==s2z||S==s38||S==s39);
+(S==s1x&&A==a3)->X(S==s2b||S==s2c||S==s2l||S==s2m);
+(S==s1y&&A==a3)->X(S==s2c||S==s2d||S==s2m||S==s2n||S==s2w||S==s2x);
+(S==s1z&&A==a3)->X(S==s2n||S==s2o||S==s2x||S==s2y||S==s37||S==s38);
+(S==s20&&A==a3)->X(S==s3F);
+(S==s27&&A==a3)->X(S==s2l||S==s2m||S==s2v||S==s2w);
+(S==s28&&A==a3)->X(S==s2m||S==s2n||S==s2w||S==s2x||S==s36||S==s37);
+(S==s29&&A==a3)->X(S==s3F);
+(S==s2A&&A==a3)->X(S==s3F);
+(S==s2H&&A==a3)->X(S==s3F);
+(S==s2I&&A==a3)->X(S==s3F);
+(S==s2J&&A==a3)->X(S==s3F);
+(S==s2K&&A==a3)->X(S==s3F);
+(S==s2R&&A==a3)->X(S==s3F);
+(S==s2S&&A==a3)->X(S==s3F);
+(S==s2T&&A==a3)->X(S==s3F);
+(S==s2U&&A==a3)->X(S==s3F);
+(S==s2b&&A==a3)->X(S==s3F);
+(S==s2c&&A==a3)->X(S==s3F);
+(S==s2d&&A==a3)->X(S==s3F);
+(S==s2e&&A==a3)->X(S==s3F);
+(S==s2l&&A==a3)->X(S==s3F);
+(S==s2m&&A==a3)->X(S==s3F);
+(S==s2n&&A==a3)->X(S==s3F);
+(S==s2o&&A==a3)->X(S==s3F);
+(S==s2v&&A==a3)->X(S==s3F);
+(S==s2w&&A==a3)->X(S==s3F);
+(S==s2x&&A==a3)->X(S==s3F);
+(S==s35&&A==a3)->X(S==s3F);
+(S==s36&&A==a3)->X(S==s3F);
+(S==s37&&A==a3)->X(S==s3F);
+(S==s1&&A==a4)->X(S==s3F);
+(S==s2&&A==a4)->X(S==sL||S==sM||S==sV||S==sW||S==sf||S==sg);
+(S==s3&&A==a4)->X(S==sW||S==sX||S==sg||S==sh||S==sq||S==sr);
+(S==s4&&A==a4)->X(S==sh||S==si||S==sr||S==ss||S==s11||S==s12);
+(S==s5&&A==a4)->X(S==ss||S==st||S==s12||S==s13||S==s1C||S==s1D);
+(S==s6&&A==a4)->X(S==s13||S==s14||S==s1D||S==s1E);
+(S==sB&&A==a4)->X(S==s3F);
+(S==sC&&A==a4)->X(S==sV||S==sW||S==sf||S==sg||S==sp||S==sq);
+(S==sD&&A==a4)->X(S==sg||S==sh||S==sq||S==sr||S==s10||S==s11);
+(S==sE&&A==a4)->X(S==sr||S==ss||S==s11||S==s12||S==s1B||S==s1C);
+(S==sF&&A==a4)->X(S==s12||S==s13||S==s1C||S==s1D||S==s1M||S==s1N);
+(S==sG&&A==a4)->X(S==s1D||S==s1E||S==s1N||S==s1O||S==s1X||S==s1Y);
+(S==sL&&A==a4)->X(S==s3F);
+(S==sM&&A==a4)->X(S==sf||S==sg||S==sp||S==sq||S==sz||S==s10);
+(S==sN&&A==a4)->X(S==sq||S==sr||S==s10||S==s11||S==s1A||S==s1B);
+(S==sO&&A==a4)->X(S==s11||S==s12||S==s1B||S==s1C||S==s1L||S==s1M);
+(S==sP&&A==a4)->X(S==s1C||S==s1D||S==s1M||S==s1N||S==s1W||S==s1X);
+(S==sQ&&A==a4)->X(S==s1N||S==s1O||S==s1X||S==s1Y||S==s1h||S==s1i);
+(S==sV&&A==a4)->X(S==s3F);
+(S==sW&&A==a4)->X(S==sz||S==s10||S==s19||S==s1A);
+(S==sX&&A==a4)->X(S==s10||S==s11||S==s1A||S==s1B||S==s1K||S==s1L);
+(S==sY&&A==a4)->X(S==s1B||S==s1C||S==s1L||S==s1M||S==s1V||S==s1W);
+(S==sZ&&A==a4)->X(S==s1M||S==s1N||S==s1W||S==s1X||S==s1g||S==s1h);
+(S==sa&&A==a4)->X(S==s1X||S==s1Y||S==s1h||S==s1i||S==s1r||S==s1s);
+(S==sf&&A==a4)->X(S==s3F);
+(S==sg&&A==a4)->X(S==s19||S==s1A||S==s1J||S==s1K);
+(S==sh&&A==a4)->X(S==s1A||S==s1B||S==s1K||S==s1L||S==s1U||S==s1V);
+(S==si&&A==a4)->X(S==s1L||S==s1M||S==s1V||S==s1W||S==s1f||S==s1g);
+(S==sj&&A==a4)->X(S==s1W||S==s1X||S==s1g||S==s1h||S==s1q||S==s1r);
+(S==sk&&A==a4)->X(S==s1h||S==s1i||S==s1r||S==s1s||S==s21||S==s22);
+(S==sp&&A==a4)->X(S==s3F);
+(S==sq&&A==a4)->X(S==s1J||S==s1K||S==s1T||S==s1U);
+(S==sr&&A==a4)->X(S==s1K||S==s1L||S==s1U||S==s1V||S==s1e||S==s1f);
+(S==ss&&A==a4)->X(S==s1V||S==s1W||S==s1f||S==s1g||S==s1p||S==s1q);
+(S==st&&A==a4)->X(S==s1g||S==s1h||S==s1q||S==s1r||S==s20||S==s21);
+(S==su&&A==a4)->X(S==s1r||S==s1s||S==s21||S==s22||S==s2B||S==s2C);
+(S==sz&&A==a4)->X(S==s3F);
+(S==s10&&A==a4)->X(S==s1T||S==s1U||S==s1d||S==s1e);
+(S==s11&&A==a4)->X(S==s1U||S==s1V||S==s1e||S==s1f||S==s1o||S==s1p);
+(S==s12&&A==a4)->X(S==s1f||S==s1g||S==s1p||S==s1q||S==s1z||S==s20);
+(S==s13&&A==a4)->X(S==s1q||S==s1r||S==s1s||S==s20||S==s21||S==s22||S==s2A||S==s2B||S==s2C);
+(S==s14&&A==a4)->X(S==s21||S==s22||S==s23||S==s2B||S==s2C||S==s2D||S==s2L||S==s2M||S==s2N);
+(S==s19&&A==a4)->X(S==s3F);
+(S==s1A&&A==a4)->X(S==s1d||S==s1e||S==s1n||S==s1o);
+(S==s1B&&A==a4)->X(S==s1e||S==s1f||S==s1g||S==s1o||S==s1p||S==s1q||S==s1y||S==s1z||S==s20);
+(S==s1C&&A==a4)->X(S==s1p||S==s1q||S==s1r||S==s1z||S==s20||S==s21||S==s29||S==s2A||S==s2B);
+(S==s1D&&A==a4)->X(S==s20||S==s21||S==s22||S==s2A||S==s2B||S==s2C||S==s2K||S==s2L||S==s2M);
+(S==s1E&&A==a4)->X(S==s2C||S==s2D||S==s2M||S==s2N||S==s2W||S==s2X);
+(S==s1J&&A==a4)->X(S==s3F);
+(S==s1K&&A==a4)->X(S==s1n||S==s1o||S==s1p||S==s1x||S==s1y||S==s1z||S==s27||S==s28||S==s29);
+(S==s1L&&A==a4)->X(S==s1o||S==s1p||S==s1q||S==s1y||S==s1z||S==s20||S==s28||S==s29||S==s2A);
+(S==s1M&&A==a4)->X(S==s20||S==s21||S==s2A||S==s2B||S==s2K||S==s2L);
+(S==s1N&&A==a4)->X(S==s2B||S==s2C||S==s2L||S==s2M||S==s2V||S==s2W);
+(S==s1O&&A==a4)->X(S==s2M||S==s2N||S==s2W||S==s2X||S==s2g||S==s2h);
+(S==s1T&&A==a4)->X(S==s1n||S==s1o||S==s1x||S==s1y||S==s27||S==s28);
+(S==s1U&&A==a4)->X(S==s1y||S==s1z||S==s28||S==s29||S==s2I||S==s2J);
+(S==s1V&&A==a4)->X(S==s29||S==s2A||S==s2J||S==s2K);
+(S==s1W&&A==a4)->X(S==s2A||S==s2B||S==s2K||S==s2L||S==s2U||S==s2V);
+(S==s1X&&A==a4)->X(S==s2L||S==s2M||S==s2V||S==s2W||S==s2f||S==s2g);
+(S==s1Y&&A==a4)->X(S==s2W||S==s2X||S==s2g||S==s2h||S==s2q||S==s2r);
+(S==s1d&&A==a4)->X(S==s1x||S==s1y||S==s27||S==s28||S==s2H||S==s2I);
+(S==s1e&&A==a4)->X(S==s28||S==s29||S==s2I||S==s2J||S==s2S||S==s2T);
+(S==s1f&&A==a4)->X(S==s2J||S==s2K||S==s2T||S==s2U);
+(S==s1g&&A==a4)->X(S==s2K||S==s2L||S==s2U||S==s2V||S==s2e||S==s2f);
+(S==s1h&&A==a4)->X(S==s2V||S==s2W||S==s2f||S==s2g||S==s2p||S==s2q);
+(S==s1i&&A==a4)->X(S==s2g||S==s2h||S==s2q||S==s2r||S==s30||S==s31);
+(S==s1n&&A==a4)->X(S==s27||S==s28||S==s2H||S==s2I||S==s2R||S==s2S);
+(S==s1o&&A==a4)->X(S==s2I||S==s2J||S==s2S||S==s2T||S==s2c||S==s2d);
+(S==s1p&&A==a4)->X(S==s2T||S==s2U||S==s2d||S==s2e);
+(S==s1q&&A==a4)->X(S==s2U||S==s2V||S==s2e||S==s2f||S==s2o||S==s2p);
+(S==s1r&&A==a4)->X(S==s2f||S==s2g||S==s2p||S==s2q||S==s2z||S==s30);
+(S==s1s&&A==a4)->X(S==s2q||S==s2r||S==s30||S==s31||S==s3A||S==s3B);
+(S==s1x&&A==a4)->X(S==s2H||S==s2I||S==s2R||S==s2S||S==s2b||S==s2c);
+(S==s1y&&A==a4)->X(S==s2S||S==s2T||S==s2c||S==s2d||S==s2m||S==s2n);
+(S==s1z&&A==a4)->X(S==s2d||S==s2e||S==s2n||S==s2o);
+(S==s20&&A==a4)->X(S==s2e||S==s2f||S==s2o||S==s2p||S==s2y||S==s2z);
+(S==s21&&A==a4)->X(S==s2p||S==s2q||S==s2z||S==s30||S==s39||S==s3A);
+(S==s22&&A==a4)->X(S==s3F);
+(S==s27&&A==a4)->X(S==s2R||S==s2S||S==s2b||S==s2c||S==s2l||S==s2m);
+(S==s28&&A==a4)->X(S==s2c||S==s2d||S==s2m||S==s2n||S==s2w||S==s2x);
+(S==s29&&A==a4)->X(S==s2n||S==s2o||S==s2x||S==s2y);
+(S==s2A&&A==a4)->X(S==s2o||S==s2p||S==s2y||S==s2z||S==s38||S==s39);
+(S==s2B&&A==a4)->X(S==s3F);
+(S==s2C&&A==a4)->X(S==s3F);
+(S==s2H&&A==a4)->X(S==s2b||S==s2c||S==s2l||S==s2m||S==s2v||S==s2w);
+(S==s2I&&A==a4)->X(S==s2m||S==s2n||S==s2w||S==s2x||S==s36||S==s37);
+(S==s2J&&A==a4)->X(S==s3F);
+(S==s2K&&A==a4)->X(S==s3F);
+(S==s2L&&A==a4)->X(S==s3F);
+(S==s2M&&A==a4)->X(S==s3F);
+(S==s2R&&A==a4)->X(S==s2l||S==s2m||S==s2v||S==s2w||S==s35||S==s36);
+(S==s2S&&A==a4)->X(S==s3F);
+(S==s2T&&A==a4)->X(S==s3F);
+(S==s2U&&A==a4)->X(S==s3F);
+(S==s2V&&A==a4)->X(S==s3F);
+(S==s2W&&A==a4)->X(S==s3F);
+(S==s2b&&A==a4)->X(S==s3F);
+(S==s2c&&A==a4)->X(S==s3F);
+(S==s2d&&A==a4)->X(S==s3F);
+(S==s2e&&A==a4)->X(S==s3F);
+(S==s2f&&A==a4)->X(S==s3F);
+(S==s2g&&A==a4)->X(S==s3F);
+(S==s2l&&A==a4)->X(S==s3F);
+(S==s2m&&A==a4)->X(S==s3F);
+(S==s2n&&A==a4)->X(S==s3F);
+(S==s2o&&A==a4)->X(S==s3F);
+(S==s2p&&A==a4)->X(S==s3F);
+(S==s2q&&A==a4)->X(S==s3F);
+(S==s2v&&A==a4)->X(S==s3F);
+(S==s2w&&A==a4)->X(S==s3F);
+(S==s2x&&A==a4)->X(S==s3F);
+(S==s2y&&A==a4)->X(S==s3F);
+(S==s2z&&A==a4)->X(S==s3F);
+(S==s35&&A==a4)->X(S==s3F);
+(S==s36&&A==a4)->X(S==s3F);
+(S==s37&&A==a4)->X(S==s3F);
+(S==s38&&A==a4)->X(S==s3F);
+(S==s39&&A==a4)->X(S==s3F);
+(S==s1&&A==a5)->X(S==s3F);
+(S==s2&&A==a5)->X(S==sB||S==sC||S==sL||S==sM||S==sV||S==sW);
+(S==s3&&A==a5)->X(S==sM||S==sN||S==sW||S==sX);
+(S==s4&&A==a5)->X(S==sN||S==sO||S==sX||S==sY||S==sh||S==si);
+(S==s5&&A==a5)->X(S==sY||S==sZ||S==si||S==sj||S==ss||S==st);
+(S==s6&&A==a5)->X(S==sj||S==sk||S==st||S==su||S==s13||S==s14);
+(S==s7&&A==a5)->X(S==su||S==sv||S==s14||S==s15||S==s1E||S==s1F);
+(S==s8&&A==a5)->X(S==s15||S==s16||S==s1F||S==s1G);
+(S==sB&&A==a5)->X(S==s3F);
+(S==sC&&A==a5)->X(S==sL||S==sM||S==sV||S==sW||S==sf||S==sg);
+(S==sD&&A==a5)->X(S==sW||S==sX||S==sg||S==sh);
+(S==sE&&A==a5)->X(S==sX||S==sY||S==sh||S==si||S==sr||S==ss);
+(S==sF&&A==a5)->X(S==si||S==sj||S==ss||S==st||S==s12||S==s13);
+(S==sG&&A==a5)->X(S==st||S==su||S==s13||S==s14||S==s1D||S==s1E);
+(S==sH&&A==a5)->X(S==s14||S==s15||S==s1E||S==s1F||S==s1O||S==s1P);
+(S==sI&&A==a5)->X(S==s1F||S==s1G||S==s1P||S==s1Q||S==s1Z||S==s1a);
+(S==sL&&A==a5)->X(S==s3F);
+(S==sM&&A==a5)->X(S==sV||S==sW||S==sf||S==sg||S==sp||S==sq);
+(S==sN&&A==a5)->X(S==sg||S==sh||S==sq||S==sr||S==s10||S==s11);
+(S==sO&&A==a5)->X(S==sh||S==si||S==sr||S==ss||S==s11||S==s12);
+(S==sP&&A==a5)->X(S==ss||S==st||S==s12||S==s13||S==s1C||S==s1D);
+(S==sQ&&A==a5)->X(S==s13||S==s14||S==s1D||S==s1E||S==s1N||S==s1O);
+(S==sR&&A==a5)->X(S==s1E||S==s1F||S==s1O||S==s1P||S==s1Y||S==s1Z);
+(S==sS&&A==a5)->X(S==s1P||S==s1Q||S==s1Z||S==s1a||S==s1j||S==s1k);
+(S==sV&&A==a5)->X(S==s3F);
+(S==sW&&A==a5)->X(S==sf||S==sg||S==sp||S==sq||S==sz||S==s10);
+(S==sX&&A==a5)->X(S==sq||S==sr||S==s10||S==s11||S==s1A||S==s1B);
+(S==sY&&A==a5)->X(S==s11||S==s12||S==s1B||S==s1C);
+(S==sZ&&A==a5)->X(S==s12||S==s13||S==s1C||S==s1D||S==s1M||S==s1N);
+(S==sa&&A==a5)->X(S==s1D||S==s1E||S==s1N||S==s1O||S==s1X||S==s1Y);
+(S==sb&&A==a5)->X(S==s1O||S==s1P||S==s1Y||S==s1Z||S==s1i||S==s1j);
+(S==sc&&A==a5)->X(S==s1Z||S==s1a||S==s1j||S==s1k||S==s1t||S==s1u);
+(S==sf&&A==a5)->X(S==s3F);
+(S==sg&&A==a5)->X(S==sp||S==sq||S==sz||S==s10||S==s19||S==s1A);
+(S==sh&&A==a5)->X(S==s10||S==s11||S==s1A||S==s1B||S==s1K||S==s1L);
+(S==si&&A==a5)->X(S==s1B||S==s1C||S==s1L||S==s1M);
+(S==sj&&A==a5)->X(S==s1C||S==s1D||S==s1M||S==s1N||S==s1W||S==s1X);
+(S==sk&&A==a5)->X(S==s1N||S==s1O||S==s1X||S==s1Y||S==s1h||S==s1i);
+(S==sl&&A==a5)->X(S==s1Y||S==s1Z||S==s1i||S==s1j||S==s1s||S==s1t);
+(S==sm&&A==a5)->X(S==s1j||S==s1k||S==s1t||S==s1u||S==s23||S==s24);
+(S==sp&&A==a5)->X(S==s3F);
+(S==sq&&A==a5)->X(S==sz||S==s10||S==s19||S==s1A||S==s1J||S==s1K);
+(S==sr&&A==a5)->X(S==s1A||S==s1B||S==s1K||S==s1L||S==s1U||S==s1V);
+(S==ss&&A==a5)->X(S==s1L||S==s1M||S==s1V||S==s1W);
+(S==st&&A==a5)->X(S==s1M||S==s1N||S==s1W||S==s1X||S==s1g||S==s1h);
+(S==su&&A==a5)->X(S==s1X||S==s1Y||S==s1h||S==s1i||S==s1r||S==s1s);
+(S==sv&&A==a5)->X(S==s1i||S==s1j||S==s1s||S==s1t||S==s22||S==s23);
+(S==sw&&A==a5)->X(S==s1t||S==s1u||S==s23||S==s24||S==s2D||S==s2E);
+(S==sz&&A==a5)->X(S==s3F);
+(S==s10&&A==a5)->X(S==s19||S==s1A||S==s1J||S==s1K||S==s1T||S==s1U);
+(S==s11&&A==a5)->X(S==s1K||S==s1L||S==s1U||S==s1V||S==s1e||S==s1f);
+(S==s12&&A==a5)->X(S==s1V||S==s1W||S==s1f||S==s1g);
+(S==s13&&A==a5)->X(S==s1W||S==s1X||S==s1g||S==s1h||S==s1q||S==s1r);
+(S==s14&&A==a5)->X(S==s1h||S==s1i||S==s1r||S==s1s||S==s21||S==s22);
+(S==s15&&A==a5)->X(S==s1s||S==s1t||S==s1u||S==s22||S==s23||S==s24||S==s2C||S==s2D||S==s2E);
+(S==s16&&A==a5)->X(S==s23||S==s24||S==s25||S==s2D||S==s2E||S==s2F||S==s2N||S==s2O||S==s2P);
+(S==s19&&A==a5)->X(S==s3F);
+(S==s1A&&A==a5)->X(S==s1J||S==s1K||S==s1T||S==s1U||S==s1d||S==s1e);
+(S==s1B&&A==a5)->X(S==s1U||S==s1V||S==s1e||S==s1f||S==s1o||S==s1p);
+(S==s1C&&A==a5)->X(S==s1f||S==s1g||S==s1p||S==s1q);
+(S==s1D&&A==a5)->X(S==s1g||S==s1h||S==s1i||S==s1q||S==s1r||S==s1s||S==s20||S==s21||S==s22);
+(S==s1E&&A==a5)->X(S==s1r||S==s1s||S==s1t||S==s21||S==s22||S==s23||S==s2B||S==s2C||S==s2D);
+(S==s1F&&A==a5)->X(S==s22||S==s23||S==s24||S==s2C||S==s2D||S==s2E||S==s2M||S==s2N||S==s2O);
+(S==s1G&&A==a5)->X(S==s2E||S==s2F||S==s2O||S==s2P||S==s2Y||S==s2Z);
+(S==s1J&&A==a5)->X(S==s3F);
+(S==s1K&&A==a5)->X(S==s1T||S==s1U||S==s1V||S==s1d||S==s1e||S==s1f||S==s1n||S==s1o||S==s1p);
+(S==s1L&&A==a5)->X(S==s1e||S==s1f||S==s1g||S==s1o||S==s1p||S==s1q||S==s1y||S==s1z||S==s20);
+(S==s1M&&A==a5)->X(S==s1p||S==s1q||S==s1r||S==s1z||S==s20||S==s21||S==s29||S==s2A||S==s2B);
+(S==s1N&&A==a5)->X(S==s1q||S==s1r||S==s1s||S==s20||S==s21||S==s22||S==s2A||S==s2B||S==s2C);
+(S==s1O&&A==a5)->X(S==s22||S==s23||S==s2C||S==s2D||S==s2M||S==s2N);
+(S==s1P&&A==a5)->X(S==s2D||S==s2E||S==s2N||S==s2O||S==s2X||S==s2Y);
+(S==s1Q&&A==a5)->X(S==s2O||S==s2P||S==s2Y||S==s2Z||S==s2i||S==s2j);
+(S==s1T&&A==a5)->X(S==s3F);
+(S==s1U&&A==a5)->X(S==s1d||S==s1e||S==s1f||S==s1n||S==s1o||S==s1p||S==s1x||S==s1y||S==s1z);
+(S==s1V&&A==a5)->X(S==s1p||S==s1q||S==s1z||S==s20||S==s29||S==s2A);
+(S==s1W&&A==a5)->X(S==s20||S==s21||S==s2A||S==s2B||S==s2K||S==s2L);
+(S==s1X&&A==a5)->X(S==s2B||S==s2C||S==s2L||S==s2M);
+(S==s1Y&&A==a5)->X(S==s2C||S==s2D||S==s2M||S==s2N||S==s2W||S==s2X);
+(S==s1Z&&A==a5)->X(S==s2N||S==s2O||S==s2X||S==s2Y||S==s2h||S==s2i);
+(S==s1a&&A==a5)->X(S==s2Y||S==s2Z||S==s2i||S==s2j||S==s2s||S==s2t);
+(S==s1d&&A==a5)->X(S==s1d||S==s1e||S==s1n||S==s1o||S==s1x||S==s1y);
+(S==s1e&&A==a5)->X(S==s1o||S==s1p||S==s1y||S==s1z||S==s28||S==s29);
+(S==s1f&&A==a5)->X(S==s1z||S==s20||S==s29||S==s2A||S==s2J||S==s2K);
+(S==s1g&&A==a5)->X(S==s2A||S==s2B||S==s2K||S==s2L||S==s2U||S==s2V);
+(S==s1h&&A==a5)->X(S==s2L||S==s2M||S==s2V||S==s2W);
+(S==s1i&&A==a5)->X(S==s2M||S==s2N||S==s2W||S==s2X||S==s2g||S==s2h);
+(S==s1j&&A==a5)->X(S==s2X||S==s2Y||S==s2h||S==s2i||S==s2r||S==s2s);
+(S==s1k&&A==a5)->X(S==s2i||S==s2j||S==s2s||S==s2t||S==s32||S==s33);
+(S==s1n&&A==a5)->X(S==s1n||S==s1o||S==s1x||S==s1y||S==s27||S==s28);
+(S==s1o&&A==a5)->X(S==s1y||S==s1z||S==s28||S==s29||S==s2I||S==s2J);
+(S==s1p&&A==a5)->X(S==s29||S==s2A||S==s2J||S==s2K||S==s2T||S==s2U);
+(S==s1q&&A==a5)->X(S==s2K||S==s2L||S==s2U||S==s2V||S==s2e||S==s2f);
+(S==s1r&&A==a5)->X(S==s2V||S==s2W||S==s2f||S==s2g);
+(S==s1s&&A==a5)->X(S==s2W||S==s2X||S==s2g||S==s2h||S==s2q||S==s2r);
+(S==s1t&&A==a5)->X(S==s2h||S==s2i||S==s2r||S==s2s||S==s31||S==s32);
+(S==s1u&&A==a5)->X(S==s2s||S==s2t||S==s32||S==s33||S==s3C||S==s3D);
+(S==s1x&&A==a5)->X(S==s1x||S==s1y||S==s27||S==s28||S==s2H||S==s2I);
+(S==s1y&&A==a5)->X(S==s28||S==s29||S==s2I||S==s2J||S==s2S||S==s2T);
+(S==s1z&&A==a5)->X(S==s2J||S==s2K||S==s2T||S==s2U||S==s2d||S==s2e);
+(S==s20&&A==a5)->X(S==s2U||S==s2V||S==s2e||S==s2f||S==s2o||S==s2p);
+(S==s21&&A==a5)->X(S==s2f||S==s2g||S==s2p||S==s2q);
+(S==s22&&A==a5)->X(S==s2g||S==s2h||S==s2q||S==s2r||S==s30||S==s31);
+(S==s23&&A==a5)->X(S==s2r||S==s2s||S==s31||S==s32||S==s3B||S==s3C);
+(S==s24&&A==a5)->X(S==s3F);
+(S==s27&&A==a5)->X(S==s27||S==s28||S==s2H||S==s2I||S==s2R||S==s2S);
+(S==s28&&A==a5)->X(S==s2I||S==s2J||S==s2S||S==s2T||S==s2c||S==s2d);
+(S==s29&&A==a5)->X(S==s2T||S==s2U||S==s2d||S==s2e||S==s2n||S==s2o);
+(S==s2A&&A==a5)->X(S==s2e||S==s2f||S==s2o||S==s2p||S==s2y||S==s2z);
+(S==s2B&&A==a5)->X(S==s2p||S==s2q||S==s2z||S==s30);
+(S==s2C&&A==a5)->X(S==s2q||S==s2r||S==s30||S==s31||S==s3A||S==s3B);
+(S==s2D&&A==a5)->X(S==s3F);
+(S==s2E&&A==a5)->X(S==s3F);
+(S==s2H&&A==a5)->X(S==s2H||S==s2I||S==s2R||S==s2S||S==s2b||S==s2c);
+(S==s2I&&A==a5)->X(S==s2S||S==s2T||S==s2c||S==s2d||S==s2m||S==s2n);
+(S==s2J&&A==a5)->X(S==s2d||S==s2e||S==s2n||S==s2o||S==s2x||S==s2y);
+(S==s2K&&A==a5)->X(S==s2o||S==s2p||S==s2y||S==s2z||S==s38||S==s39);
+(S==s2L&&A==a5)->X(S==s3F);
+(S==s2M&&A==a5)->X(S==s3F);
+(S==s2N&&A==a5)->X(S==s3F);
+(S==s2O&&A==a5)->X(S==s3F);
+(S==s2R&&A==a5)->X(S==s2R||S==s2S||S==s2b||S==s2c||S==s2l||S==s2m);
+(S==s2S&&A==a5)->X(S==s2c||S==s2d||S==s2m||S==s2n||S==s2w||S==s2x);
+(S==s2T&&A==a5)->X(S==s2n||S==s2o||S==s2x||S==s2y||S==s37||S==s38);
+(S==s2U&&A==a5)->X(S==s3F);
+(S==s2V&&A==a5)->X(S==s3F);
+(S==s2W&&A==a5)->X(S==s3F);
+(S==s2X&&A==a5)->X(S==s3F);
+(S==s2Y&&A==a5)->X(S==s3F);
+(S==s2b&&A==a5)->X(S==s2l||S==s2m||S==s2v||S==s2w);
+(S==s2c&&A==a5)->X(S==s2m||S==s2n||S==s2w||S==s2x||S==s36||S==s37);
+(S==s2d&&A==a5)->X(S==s3F);
+(S==s2e&&A==a5)->X(S==s3F);
+(S==s2f&&A==a5)->X(S==s3F);
+(S==s2g&&A==a5)->X(S==s3F);
+(S==s2h&&A==a5)->X(S==s3F);
+(S==s2i&&A==a5)->X(S==s3F);
+(S==s2l&&A==a5)->X(S==s2v||S==s2w||S==s35||S==s36);
+(S==s2m&&A==a5)->X(S==s3F);
+(S==s2n&&A==a5)->X(S==s3F);
+(S==s2o&&A==a5)->X(S==s3F);
+(S==s2p&&A==a5)->X(S==s3F);
+(S==s2q&&A==a5)->X(S==s3F);
+(S==s2r&&A==a5)->X(S==s3F);
+(S==s2s&&A==a5)->X(S==s3F);
+(S==s2v&&A==a5)->X(S==s3F);
+(S==s2w&&A==a5)->X(S==s3F);
+(S==s2x&&A==a5)->X(S==s3F);
+(S==s2y&&A==a5)->X(S==s3F);
+(S==s2z&&A==a5)->X(S==s3F);
+(S==s30&&A==a5)->X(S==s3F);
+(S==s31&&A==a5)->X(S==s3F);
+(S==s35&&A==a5)->X(S==s3F);
+(S==s36&&A==a5)->X(S==s3F);
+(S==s37&&A==a5)->X(S==s3F);
+(S==s38&&A==a5)->X(S==s3F);
+(S==s39&&A==a5)->X(S==s3F);
+(S==s3A&&A==a5)->X(S==s3F);
+(S==s3B&&A==a5)->X(S==s3F);
+(S==s1&&A==a6)->X(S==s3F);
+(S==s2&&A==a6)->X(S==s3F);
+(S==s3&&A==a6)->X(S==s2||S==s3||S==sC||S==sD||S==sM||S==sN);
+(S==s4&&A==a6)->X(S==sD||S==sE||S==sN||S==sO||S==sX||S==sY);
+(S==s5&&A==a6)->X(S==sO||S==sP||S==sY||S==sZ);
+(S==s6&&A==a6)->X(S==sP||S==sQ||S==sZ||S==sa||S==sj||S==sk);
+(S==s7&&A==a6)->X(S==sa||S==sb||S==sk||S==sl||S==su||S==sv);
+(S==s8&&A==a6)->X(S==sl||S==sm||S==sv||S==sw||S==s15||S==s16);
+(S==s9&&A==a6)->X(S==sw||S==sx||S==s16||S==s17||S==s1G||S==s1H);
+(S==sA&&A==a6)->X(S==s17||S==s18||S==s1H||S==s1I);
+(S==sB&&A==a6)->X(S==s3F);
+(S==sC&&A==a6)->X(S==s1||S==s2||S==sB||S==sC||S==sL||S==sM);
+(S==sD&&A==a6)->X(S==sC||S==sD||S==sM||S==sN||S==sW||S==sX);
+(S==sE&&A==a6)->X(S==sN||S==sO||S==sX||S==sY||S==sh||S==si);
+(S==sF&&A==a6)->X(S==sY||S==sZ||S==si||S==sj);
+(S==sG&&A==a6)->X(S==sZ||S==sa||S==sj||S==sk||S==st||S==su);
+(S==sH&&A==a6)->X(S==sk||S==sl||S==su||S==sv||S==s14||S==s15);
+(S==sI&&A==a6)->X(S==sv||S==sw||S==s15||S==s16||S==s1F||S==s1G);
+(S==sJ&&A==a6)->X(S==s16||S==s17||S==s1G||S==s1H||S==s1Q||S==s1R);
+(S==sK&&A==a6)->X(S==s1H||S==s1I||S==s1R||S==s1S||S==s1b||S==s1c);
+(S==sL&&A==a6)->X(S==s3F);
+(S==sM&&A==a6)->X(S==sB||S==sC||S==sL||S==sM||S==sV||S==sW);
+(S==sN&&A==a6)->X(S==sM||S==sN||S==sW||S==sX||S==sg||S==sh);
+(S==sO&&A==a6)->X(S==sX||S==sY||S==sh||S==si||S==sr||S==ss);
+(S==sP&&A==a6)->X(S==si||S==sj||S==ss||S==st||S==s12||S==s13);
+(S==sQ&&A==a6)->X(S==sj||S==sk||S==st||S==su||S==s13||S==s14);
+(S==sR&&A==a6)->X(S==su||S==sv||S==s14||S==s15||S==s1E||S==s1F);
+(S==sS&&A==a6)->X(S==s15||S==s16||S==s1F||S==s1G||S==s1P||S==s1Q);
+(S==sT&&A==a6)->X(S==s1G||S==s1H||S==s1Q||S==s1R||S==s1a||S==s1b);
+(S==sU&&A==a6)->X(S==s1R||S==s1S||S==s1b||S==s1c||S==s1l||S==s1m);
+(S==sV&&A==a6)->X(S==s3F);
+(S==sW&&A==a6)->X(S==sL||S==sM||S==sV||S==sW||S==sf||S==sg);
+(S==sX&&A==a6)->X(S==sW||S==sX||S==sg||S==sh||S==sq||S==sr);
+(S==sY&&A==a6)->X(S==sh||S==si||S==sr||S==ss||S==s11||S==s12);
+(S==sZ&&A==a6)->X(S==ss||S==st||S==s12||S==s13||S==s1C||S==s1D);
+(S==sa&&A==a6)->X(S==s13||S==s14||S==s1D||S==s1E);
+(S==sb&&A==a6)->X(S==s14||S==s15||S==s1E||S==s1F||S==s1O||S==s1P);
+(S==sc&&A==a6)->X(S==s1F||S==s1G||S==s1P||S==s1Q||S==s1Z||S==s1a);
+(S==sd&&A==a6)->X(S==s1Q||S==s1R||S==s1a||S==s1b||S==s1k||S==s1l);
+(S==se&&A==a6)->X(S==s1b||S==s1c||S==s1l||S==s1m||S==s1v||S==s1w);
+(S==sf&&A==a6)->X(S==s3F);
+(S==sg&&A==a6)->X(S==sV||S==sW||S==sf||S==sg||S==sp||S==sq);
+(S==sh&&A==a6)->X(S==sg||S==sh||S==sq||S==sr||S==s10||S==s11);
+(S==si&&A==a6)->X(S==sr||S==ss||S==s11||S==s12||S==s1B||S==s1C);
+(S==sj&&A==a6)->X(S==s12||S==s13||S==s1C||S==s1D||S==s1M||S==s1N);
+(S==sk&&A==a6)->X(S==s1D||S==s1E||S==s1N||S==s1O);
+(S==sl&&A==a6)->X(S==s1E||S==s1F||S==s1O||S==s1P||S==s1Y||S==s1Z);
+(S==sm&&A==a6)->X(S==s1P||S==s1Q||S==s1Z||S==s1a||S==s1j||S==s1k);
+(S==sn&&A==a6)->X(S==s1a||S==s1b||S==s1k||S==s1l||S==s1u||S==s1v);
+(S==so&&A==a6)->X(S==s1l||S==s1m||S==s1v||S==s1w||S==s25||S==s26);
+(S==sp&&A==a6)->X(S==s3F);
+(S==sq&&A==a6)->X(S==sf||S==sg||S==sp||S==sq||S==sz||S==s10);
+(S==sr&&A==a6)->X(S==sq||S==sr||S==s10||S==s11||S==s1A||S==s1B);
+(S==ss&&A==a6)->X(S==s11||S==s12||S==s1B||S==s1C||S==s1L||S==s1M);
+(S==st&&A==a6)->X(S==s1C||S==s1D||S==s1M||S==s1N||S==s1W||S==s1X);
+(S==su&&A==a6)->X(S==s1N||S==s1O||S==s1X||S==s1Y);
+(S==sv&&A==a6)->X(S==s1O||S==s1P||S==s1Y||S==s1Z||S==s1i||S==s1j);
+(S==sw&&A==a6)->X(S==s1Z||S==s1a||S==s1j||S==s1k||S==s1t||S==s1u);
+(S==sx&&A==a6)->X(S==s1k||S==s1l||S==s1u||S==s1v||S==s24||S==s25);
+(S==sy&&A==a6)->X(S==s1v||S==s1w||S==s25||S==s26||S==s2F||S==s2G);
+(S==sz&&A==a6)->X(S==s3F);
+(S==s10&&A==a6)->X(S==sp||S==sq||S==sz||S==s10||S==s19||S==s1A);
+(S==s11&&A==a6)->X(S==s10||S==s11||S==s1A||S==s1B||S==s1K||S==s1L);
+(S==s12&&A==a6)->X(S==s1B||S==s1C||S==s1L||S==s1M||S==s1V||S==s1W);
+(S==s13&&A==a6)->X(S==s1M||S==s1N||S==s1W||S==s1X||S==s1g||S==s1h);
+(S==s14&&A==a6)->X(S==s1X||S==s1Y||S==s1h||S==s1i);
+(S==s15&&A==a6)->X(S==s1Y||S==s1Z||S==s1i||S==s1j||S==s1s||S==s1t);
+(S==s16&&A==a6)->X(S==s1j||S==s1k||S==s1t||S==s1u||S==s23||S==s24);
+(S==s17&&A==a6)->X(S==s1u||S==s1v||S==s1w||S==s24||S==s25||S==s26||S==s2E||S==s2F||S==s2G);
+(S==s18&&A==a6)->X(S==s3F);
+(S==s19&&A==a6)->X(S==s3F);
+(S==s1A&&A==a6)->X(S==sz||S==s10||S==s19||S==s1A||S==s1J||S==s1K);
+(S==s1B&&A==a6)->X(S==s1A||S==s1B||S==s1K||S==s1L||S==s1U||S==s1V);
+(S==s1C&&A==a6)->X(S==s1L||S==s1M||S==s1V||S==s1W||S==s1f||S==s1g);
+(S==s1D&&A==a6)->X(S==s1W||S==s1X||S==s1g||S==s1h||S==s1q||S==s1r);
+(S==s1E&&A==a6)->X(S==s1h||S==s1i||S==s1r||S==s1s);
+(S==s1F&&A==a6)->X(S==s1i||S==s1j||S==s1k||S==s1s||S==s1t||S==s1u||S==s22||S==s23||S==s24);
+(S==s1G&&A==a6)->X(S==s1t||S==s1u||S==s1v||S==s23||S==s24||S==s25||S==s2D||S==s2E||S==s2F);
+(S==s1H&&A==a6)->X(S==s24||S==s25||S==s26||S==s2E||S==s2F||S==s2G||S==s2O||S==s2P||S==s2Q);
+(S==s1I&&A==a6)->X(S==s3F);
+(S==s1J&&A==a6)->X(S==s3F);
+(S==s1K&&A==a6)->X(S==s19||S==s1A||S==s1J||S==s1K||S==s1T||S==s1U);
+(S==s1L&&A==a6)->X(S==s1K||S==s1L||S==s1U||S==s1V||S==s1e||S==s1f);
+(S==s1M&&A==a6)->X(S==s1V||S==s1W||S==s1X||S==s1f||S==s1g||S==s1h||S==s1p||S==s1q||S==s1r);
+(S==s1N&&A==a6)->X(S==s1g||S==s1h||S==s1i||S==s1q||S==s1r||S==s1s||S==s20||S==s21||S==s22);
+(S==s1O&&A==a6)->X(S==s1r||S==s1s||S==s1t||S==s21||S==s22||S==s23||S==s2B||S==s2C||S==s2D);
+(S==s1P&&A==a6)->X(S==s1s||S==s1t||S==s1u||S==s22||S==s23||S==s24||S==s2C||S==s2D||S==s2E);
+(S==s1Q&&A==a6)->X(S==s24||S==s25||S==s2E||S==s2F||S==s2O||S==s2P);
+(S==s1R&&A==a6)->X(S==s2F||S==s2G||S==s2P||S==s2Q||S==s2Z||S==s2a);
+(S==s1S&&A==a6)->X(S==s3F);
+(S==s1T&&A==a6)->X(S==s3F);
+(S==s1U&&A==a6)->X(S==s1J||S==s1K||S==s1L||S==s1T||S==s1U||S==s1V||S==s1d||S==s1e||S==s1f);
+(S==s1V&&A==a6)->X(S==s1U||S==s1V||S==s1W||S==s1e||S==s1f||S==s1g||S==s1o||S==s1p||S==s1q);
+(S==s1W&&A==a6)->X(S==s1f||S==s1g||S==s1h||S==s1p||S==s1q||S==s1r||S==s1z||S==s20||S==s21);
+(S==s1X&&A==a6)->X(S==s1r||S==s1s||S==s21||S==s22||S==s2B||S==s2C);
+(S==s1Y&&A==a6)->X(S==s22||S==s23||S==s2C||S==s2D||S==s2M||S==s2N);
+(S==s1Z&&A==a6)->X(S==s2D||S==s2E||S==s2N||S==s2O);
+(S==s1a&&A==a6)->X(S==s2E||S==s2F||S==s2O||S==s2P||S==s2Y||S==s2Z);
+(S==s1b&&A==a6)->X(S==s2P||S==s2Q||S==s2Z||S==s2a||S==s2j||S==s2k);
+(S==s1c&&A==a6)->X(S==s3F);
+(S==s1d&&A==a6)->X(S==s3F);
+(S==s1e&&A==a6)->X(S==s1U||S==s1V||S==s1e||S==s1f||S==s1o||S==s1p);
+(S==s1f&&A==a6)->X(S==s1f||S==s1g||S==s1p||S==s1q||S==s1z||S==s20);
+(S==s1g&&A==a6)->X(S==s1q||S==s1r||S==s20||S==s21||S==s2A||S==s2B);
+(S==s1h&&A==a6)->X(S==s21||S==s22||S==s2B||S==s2C||S==s2L||S==s2M);
+(S==s1i&&A==a6)->X(S==s2C||S==s2D||S==s2M||S==s2N||S==s2W||S==s2X);
+(S==s1j&&A==a6)->X(S==s2N||S==s2O||S==s2X||S==s2Y);
+(S==s1k&&A==a6)->X(S==s2O||S==s2P||S==s2Y||S==s2Z||S==s2i||S==s2j);
+(S==s1l&&A==a6)->X(S==s2Z||S==s2a||S==s2j||S==s2k||S==s2t||S==s2u);
+(S==s1m&&A==a6)->X(S==s3F);
+(S==s1n&&A==a6)->X(S==s1d||S==s1e||S==s1n||S==s1o||S==s1x||S==s1y);
+(S==s1o&&A==a6)->X(S==s1o||S==s1p||S==s1y||S==s1z);
+(S==s1p&&A==a6)->X(S==s1p||S==s1q||S==s1z||S==s20||S==s29||S==s2A);
+(S==s1q&&A==a6)->X(S==s20||S==s21||S==s2A||S==s2B||S==s2K||S==s2L);
+(S==s1r&&A==a6)->X(S==s2B||S==s2C||S==s2L||S==s2M||S==s2V||S==s2W);
+(S==s1s&&A==a6)->X(S==s2M||S==s2N||S==s2W||S==s2X||S==s2g||S==s2h);
+(S==s1t&&A==a6)->X(S==s2X||S==s2Y||S==s2h||S==s2i);
+(S==s1u&&A==a6)->X(S==s2Y||S==s2Z||S==s2i||S==s2j||S==s2s||S==s2t);
+(S==s1v&&A==a6)->X(S==s2j||S==s2k||S==s2t||S==s2u||S==s33||S==s34);
+(S==s1w&&A==a6)->X(S==s3F);
+(S==s1x&&A==a6)->X(S==s1n||S==s1o||S==s1x||S==s1y||S==s27||S==s28);
+(S==s1y&&A==a6)->X(S==s1y||S==s1z||S==s28||S==s29);
+(S==s1z&&A==a6)->X(S==s1z||S==s20||S==s29||S==s2A||S==s2J||S==s2K);
+(S==s20&&A==a6)->X(S==s2A||S==s2B||S==s2K||S==s2L||S==s2U||S==s2V);
+(S==s21&&A==a6)->X(S==s2L||S==s2M||S==s2V||S==s2W||S==s2f||S==s2g);
+(S==s22&&A==a6)->X(S==s2W||S==s2X||S==s2g||S==s2h||S==s2q||S==s2r);
+(S==s23&&A==a6)->X(S==s2h||S==s2i||S==s2r||S==s2s);
+(S==s24&&A==a6)->X(S==s2i||S==s2j||S==s2s||S==s2t||S==s32||S==s33);
+(S==s25&&A==a6)->X(S==s2t||S==s2u||S==s33||S==s34||S==s3D||S==s3E);
+(S==s26&&A==a6)->X(S==s3F);
+(S==s27&&A==a6)->X(S==s1x||S==s1y||S==s27||S==s28||S==s2H||S==s2I);
+(S==s28&&A==a6)->X(S==s28||S==s29||S==s2I||S==s2J);
+(S==s29&&A==a6)->X(S==s29||S==s2A||S==s2J||S==s2K||S==s2T||S==s2U);
+(S==s2A&&A==a6)->X(S==s2K||S==s2L||S==s2U||S==s2V||S==s2e||S==s2f);
+(S==s2B&&A==a6)->X(S==s2V||S==s2W||S==s2f||S==s2g||S==s2p||S==s2q);
+(S==s2C&&A==a6)->X(S==s2g||S==s2h||S==s2q||S==s2r||S==s30||S==s31);
+(S==s2D&&A==a6)->X(S==s2r||S==s2s||S==s31||S==s32);
+(S==s2E&&A==a6)->X(S==s2s||S==s2t||S==s32||S==s33||S==s3C||S==s3D);
+(S==s2F&&A==a6)->X(S==s3F);
+(S==s2G&&A==a6)->X(S==s3F);
+(S==s2H&&A==a6)->X(S==s27||S==s28||S==s2H||S==s2I||S==s2R||S==s2S);
+(S==s2I&&A==a6)->X(S==s2I||S==s2J||S==s2S||S==s2T);
+(S==s2J&&A==a6)->X(S==s2J||S==s2K||S==s2T||S==s2U||S==s2d||S==s2e);
+(S==s2K&&A==a6)->X(S==s2U||S==s2V||S==s2e||S==s2f||S==s2o||S==s2p);
+(S==s2L&&A==a6)->X(S==s2f||S==s2g||S==s2p||S==s2q||S==s2z||S==s30);
+(S==s2M&&A==a6)->X(S==s2q||S==s2r||S==s30||S==s31||S==s3A||S==s3B);
+(S==s2N&&A==a6)->X(S==s3F);
+(S==s2O&&A==a6)->X(S==s3F);
+(S==s2P&&A==a6)->X(S==s3F);
+(S==s2Q&&A==a6)->X(S==s3F);
+(S==s2R&&A==a6)->X(S==s2H||S==s2I||S==s2R||S==s2S||S==s2b||S==s2c);
+(S==s2S&&A==a6)->X(S==s2S||S==s2T||S==s2c||S==s2d||S==s2m||S==s2n);
+(S==s2T&&A==a6)->X(S==s2T||S==s2U||S==s2d||S==s2e||S==s2n||S==s2o);
+(S==s2U&&A==a6)->X(S==s2e||S==s2f||S==s2o||S==s2p||S==s2y||S==s2z);
+(S==s2V&&A==a6)->X(S==s2p||S==s2q||S==s2z||S==s30||S==s39||S==s3A);
+(S==s2W&&A==a6)->X(S==s3F);
+(S==s2X&&A==a6)->X(S==s3F);
+(S==s2Y&&A==a6)->X(S==s3F);
+(S==s2Z&&A==a6)->X(S==s3F);
+(S==s2a&&A==a6)->X(S==s3F);
+(S==s2b&&A==a6)->X(S==s2R||S==s2S||S==s2b||S==s2c||S==s2l||S==s2m);
+(S==s2c&&A==a6)->X(S==s2c||S==s2d||S==s2m||S==s2n||S==s2w||S==s2x);
+(S==s2d&&A==a6)->X(S==s2n||S==s2o||S==s2x||S==s2y);
+(S==s2e&&A==a6)->X(S==s2o||S==s2p||S==s2y||S==s2z||S==s38||S==s39);
+(S==s2f&&A==a6)->X(S==s3F);
+(S==s2g&&A==a6)->X(S==s3F);
+(S==s2h&&A==a6)->X(S==s3F);
+(S==s2i&&A==a6)->X(S==s3F);
+(S==s2j&&A==a6)->X(S==s3F);
+(S==s2k&&A==a6)->X(S==s3F);
+(S==s2l&&A==a6)->X(S==s2b||S==s2c||S==s2l||S==s2m||S==s2v||S==s2w);
+(S==s2m&&A==a6)->X(S==s2m||S==s2n||S==s2w||S==s2x||S==s36||S==s37);
+(S==s2n&&A==a6)->X(S==s2x||S==s2y||S==s37||S==s38);
+(S==s2o&&A==a6)->X(S==s3F);
+(S==s2p&&A==a6)->X(S==s3F);
+(S==s2q&&A==a6)->X(S==s3F);
+(S==s2r&&A==a6)->X(S==s3F);
+(S==s2s&&A==a6)->X(S==s3F);
+(S==s2t&&A==a6)->X(S==s3F);
+(S==s2u&&A==a6)->X(S==s3F);
+(S==s2v&&A==a6)->X(S==s2l||S==s2m||S==s2v||S==s2w||S==s35||S==s36);
+(S==s2w&&A==a6)->X(S==s3F);
+(S==s2x&&A==a6)->X(S==s3F);
+(S==s2y&&A==a6)->X(S==s3F);
+(S==s2z&&A==a6)->X(S==s3F);
+(S==s30&&A==a6)->X(S==s3F);
+(S==s31&&A==a6)->X(S==s3F);
+(S==s32&&A==a6)->X(S==s3F);
+(S==s33&&A==a6)->X(S==s3F);
+(S==s35&&A==a6)->X(S==s3F);
+(S==s36&&A==a6)->X(S==s3F);
+(S==s37&&A==a6)->X(S==s3F);
+(S==s38&&A==a6)->X(S==s3F);
+(S==s39&&A==a6)->X(S==s3F);
+(S==s3A&&A==a6)->X(S==s3F);
+(S==s3B&&A==a6)->X(S==s3F);
+(S==s3C&&A==a6)->X(S==s3F);
+(S==s3D&&A==a6)->X(S==s3F);
+(S==s1&&A==a7)->X(S==s3F);
+(S==s2&&A==a7)->X(S==s3F);
+(S==s3&&A==a7)->X(S==s3F);
+(S==s4&&A==a7)->X(S==s3F);
+(S==s5&&A==a7)->X(S==s4||S==s5||S==sE||S==sF||S==sO||S==sP);
+(S==s6&&A==a7)->X(S==sF||S==sG||S==sP||S==sQ||S==sZ||S==sa);
+(S==s7&&A==a7)->X(S==sQ||S==sR||S==sa||S==sb);
+(S==s8&&A==a7)->X(S==sR||S==sS||S==sb||S==sc||S==sl||S==sm);
+(S==s9&&A==a7)->X(S==sc||S==sd||S==sm||S==sn||S==sw||S==sx);
+(S==sA&&A==a7)->X(S==sn||S==so||S==sx||S==sy||S==s17||S==s18);
+(S==sB&&A==a7)->X(S==s3F);
+(S==sC&&A==a7)->X(S==s3F);
+(S==sD&&A==a7)->X(S==s3F);
+(S==sE&&A==a7)->X(S==s3||S==s4||S==sD||S==sE||S==sN||S==sO);
+(S==sF&&A==a7)->X(S==sE||S==sF||S==sO||S==sP||S==sY||S==sZ);
+(S==sG&&A==a7)->X(S==sP||S==sQ||S==sZ||S==sa||S==sj||S==sk);
+(S==sH&&A==a7)->X(S==sa||S==sb||S==sk||S==sl);
+(S==sI&&A==a7)->X(S==sb||S==sc||S==sl||S==sm||S==sv||S==sw);
+(S==sJ&&A==a7)->X(S==sm||S==sn||S==sw||S==sx||S==s16||S==s17);
+(S==sK&&A==a7)->X(S==sx||S==sy||S==s17||S==s18||S==s1H||S==s1I);
+(S==sL&&A==a7)->X(S==s3F);
+(S==sM&&A==a7)->X(S==s1||S==s2||S==sB||S==sC);
+(S==sN&&A==a7)->X(S==s2||S==s3||S==sC||S==sD||S==sM||S==sN);
+(S==sO&&A==a7)->X(S==sD||S==sE||S==sN||S==sO||S==sX||S==sY);
+(S==sP&&A==a7)->X(S==sO||S==sP||S==sY||S==sZ||S==si||S==sj);
+(S==sQ&&A==a7)->X(S==sZ||S==sa||S==sj||S==sk||S==st||S==su);
+(S==sR&&A==a7)->X(S==sk||S==sl||S==su||S==sv||S==s14||S==s15);
+(S==sS&&A==a7)->X(S==sl||S==sm||S==sv||S==sw||S==s15||S==s16);
+(S==sT&&A==a7)->X(S==sw||S==sx||S==s16||S==s17||S==s1G||S==s1H);
+(S==sU&&A==a7)->X(S==s17||S==s18||S==s1H||S==s1I||S==s1R||S==s1S);
+(S==sV&&A==a7)->X(S==s3F);
+(S==sW&&A==a7)->X(S==sB||S==sC||S==sL||S==sM);
+(S==sX&&A==a7)->X(S==sC||S==sD||S==sM||S==sN||S==sW||S==sX);
+(S==sY&&A==a7)->X(S==sN||S==sO||S==sX||S==sY||S==sh||S==si);
+(S==sZ&&A==a7)->X(S==sY||S==sZ||S==si||S==sj||S==ss||S==st);
+(S==sa&&A==a7)->X(S==sj||S==sk||S==st||S==su||S==s13||S==s14);
+(S==sb&&A==a7)->X(S==su||S==sv||S==s14||S==s15||S==s1E||S==s1F);
+(S==sc&&A==a7)->X(S==s15||S==s16||S==s1F||S==s1G);
+(S==sd&&A==a7)->X(S==s16||S==s17||S==s1G||S==s1H||S==s1Q||S==s1R);
+(S==se&&A==a7)->X(S==s1H||S==s1I||S==s1R||S==s1S||S==s1b||S==s1c);
+(S==sf&&A==a7)->X(S==s3F);
+(S==sg&&A==a7)->X(S==sL||S==sM||S==sV||S==sW||S==sf||S==sg);
+(S==sh&&A==a7)->X(S==sM||S==sN||S==sW||S==sX||S==sg||S==sh);
+(S==si&&A==a7)->X(S==sX||S==sY||S==sh||S==si||S==sr||S==ss);
+(S==sj&&A==a7)->X(S==si||S==sj||S==ss||S==st||S==s12||S==s13);
+(S==sk&&A==a7)->X(S==st||S==su||S==s13||S==s14||S==s1D||S==s1E);
+(S==sl&&A==a7)->X(S==s14||S==s15||S==s1E||S==s1F||S==s1O||S==s1P);
+(S==sm&&A==a7)->X(S==s1F||S==s1G||S==s1P||S==s1Q);
+(S==sn&&A==a7)->X(S==s1G||S==s1H||S==s1Q||S==s1R||S==s1a||S==s1b);
+(S==so&&A==a7)->X(S==s1R||S==s1S||S==s1b||S==s1c||S==s1l||S==s1m);
+(S==sp&&A==a7)->X(S==s3F);
+(S==sq&&A==a7)->X(S==sV||S==sW||S==sf||S==sg||S==sp||S==sq);
+(S==sr&&A==a7)->X(S==sg||S==sh||S==sq||S==sr);
+(S==ss&&A==a7)->X(S==sh||S==si||S==sr||S==ss||S==s11||S==s12);
+(S==st&&A==a7)->X(S==ss||S==st||S==s12||S==s13||S==s1C||S==s1D);
+(S==su&&A==a7)->X(S==s13||S==s14||S==s1D||S==s1E||S==s1N||S==s1O);
+(S==sv&&A==a7)->X(S==s1E||S==s1F||S==s1O||S==s1P||S==s1Y||S==s1Z);
+(S==sw&&A==a7)->X(S==s1P||S==s1Q||S==s1Z||S==s1a);
+(S==sx&&A==a7)->X(S==s1Q||S==s1R||S==s1a||S==s1b||S==s1k||S==s1l);
+(S==sy&&A==a7)->X(S==s1b||S==s1c||S==s1l||S==s1m||S==s1v||S==s1w);
+(S==sz&&A==a7)->X(S==s3F);
+(S==s10&&A==a7)->X(S==sf||S==sg||S==sp||S==sq||S==sz||S==s10);
+(S==s11&&A==a7)->X(S==sq||S==sr||S==s10||S==s11);
+(S==s12&&A==a7)->X(S==sr||S==ss||S==s11||S==s12||S==s1B||S==s1C);
+(S==s13&&A==a7)->X(S==s12||S==s13||S==s1C||S==s1D||S==s1M||S==s1N);
+(S==s14&&A==a7)->X(S==s1D||S==s1E||S==s1N||S==s1O||S==s1X||S==s1Y);
+(S==s15&&A==a7)->X(S==s1O||S==s1P||S==s1Y||S==s1Z||S==s1i||S==s1j);
+(S==s16&&A==a7)->X(S==s1Z||S==s1a||S==s1j||S==s1k);
+(S==s17&&A==a7)->X(S==s1a||S==s1b||S==s1k||S==s1l||S==s1u||S==s1v);
+(S==s18&&A==a7)->X(S==s1l||S==s1m||S==s1v||S==s1w||S==s25||S==s26);
+(S==s19&&A==a7)->X(S==s3F);
+(S==s1A&&A==a7)->X(S==sp||S==sq||S==sz||S==s10||S==s19||S==s1A);
+(S==s1B&&A==a7)->X(S==s10||S==s11||S==s1A||S==s1B);
+(S==s1C&&A==a7)->X(S==s11||S==s12||S==s1B||S==s1C||S==s1L||S==s1M);
+(S==s1D&&A==a7)->X(S==s1C||S==s1D||S==s1M||S==s1N||S==s1W||S==s1X);
+(S==s1E&&A==a7)->X(S==s1N||S==s1O||S==s1X||S==s1Y||S==s1h||S==s1i);
+(S==s1F&&A==a7)->X(S==s1Y||S==s1Z||S==s1i||S==s1j||S==s1s||S==s1t);
+(S==s1G&&A==a7)->X(S==s1j||S==s1k||S==s1t||S==s1u);
+(S==s1H&&A==a7)->X(S==s1k||S==s1l||S==s1m||S==s1u||S==s1v||S==s1w||S==s24||S==s25||S==s26);
+(S==s1I&&A==a7)->X(S==s3F);
+(S==s1J&&A==a7)->X(S==s3F);
+(S==s1K&&A==a7)->X(S==sz||S==s10||S==s19||S==s1A||S==s1J||S==s1K);
+(S==s1L&&A==a7)->X(S==s1A||S==s1B||S==s1K||S==s1L);
+(S==s1M&&A==a7)->X(S==s1B||S==s1C||S==s1L||S==s1M||S==s1V||S==s1W);
+(S==s1N&&A==a7)->X(S==s1M||S==s1N||S==s1W||S==s1X||S==s1g||S==s1h);
+(S==s1O&&A==a7)->X(S==s1X||S==s1Y||S==s1Z||S==s1h||S==s1i||S==s1j||S==s1r||S==s1s||S==s1t);
+(S==s1P&&A==a7)->X(S==s1i||S==s1j||S==s1k||S==s1s||S==s1t||S==s1u||S==s22||S==s23||S==s24);
+(S==s1Q&&A==a7)->X(S==s1t||S==s1u||S==s1v||S==s23||S==s24||S==s25||S==s2D||S==s2E||S==s2F);
+(S==s1R&&A==a7)->X(S==s1u||S==s1v||S==s1w||S==s24||S==s25||S==s26||S==s2E||S==s2F||S==s2G);
+(S==s1S&&A==a7)->X(S==s3F);
+(S==s1T&&A==a7)->X(S==s3F);
+(S==s1U&&A==a7)->X(S==s19||S==s1A||S==s1J||S==s1K||S==s1T||S==s1U);
+(S==s1V&&A==a7)->X(S==s1K||S==s1L||S==s1U||S==s1V);
+(S==s1W&&A==a7)->X(S==s1L||S==s1M||S==s1N||S==s1V||S==s1W||S==s1X||S==s1f||S==s1g||S==s1h);
+(S==s1X&&A==a7)->X(S==s1W||S==s1X||S==s1Y||S==s1g||S==s1h||S==s1i||S==s1q||S==s1r||S==s1s);
+(S==s1Y&&A==a7)->X(S==s1h||S==s1i||S==s1j||S==s1r||S==s1s||S==s1t||S==s21||S==s22||S==s23);
+(S==s1Z&&A==a7)->X(S==s1t||S==s1u||S==s23||S==s24||S==s2D||S==s2E);
+(S==s1a&&A==a7)->X(S==s24||S==s25||S==s2E||S==s2F||S==s2O||S==s2P);
+(S==s1b&&A==a7)->X(S==s2F||S==s2G||S==s2P||S==s2Q);
+(S==s1c&&A==a7)->X(S==s3F);
+(S==s1d&&A==a7)->X(S==s3F);
+(S==s1e&&A==a7)->X(S==s1J||S==s1K||S==s1L||S==s1T||S==s1U||S==s1V||S==s1d||S==s1e||S==s1f);
+(S==s1f&&A==a7)->X(S==s1U||S==s1V||S==s1W||S==s1e||S==s1f||S==s1g||S==s1o||S==s1p||S==s1q);
+(S==s1g&&A==a7)->X(S==s1V||S==s1W||S==s1X||S==s1f||S==s1g||S==s1h||S==s1p||S==s1q||S==s1r);
+(S==s1h&&A==a7)->X(S==s1h||S==s1i||S==s1r||S==s1s||S==s21||S==s22);
+(S==s1i&&A==a7)->X(S==s1s||S==s1t||S==s22||S==s23||S==s2C||S==s2D);
+(S==s1j&&A==a7)->X(S==s23||S==s24||S==s2D||S==s2E||S==s2N||S==s2O);
+(S==s1k&&A==a7)->X(S==s2E||S==s2F||S==s2O||S==s2P||S==s2Y||S==s2Z);
+(S==s1l&&A==a7)->X(S==s2P||S==s2Q||S==s2Z||S==s2a);
+(S==s1m&&A==a7)->X(S==s3F);
+(S==s1n&&A==a7)->X(S==s3F);
+(S==s1o&&A==a7)->X(S==s1U||S==s1V||S==s1e||S==s1f||S==s1o||S==s1p);
+(S==s1p&&A==a7)->X(S==s1f||S==s1g||S==s1p||S==s1q||S==s1z||S==s20);
+(S==s1q&&A==a7)->X(S==s1q||S==s1r||S==s20||S==s21);
+(S==s1r&&A==a7)->X(S==s1r||S==s1s||S==s21||S==s22||S==s2B||S==s2C);
+(S==s1s&&A==a7)->X(S==s22||S==s23||S==s2C||S==s2D||S==s2M||S==s2N);
+(S==s1t&&A==a7)->X(S==s2D||S==s2E||S==s2N||S==s2O||S==s2X||S==s2Y);
+(S==s1u&&A==a7)->X(S==s2O||S==s2P||S==s2Y||S==s2Z||S==s2i||S==s2j);
+(S==s1v&&A==a7)->X(S==s2Z||S==s2a||S==s2j||S==s2k);
+(S==s1w&&A==a7)->X(S==s3F);
+(S==s1x&&A==a7)->X(S==s1T||S==s1U||S==s1d||S==s1e||S==s1n||S==s1o);
+(S==s1y&&A==a7)->X(S==s1e||S==s1f||S==s1o||S==s1p||S==s1y||S==s1z);
+(S==s1z&&A==a7)->X(S==s1p||S==s1q||S==s1z||S==s20||S==s29||S==s2A);
+(S==s20&&A==a7)->X(S==s20||S==s21||S==s2A||S==s2B);
+(S==s21&&A==a7)->X(S==s21||S==s22||S==s2B||S==s2C||S==s2L||S==s2M);
+(S==s22&&A==a7)->X(S==s2C||S==s2D||S==s2M||S==s2N||S==s2W||S==s2X);
+(S==s23&&A==a7)->X(S==s2N||S==s2O||S==s2X||S==s2Y||S==s2h||S==s2i);
+(S==s24&&A==a7)->X(S==s2Y||S==s2Z||S==s2i||S==s2j||S==s2s||S==s2t);
+(S==s25&&A==a7)->X(S==s2j||S==s2k||S==s2t||S==s2u);
+(S==s26&&A==a7)->X(S==s3F);
+(S==s27&&A==a7)->X(S==s1d||S==s1e||S==s1n||S==s1o||S==s1x||S==s1y);
+(S==s28&&A==a7)->X(S==s1o||S==s1p||S==s1y||S==s1z||S==s28||S==s29);
+(S==s29&&A==a7)->X(S==s1z||S==s20||S==s29||S==s2A||S==s2J||S==s2K);
+(S==s2A&&A==a7)->X(S==s2A||S==s2B||S==s2K||S==s2L);
+(S==s2B&&A==a7)->X(S==s2B||S==s2C||S==s2L||S==s2M||S==s2V||S==s2W);
+(S==s2C&&A==a7)->X(S==s2M||S==s2N||S==s2W||S==s2X||S==s2g||S==s2h);
+(S==s2D&&A==a7)->X(S==s2X||S==s2Y||S==s2h||S==s2i||S==s2r||S==s2s);
+(S==s2E&&A==a7)->X(S==s2i||S==s2j||S==s2s||S==s2t||S==s32||S==s33);
+(S==s2F&&A==a7)->X(S==s2t||S==s2u||S==s33||S==s34);
+(S==s2G&&A==a7)->X(S==s3F);
+(S==s2H&&A==a7)->X(S==s1n||S==s1o||S==s1x||S==s1y||S==s27||S==s28);
+(S==s2I&&A==a7)->X(S==s1y||S==s1z||S==s28||S==s29||S==s2I||S==s2J);
+(S==s2J&&A==a7)->X(S==s29||S==s2A||S==s2J||S==s2K||S==s2T||S==s2U);
+(S==s2K&&A==a7)->X(S==s2K||S==s2L||S==s2U||S==s2V);
+(S==s2L&&A==a7)->X(S==s2L||S==s2M||S==s2V||S==s2W||S==s2f||S==s2g);
+(S==s2M&&A==a7)->X(S==s2W||S==s2X||S==s2g||S==s2h||S==s2q||S==s2r);
+(S==s2N&&A==a7)->X(S==s2h||S==s2i||S==s2r||S==s2s||S==s31||S==s32);
+(S==s2O&&A==a7)->X(S==s2s||S==s2t||S==s32||S==s33||S==s3C||S==s3D);
+(S==s2P&&A==a7)->X(S==s3F);
+(S==s2Q&&A==a7)->X(S==s3F);
+(S==s2R&&A==a7)->X(S==s1x||S==s1y||S==s27||S==s28||S==s2H||S==s2I);
+(S==s2S&&A==a7)->X(S==s28||S==s29||S==s2I||S==s2J||S==s2S||S==s2T);
+(S==s2T&&A==a7)->X(S==s2J||S==s2K||S==s2T||S==s2U||S==s2d||S==s2e);
+(S==s2U&&A==a7)->X(S==s2U||S==s2V||S==s2e||S==s2f||S==s2o||S==s2p);
+(S==s2V&&A==a7)->X(S==s2V||S==s2W||S==s2f||S==s2g||S==s2p||S==s2q);
+(S==s2W&&A==a7)->X(S==s2g||S==s2h||S==s2q||S==s2r||S==s30||S==s31);
+(S==s2X&&A==a7)->X(S==s2r||S==s2s||S==s31||S==s32||S==s3B||S==s3C);
+(S==s2Y&&A==a7)->X(S==s3F);
+(S==s2Z&&A==a7)->X(S==s3F);
+(S==s2a&&A==a7)->X(S==s3F);
+(S==s2b&&A==a7)->X(S==s27||S==s28||S==s2H||S==s2I||S==s2R||S==s2S);
+(S==s2c&&A==a7)->X(S==s2I||S==s2J||S==s2S||S==s2T||S==s2c||S==s2d);
+(S==s2d&&A==a7)->X(S==s2T||S==s2U||S==s2d||S==s2e||S==s2n||S==s2o);
+(S==s2e&&A==a7)->X(S==s2e||S==s2f||S==s2o||S==s2p||S==s2y||S==s2z);
+(S==s2f&&A==a7)->X(S==s2p||S==s2q||S==s2z||S==s30);
+(S==s2g&&A==a7)->X(S==s2q||S==s2r||S==s30||S==s31||S==s3A||S==s3B);
+(S==s2h&&A==a7)->X(S==s3F);
+(S==s2i&&A==a7)->X(S==s3F);
+(S==s2j&&A==a7)->X(S==s3F);
+(S==s2k&&A==a7)->X(S==s3F);
+(S==s2l&&A==a7)->X(S==s2H||S==s2I||S==s2R||S==s2S||S==s2b||S==s2c);
+(S==s2m&&A==a7)->X(S==s2S||S==s2T||S==s2c||S==s2d||S==s2m||S==s2n);
+(S==s2n&&A==a7)->X(S==s2d||S==s2e||S==s2n||S==s2o||S==s2x||S==s2y);
+(S==s2o&&A==a7)->X(S==s2o||S==s2p||S==s2y||S==s2z||S==s38||S==s39);
+(S==s2p&&A==a7)->X(S==s2z||S==s30||S==s39||S==s3A);
+(S==s2q&&A==a7)->X(S==s3F);
+(S==s2r&&A==a7)->X(S==s3F);
+(S==s2s&&A==a7)->X(S==s3F);
+(S==s2t&&A==a7)->X(S==s3F);
+(S==s2u&&A==a7)->X(S==s3F);
+(S==s2v&&A==a7)->X(S==s2R||S==s2S||S==s2b||S==s2c||S==s2l||S==s2m);
+(S==s2w&&A==a7)->X(S==s2c||S==s2d||S==s2m||S==s2n||S==s2w||S==s2x);
+(S==s2x&&A==a7)->X(S==s2n||S==s2o||S==s2x||S==s2y||S==s37||S==s38);
+(S==s2y&&A==a7)->X(S==s3F);
+(S==s2z&&A==a7)->X(S==s3F);
+(S==s30&&A==a7)->X(S==s3F);
+(S==s31&&A==a7)->X(S==s3F);
+(S==s32&&A==a7)->X(S==s3F);
+(S==s33&&A==a7)->X(S==s3F);
+(S==s34&&A==a7)->X(S==s3F);
+(S==s35&&A==a7)->X(S==s2b||S==s2c||S==s2l||S==s2m||S==s2v||S==s2w);
+(S==s36&&A==a7)->X(S==s2m||S==s2n||S==s2w||S==s2x||S==s36||S==s37);
+(S==s37&&A==a7)->X(S==s3F);
+(S==s38&&A==a7)->X(S==s3F);
+(S==s39&&A==a7)->X(S==s3F);
+(S==s3A&&A==a7)->X(S==s3F);
+(S==s3B&&A==a7)->X(S==s3F);
+(S==s3C&&A==a7)->X(S==s3F);
+(S==s3D&&A==a7)->X(S==s3F);
+(S==s3E&&A==a7)->X(S==s3F);
+(S==s1&&A==a8)->X(S==s3F);
+(S==s2&&A==a8)->X(S==s3F);
+(S==s3&&A==a8)->X(S==s3F);
+(S==s4&&A==a8)->X(S==s3F);
+(S==s5&&A==a8)->X(S==s3F);
+(S==s6&&A==a8)->X(S==s3F);
+(S==s7&&A==a8)->X(S==s6||S==s7||S==sG||S==sH||S==sQ||S==sR);
+(S==s8&&A==a8)->X(S==sH||S==sI||S==sR||S==sS||S==sb||S==sc);
+(S==s9&&A==a8)->X(S==sS||S==sT||S==sc||S==sd);
+(S==sA&&A==a8)->X(S==sT||S==sU||S==sd||S==se||S==sn||S==so);
+(S==sB&&A==a8)->X(S==s3F);
+(S==sC&&A==a8)->X(S==s3F);
+(S==sD&&A==a8)->X(S==s3F);
+(S==sE&&A==a8)->X(S==s3F);
+(S==sF&&A==a8)->X(S==s3F);
+(S==sG&&A==a8)->X(S==s5||S==s6||S==sF||S==sG||S==sP||S==sQ);
+(S==sH&&A==a8)->X(S==sG||S==sH||S==sQ||S==sR||S==sa||S==sb);
+(S==sI&&A==a8)->X(S==sR||S==sS||S==sb||S==sc||S==sl||S==sm);
+(S==sJ&&A==a8)->X(S==sc||S==sd||S==sm||S==sn);
+(S==sK&&A==a8)->X(S==sd||S==se||S==sn||S==so||S==sx||S==sy);
+(S==sL&&A==a8)->X(S==s3F);
+(S==sM&&A==a8)->X(S==s3F);
+(S==sN&&A==a8)->X(S==s3F);
+(S==sO&&A==a8)->X(S==s3||S==s4||S==sD||S==sE);
+(S==sP&&A==a8)->X(S==s4||S==s5||S==sE||S==sF||S==sO||S==sP);
+(S==sQ&&A==a8)->X(S==sF||S==sG||S==sP||S==sQ||S==sZ||S==sa);
+(S==sR&&A==a8)->X(S==sQ||S==sR||S==sa||S==sb||S==sk||S==sl);
+(S==sS&&A==a8)->X(S==sb||S==sc||S==sl||S==sm||S==sv||S==sw);
+(S==sT&&A==a8)->X(S==sm||S==sn||S==sw||S==sx||S==s16||S==s17);
+(S==sU&&A==a8)->X(S==sn||S==so||S==sx||S==sy||S==s17||S==s18);
+(S==sV&&A==a8)->X(S==s3F);
+(S==sW&&A==a8)->X(S==s3F);
+(S==sX&&A==a8)->X(S==s2||S==s3||S==sC||S==sD||S==sM||S==sN);
+(S==sY&&A==a8)->X(S==sD||S==sE||S==sN||S==sO);
+(S==sZ&&A==a8)->X(S==sE||S==sF||S==sO||S==sP||S==sY||S==sZ);
+(S==sa&&A==a8)->X(S==sP||S==sQ||S==sZ||S==sa||S==sj||S==sk);
+(S==sb&&A==a8)->X(S==sa||S==sb||S==sk||S==sl||S==su||S==sv);
+(S==sc&&A==a8)->X(S==sl||S==sm||S==sv||S==sw||S==s15||S==s16);
+(S==sd&&A==a8)->X(S==sw||S==sx||S==s16||S==s17||S==s1G||S==s1H);
+(S==se&&A==a8)->X(S==s17||S==s18||S==s1H||S==s1I);
+(S==sf&&A==a8)->X(S==s3F);
+(S==sg&&A==a8)->X(S==s1||S==s2||S==sB||S==sC||S==sL||S==sM);
+(S==sh&&A==a8)->X(S==sC||S==sD||S==sM||S==sN||S==sW||S==sX);
+(S==si&&A==a8)->X(S==sN||S==sO||S==sX||S==sY||S==sh||S==si);
+(S==sj&&A==a8)->X(S==sO||S==sP||S==sY||S==sZ||S==si||S==sj);
+(S==sk&&A==a8)->X(S==sZ||S==sa||S==sj||S==sk||S==st||S==su);
+(S==sl&&A==a8)->X(S==sk||S==sl||S==su||S==sv||S==s14||S==s15);
+(S==sm&&A==a8)->X(S==sv||S==sw||S==s15||S==s16||S==s1F||S==s1G);
+(S==sn&&A==a8)->X(S==s16||S==s17||S==s1G||S==s1H||S==s1Q||S==s1R);
+(S==so&&A==a8)->X(S==s1H||S==s1I||S==s1R||S==s1S);
+(S==sp&&A==a8)->X(S==s3F);
+(S==sq&&A==a8)->X(S==sB||S==sC||S==sL||S==sM||S==sV||S==sW);
+(S==sr&&A==a8)->X(S==sM||S==sN||S==sW||S==sX||S==sg||S==sh);
+(S==ss&&A==a8)->X(S==sX||S==sY||S==sh||S==si||S==sr||S==ss);
+(S==st&&A==a8)->X(S==si||S==sj||S==ss||S==st);
+(S==su&&A==a8)->X(S==sj||S==sk||S==st||S==su||S==s13||S==s14);
+(S==sv&&A==a8)->X(S==su||S==sv||S==s14||S==s15||S==s1E||S==s1F);
+(S==sw&&A==a8)->X(S==s15||S==s16||S==s1F||S==s1G||S==s1P||S==s1Q);
+(S==sx&&A==a8)->X(S==s1G||S==s1H||S==s1Q||S==s1R||S==s1a||S==s1b);
+(S==sy&&A==a8)->X(S==s1R||S==s1S||S==s1b||S==s1c);
+(S==sz&&A==a8)->X(S==s3F);
+(S==s10&&A==a8)->X(S==sL||S==sM||S==sV||S==sW||S==sf||S==sg);
+(S==s11&&A==a8)->X(S==sW||S==sX||S==sg||S==sh||S==sq||S==sr);
+(S==s12&&A==a8)->X(S==sh||S==si||S==sr||S==ss||S==s11||S==s12);
+(S==s13&&A==a8)->X(S==ss||S==st||S==s12||S==s13);
+(S==s14&&A==a8)->X(S==st||S==su||S==s13||S==s14||S==s1D||S==s1E);
+(S==s15&&A==a8)->X(S==s14||S==s15||S==s1E||S==s1F||S==s1O||S==s1P);
+(S==s16&&A==a8)->X(S==s1F||S==s1G||S==s1P||S==s1Q||S==s1Z||S==s1a);
+(S==s17&&A==a8)->X(S==s1Q||S==s1R||S==s1a||S==s1b||S==s1k||S==s1l);
+(S==s18&&A==a8)->X(S==s1b||S==s1c||S==s1l||S==s1m);
+(S==s19&&A==a8)->X(S==s3F);
+(S==s1A&&A==a8)->X(S==sV||S==sW||S==sf||S==sg||S==sp||S==sq);
+(S==s1B&&A==a8)->X(S==sg||S==sh||S==sq||S==sr||S==s10||S==s11);
+(S==s1C&&A==a8)->X(S==sr||S==ss||S==s11||S==s12||S==s1B||S==s1C);
+(S==s1D&&A==a8)->X(S==s12||S==s13||S==s1C||S==s1D);
+(S==s1E&&A==a8)->X(S==s13||S==s14||S==s1D||S==s1E||S==s1N||S==s1O);
+(S==s1F&&A==a8)->X(S==s1E||S==s1F||S==s1O||S==s1P||S==s1Y||S==s1Z);
+(S==s1G&&A==a8)->X(S==s1P||S==s1Q||S==s1Z||S==s1a||S==s1j||S==s1k);
+(S==s1H&&A==a8)->X(S==s1a||S==s1b||S==s1k||S==s1l||S==s1u||S==s1v);
+(S==s1I&&A==a8)->X(S==s1l||S==s1m||S==s1v||S==s1w);
+(S==s1J&&A==a8)->X(S==s3F);
+(S==s1K&&A==a8)->X(S==sf||S==sg||S==sp||S==sq||S==sz||S==s10);
+(S==s1L&&A==a8)->X(S==sq||S==sr||S==s10||S==s11||S==s1A||S==s1B);
+(S==s1M&&A==a8)->X(S==s11||S==s12||S==s1B||S==s1C||S==s1L||S==s1M);
+(S==s1N&&A==a8)->X(S==s1C||S==s1D||S==s1M||S==s1N);
+(S==s1O&&A==a8)->X(S==s1D||S==s1E||S==s1N||S==s1O||S==s1X||S==s1Y);
+(S==s1P&&A==a8)->X(S==s1O||S==s1P||S==s1Y||S==s1Z||S==s1i||S==s1j);
+(S==s1Q&&A==a8)->X(S==s1Z||S==s1a||S==s1b||S==s1j||S==s1k||S==s1l||S==s1t||S==s1u||S==s1v);
+(S==s1R&&A==a8)->X(S==s1k||S==s1l||S==s1m||S==s1u||S==s1v||S==s1w||S==s24||S==s25||S==s26);
+(S==s1S&&A==a8)->X(S==s3F);
+(S==s1T&&A==a8)->X(S==s3F);
+(S==s1U&&A==a8)->X(S==sp||S==sq||S==sz||S==s10||S==s19||S==s1A);
+(S==s1V&&A==a8)->X(S==s10||S==s11||S==s1A||S==s1B||S==s1K||S==s1L);
+(S==s1W&&A==a8)->X(S==s1B||S==s1C||S==s1L||S==s1M||S==s1V||S==s1W);
+(S==s1X&&A==a8)->X(S==s1M||S==s1N||S==s1O||S==s1W||S==s1X||S==s1Y||S==s1g||S==s1h||S==s1i);
+(S==s1Y&&A==a8)->X(S==s1N||S==s1O||S==s1P||S==s1X||S==s1Y||S==s1Z||S==s1h||S==s1i||S==s1j);
+(S==s1Z&&A==a8)->X(S==s1Y||S==s1Z||S==s1a||S==s1i||S==s1j||S==s1k||S==s1s||S==s1t||S==s1u);
+(S==s1a&&A==a8)->X(S==s1j||S==s1k||S==s1l||S==s1t||S==s1u||S==s1v||S==s23||S==s24||S==s25);
+(S==s1b&&A==a8)->X(S==s1v||S==s1w||S==s25||S==s26||S==s2F||S==s2G);
+(S==s1c&&A==a8)->X(S==s3F);
+(S==s1d&&A==a8)->X(S==s3F);
+(S==s1e&&A==a8)->X(S==sz||S==s10||S==s19||S==s1A||S==s1J||S==s1K);
+(S==s1f&&A==a8)->X(S==s1A||S==s1B||S==s1C||S==s1K||S==s1L||S==s1M||S==s1U||S==s1V||S==s1W);
+(S==s1g&&A==a8)->X(S==s1L||S==s1M||S==s1N||S==s1V||S==s1W||S==s1X||S==s1f||S==s1g||S==s1h);
+(S==s1h&&A==a8)->X(S==s1W||S==s1X||S==s1Y||S==s1g||S==s1h||S==s1i||S==s1q||S==s1r||S==s1s);
+(S==s1i&&A==a8)->X(S==s1X||S==s1Y||S==s1Z||S==s1h||S==s1i||S==s1j||S==s1r||S==s1s||S==s1t);
+(S==s1j&&A==a8)->X(S==s1j||S==s1k||S==s1t||S==s1u||S==s23||S==s24);
+(S==s1k&&A==a8)->X(S==s1u||S==s1v||S==s24||S==s25||S==s2E||S==s2F);
+(S==s1l&&A==a8)->X(S==s25||S==s26||S==s2F||S==s2G||S==s2P||S==s2Q);
+(S==s1m&&A==a8)->X(S==s3F);
+(S==s1n&&A==a8)->X(S==s3F);
+(S==s1o&&A==a8)->X(S==s19||S==s1A||S==s1B||S==s1J||S==s1K||S==s1L||S==s1T||S==s1U||S==s1V);
+(S==s1p&&A==a8)->X(S==s1K||S==s1L||S==s1M||S==s1U||S==s1V||S==s1W||S==s1e||S==s1f||S==s1g);
+(S==s1q&&A==a8)->X(S==s1W||S==s1X||S==s1g||S==s1h||S==s1q||S==s1r);
+(S==s1r&&A==a8)->X(S==s1h||S==s1i||S==s1r||S==s1s||S==s21||S==s22);
+(S==s1s&&A==a8)->X(S==s1s||S==s1t||S==s22||S==s23);
+(S==s1t&&A==a8)->X(S==s1t||S==s1u||S==s23||S==s24||S==s2D||S==s2E);
+(S==s1u&&A==a8)->X(S==s24||S==s25||S==s2E||S==s2F||S==s2O||S==s2P);
+(S==s1v&&A==a8)->X(S==s2F||S==s2G||S==s2P||S==s2Q||S==s2Z||S==s2a);
+(S==s1w&&A==a8)->X(S==s3F);
+(S==s1x&&A==a8)->X(S==s1J||S==s1K||S==s1T||S==s1U);
+(S==s1y&&A==a8)->X(S==s1K||S==s1L||S==s1U||S==s1V||S==s1e||S==s1f);
+(S==s1z&&A==a8)->X(S==s1V||S==s1W||S==s1f||S==s1g||S==s1p||S==s1q);
+(S==s20&&A==a8)->X(S==s1g||S==s1h||S==s1q||S==s1r||S==s20||S==s21);
+(S==s21&&A==a8)->X(S==s1r||S==s1s||S==s21||S==s22||S==s2B||S==s2C);
+(S==s22&&A==a8)->X(S==s22||S==s23||S==s2C||S==s2D);
+(S==s23&&A==a8)->X(S==s23||S==s24||S==s2D||S==s2E||S==s2N||S==s2O);
+(S==s24&&A==a8)->X(S==s2E||S==s2F||S==s2O||S==s2P||S==s2Y||S==s2Z);
+(S==s25&&A==a8)->X(S==s2P||S==s2Q||S==s2Z||S==s2a||S==s2j||S==s2k);
+(S==s26&&A==a8)->X(S==s3F);
+(S==s27&&A==a8)->X(S==s1T||S==s1U||S==s1d||S==s1e);
+(S==s28&&A==a8)->X(S==s1U||S==s1V||S==s1e||S==s1f||S==s1o||S==s1p);
+(S==s29&&A==a8)->X(S==s1f||S==s1g||S==s1p||S==s1q||S==s1z||S==s20);
+(S==s2A&&A==a8)->X(S==s1q||S==s1r||S==s20||S==s21||S==s2A||S==s2B);
+(S==s2B&&A==a8)->X(S==s21||S==s22||S==s2B||S==s2C||S==s2L||S==s2M);
+(S==s2C&&A==a8)->X(S==s2C||S==s2D||S==s2M||S==s2N);
+(S==s2D&&A==a8)->X(S==s2D||S==s2E||S==s2N||S==s2O||S==s2X||S==s2Y);
+(S==s2E&&A==a8)->X(S==s2O||S==s2P||S==s2Y||S==s2Z||S==s2i||S==s2j);
+(S==s2F&&A==a8)->X(S==s2Z||S==s2a||S==s2j||S==s2k||S==s2t||S==s2u);
+(S==s2G&&A==a8)->X(S==s3F);
+(S==s2H&&A==a8)->X(S==s1d||S==s1e||S==s1n||S==s1o);
+(S==s2I&&A==a8)->X(S==s1e||S==s1f||S==s1o||S==s1p||S==s1y||S==s1z);
+(S==s2J&&A==a8)->X(S==s1p||S==s1q||S==s1z||S==s20||S==s29||S==s2A);
+(S==s2K&&A==a8)->X(S==s20||S==s21||S==s2A||S==s2B||S==s2K||S==s2L);
+(S==s2L&&A==a8)->X(S==s2B||S==s2C||S==s2L||S==s2M||S==s2V||S==s2W);
+(S==s2M&&A==a8)->X(S==s2M||S==s2N||S==s2W||S==s2X);
+(S==s2N&&A==a8)->X(S==s2N||S==s2O||S==s2X||S==s2Y||S==s2h||S==s2i);
+(S==s2O&&A==a8)->X(S==s2Y||S==s2Z||S==s2i||S==s2j||S==s2s||S==s2t);
+(S==s2P&&A==a8)->X(S==s2j||S==s2k||S==s2t||S==s2u||S==s33||S==s34);
+(S==s2Q&&A==a8)->X(S==s3F);
+(S==s2R&&A==a8)->X(S==s1n||S==s1o||S==s1x||S==s1y);
+(S==s2S&&A==a8)->X(S==s1o||S==s1p||S==s1y||S==s1z||S==s28||S==s29);
+(S==s2T&&A==a8)->X(S==s1z||S==s20||S==s29||S==s2A||S==s2J||S==s2K);
+(S==s2U&&A==a8)->X(S==s2A||S==s2B||S==s2K||S==s2L||S==s2U||S==s2V);
+(S==s2V&&A==a8)->X(S==s2L||S==s2M||S==s2V||S==s2W||S==s2f||S==s2g);
+(S==s2W&&A==a8)->X(S==s2W||S==s2X||S==s2g||S==s2h||S==s2q||S==s2r);
+(S==s2X&&A==a8)->X(S==s2X||S==s2Y||S==s2h||S==s2i||S==s2r||S==s2s);
+(S==s2Y&&A==a8)->X(S==s2i||S==s2j||S==s2s||S==s2t||S==s32||S==s33);
+(S==s2Z&&A==a8)->X(S==s2t||S==s2u||S==s33||S==s34||S==s3D||S==s3E);
+(S==s2a&&A==a8)->X(S==s3F);
+(S==s2b&&A==a8)->X(S==s1x||S==s1y||S==s27||S==s28);
+(S==s2c&&A==a8)->X(S==s1y||S==s1z||S==s28||S==s29||S==s2I||S==s2J);
+(S==s2d&&A==a8)->X(S==s29||S==s2A||S==s2J||S==s2K||S==s2T||S==s2U);
+(S==s2e&&A==a8)->X(S==s2K||S==s2L||S==s2U||S==s2V||S==s2e||S==s2f);
+(S==s2f&&A==a8)->X(S==s2V||S==s2W||S==s2f||S==s2g||S==s2p||S==s2q);
+(S==s2g&&A==a8)->X(S==s2g||S==s2h||S==s2q||S==s2r||S==s30||S==s31);
+(S==s2h&&A==a8)->X(S==s2r||S==s2s||S==s31||S==s32);
+(S==s2i&&A==a8)->X(S==s2s||S==s2t||S==s32||S==s33||S==s3C||S==s3D);
+(S==s2j&&A==a8)->X(S==s3F);
+(S==s2k&&A==a8)->X(S==s3F);
+(S==s2l&&A==a8)->X(S==s27||S==s28||S==s2H||S==s2I||S==s2R||S==s2S);
+(S==s2m&&A==a8)->X(S==s28||S==s29||S==s2I||S==s2J||S==s2S||S==s2T);
+(S==s2n&&A==a8)->X(S==s2J||S==s2K||S==s2T||S==s2U||S==s2d||S==s2e);
+(S==s2o&&A==a8)->X(S==s2U||S==s2V||S==s2e||S==s2f||S==s2o||S==s2p);
+(S==s2p&&A==a8)->X(S==s2f||S==s2g||S==s2p||S==s2q||S==s2z||S==s30);
+(S==s2q&&A==a8)->X(S==s2q||S==s2r||S==s30||S==s31||S==s3A||S==s3B);
+(S==s2r&&A==a8)->X(S==s31||S==s32||S==s3B||S==s3C);
+(S==s2s&&A==a8)->X(S==s3F);
+(S==s2t&&A==a8)->X(S==s3F);
+(S==s2u&&A==a8)->X(S==s3F);
+(S==s2v&&A==a8)->X(S==s2H||S==s2I||S==s2R||S==s2S||S==s2b||S==s2c);
+(S==s2w&&A==a8)->X(S==s2S||S==s2T||S==s2c||S==s2d);
+(S==s2x&&A==a8)->X(S==s2T||S==s2U||S==s2d||S==s2e||S==s2n||S==s2o);
+(S==s2y&&A==a8)->X(S==s2e||S==s2f||S==s2o||S==s2p||S==s2y||S==s2z);
+(S==s2z&&A==a8)->X(S==s2p||S==s2q||S==s2z||S==s30||S==s39||S==s3A);
+(S==s30&&A==a8)->X(S==s3F);
+(S==s31&&A==a8)->X(S==s3F);
+(S==s32&&A==a8)->X(S==s3F);
+(S==s33&&A==a8)->X(S==s3F);
+(S==s34&&A==a8)->X(S==s3F);
+(S==s35&&A==a8)->X(S==s2R||S==s2S||S==s2b||S==s2c||S==s2l||S==s2m);
+(S==s36&&A==a8)->X(S==s2c||S==s2d||S==s2m||S==s2n);
+(S==s37&&A==a8)->X(S==s2d||S==s2e||S==s2n||S==s2o||S==s2x||S==s2y);
+(S==s38&&A==a8)->X(S==s2o||S==s2p||S==s2y||S==s2z||S==s38||S==s39);
+(S==s39&&A==a8)->X(S==s3F);
+(S==s3A&&A==a8)->X(S==s3F);
+(S==s3B&&A==a8)->X(S==s3F);
+(S==s3C&&A==a8)->X(S==s3F);
+(S==s3D&&A==a8)->X(S==s3F);
+(S==s3E&&A==a8)->X(S==s3F);
+(S==s1&&A==a9)->X(S==s3F);
+(S==s2&&A==a9)->X(S==s3F);
+(S==s3&&A==a9)->X(S==s3F);
+(S==s4&&A==a9)->X(S==s3F);
+(S==s5&&A==a9)->X(S==s3F);
+(S==s6&&A==a9)->X(S==s3F);
+(S==s7&&A==a9)->X(S==s3F);
+(S==s8&&A==a9)->X(S==s3F);
+(S==s9&&A==a9)->X(S==s8||S==s9||S==sI||S==sJ||S==sS||S==sT);
+(S==sA&&A==a9)->X(S==sJ||S==sK||S==sT||S==sU||S==sd||S==se);
+(S==sB&&A==a9)->X(S==s3F);
+(S==sC&&A==a9)->X(S==s3F);
+(S==sD&&A==a9)->X(S==s3F);
+(S==sE&&A==a9)->X(S==s3F);
+(S==sF&&A==a9)->X(S==s3F);
+(S==sG&&A==a9)->X(S==s3F);
+(S==sH&&A==a9)->X(S==s3F);
+(S==sI&&A==a9)->X(S==s7||S==s8||S==sH||S==sI||S==sR||S==sS);
+(S==sJ&&A==a9)->X(S==sI||S==sJ||S==sS||S==sT||S==sc||S==sd);
+(S==sK&&A==a9)->X(S==sT||S==sU||S==sd||S==se||S==sn||S==so);
+(S==sL&&A==a9)->X(S==s3F);
+(S==sM&&A==a9)->X(S==s3F);
+(S==sN&&A==a9)->X(S==s3F);
+(S==sO&&A==a9)->X(S==s3F);
+(S==sP&&A==a9)->X(S==s3F);
+(S==sQ&&A==a9)->X(S==s5||S==s6||S==sF||S==sG);
+(S==sR&&A==a9)->X(S==s6||S==s7||S==sG||S==sH||S==sQ||S==sR);
+(S==sS&&A==a9)->X(S==sH||S==sI||S==sR||S==sS||S==sb||S==sc);
+(S==sT&&A==a9)->X(S==sS||S==sT||S==sc||S==sd||S==sm||S==sn);
+(S==sU&&A==a9)->X(S==sd||S==se||S==sn||S==so||S==sx||S==sy);
+(S==sV&&A==a9)->X(S==s3F);
+(S==sW&&A==a9)->X(S==s3F);
+(S==sX&&A==a9)->X(S==s3F);
+(S==sY&&A==a9)->X(S==s3F);
+(S==sZ&&A==a9)->X(S==s4||S==s5||S==sE||S==sF||S==sO||S==sP);
+(S==sa&&A==a9)->X(S==sF||S==sG||S==sP||S==sQ);
+(S==sb&&A==a9)->X(S==sG||S==sH||S==sQ||S==sR||S==sa||S==sb);
+(S==sc&&A==a9)->X(S==sR||S==sS||S==sb||S==sc||S==sl||S==sm);
+(S==sd&&A==a9)->X(S==sc||S==sd||S==sm||S==sn||S==sw||S==sx);
+(S==se&&A==a9)->X(S==sn||S==so||S==sx||S==sy||S==s17||S==s18);
+(S==sf&&A==a9)->X(S==s3F);
+(S==sg&&A==a9)->X(S==s3F);
+(S==sh&&A==a9)->X(S==s3F);
+(S==si&&A==a9)->X(S==s3||S==s4||S==sD||S==sE||S==sN||S==sO);
+(S==sj&&A==a9)->X(S==sE||S==sF||S==sO||S==sP||S==sY||S==sZ);
+(S==sk&&A==a9)->X(S==sP||S==sQ||S==sZ||S==sa||S==sj||S==sk);
+(S==sl&&A==a9)->X(S==sQ||S==sR||S==sa||S==sb||S==sk||S==sl);
+(S==sm&&A==a9)->X(S==sb||S==sc||S==sl||S==sm||S==sv||S==sw);
+(S==sn&&A==a9)->X(S==sm||S==sn||S==sw||S==sx||S==s16||S==s17);
+(S==so&&A==a9)->X(S==sx||S==sy||S==s17||S==s18||S==s1H||S==s1I);
+(S==sp&&A==a9)->X(S==s3F);
+(S==sq&&A==a9)->X(S==s3F);
+(S==sr&&A==a9)->X(S==s2||S==s3||S==sC||S==sD||S==sM||S==sN);
+(S==ss&&A==a9)->X(S==sD||S==sE||S==sN||S==sO||S==sX||S==sY);
+(S==st&&A==a9)->X(S==sO||S==sP||S==sY||S==sZ||S==si||S==sj);
+(S==su&&A==a9)->X(S==sZ||S==sa||S==sj||S==sk||S==st||S==su);
+(S==sv&&A==a9)->X(S==sk||S==sl||S==su||S==sv);
+(S==sw&&A==a9)->X(S==sl||S==sm||S==sv||S==sw||S==s15||S==s16);
+(S==sx&&A==a9)->X(S==sw||S==sx||S==s16||S==s17||S==s1G||S==s1H);
+(S==sy&&A==a9)->X(S==s17||S==s18||S==s1H||S==s1I||S==s1R||S==s1S);
+(S==sz&&A==a9)->X(S==s3F);
+(S==s10&&A==a9)->X(S==sB||S==sC||S==sL||S==sM);
+(S==s11&&A==a9)->X(S==sC||S==sD||S==sM||S==sN||S==sW||S==sX);
+(S==s12&&A==a9)->X(S==sN||S==sO||S==sX||S==sY||S==sh||S==si);
+(S==s13&&A==a9)->X(S==sY||S==sZ||S==si||S==sj||S==ss||S==st);
+(S==s14&&A==a9)->X(S==sj||S==sk||S==st||S==su||S==s13||S==s14);
+(S==s15&&A==a9)->X(S==su||S==sv||S==s14||S==s15);
+(S==s16&&A==a9)->X(S==sv||S==sw||S==s15||S==s16||S==s1F||S==s1G);
+(S==s17&&A==a9)->X(S==s16||S==s17||S==s1G||S==s1H||S==s1Q||S==s1R);
+(S==s18&&A==a9)->X(S==s1H||S==s1I||S==s1R||S==s1S||S==s1b||S==s1c);
+(S==s19&&A==a9)->X(S==s3F);
+(S==s1A&&A==a9)->X(S==sL||S==sM||S==sV||S==sW);
+(S==s1B&&A==a9)->X(S==sM||S==sN||S==sW||S==sX||S==sg||S==sh);
+(S==s1C&&A==a9)->X(S==sX||S==sY||S==sh||S==si||S==sr||S==ss);
+(S==s1D&&A==a9)->X(S==si||S==sj||S==ss||S==st||S==s12||S==s13);
+(S==s1E&&A==a9)->X(S==st||S==su||S==s13||S==s14||S==s1D||S==s1E);
+(S==s1F&&A==a9)->X(S==s14||S==s15||S==s1E||S==s1F);
+(S==s1G&&A==a9)->X(S==s15||S==s16||S==s1F||S==s1G||S==s1P||S==s1Q);
+(S==s1H&&A==a9)->X(S==s1G||S==s1H||S==s1Q||S==s1R||S==s1a||S==s1b);
+(S==s1I&&A==a9)->X(S==s1R||S==s1S||S==s1b||S==s1c||S==s1l||S==s1m);
+(S==s1J&&A==a9)->X(S==s3F);
+(S==s1K&&A==a9)->X(S==sV||S==sW||S==sf||S==sg);
+(S==s1L&&A==a9)->X(S==sW||S==sX||S==sg||S==sh||S==sq||S==sr);
+(S==s1M&&A==a9)->X(S==sh||S==si||S==sr||S==ss||S==s11||S==s12);
+(S==s1N&&A==a9)->X(S==ss||S==st||S==s12||S==s13||S==s1C||S==s1D);
+(S==s1O&&A==a9)->X(S==s13||S==s14||S==s1D||S==s1E||S==s1N||S==s1O);
+(S==s1P&&A==a9)->X(S==s1E||S==s1F||S==s1O||S==s1P);
+(S==s1Q&&A==a9)->X(S==s1F||S==s1G||S==s1P||S==s1Q||S==s1Z||S==s1a);
+(S==s1R&&A==a9)->X(S==s1Q||S==s1R||S==s1a||S==s1b||S==s1k||S==s1l);
+(S==s1S&&A==a9)->X(S==s3F);
+(S==s1T&&A==a9)->X(S==s3F);
+(S==s1U&&A==a9)->X(S==sf||S==sg||S==sp||S==sq);
+(S==s1V&&A==a9)->X(S==sg||S==sh||S==sq||S==sr||S==s10||S==s11);
+(S==s1W&&A==a9)->X(S==sr||S==ss||S==s11||S==s12||S==s1B||S==s1C);
+(S==s1X&&A==a9)->X(S==s12||S==s13||S==s1C||S==s1D||S==s1M||S==s1N);
+(S==s1Y&&A==a9)->X(S==s1D||S==s1E||S==s1N||S==s1O||S==s1X||S==s1Y);
+(S==s1Z&&A==a9)->X(S==s1O||S==s1P||S==s1Q||S==s1Y||S==s1Z||S==s1a||S==s1i||S==s1j||S==s1k);
+(S==s1a&&A==a9)->X(S==s1P||S==s1Q||S==s1R||S==s1Z||S==s1a||S==s1b||S==s1j||S==s1k||S==s1l);
+(S==s1b&&A==a9)->X(S==s1a||S==s1b||S==s1c||S==s1k||S==s1l||S==s1m||S==s1u||S==s1v||S==s1w);
+(S==s1c&&A==a9)->X(S==s3F);
+(S==s1d&&A==a9)->X(S==s3F);
+(S==s1e&&A==a9)->X(S==sp||S==sq||S==sz||S==s10);
+(S==s1f&&A==a9)->X(S==sq||S==sr||S==s10||S==s11||S==s1A||S==s1B);
+(S==s1g&&A==a9)->X(S==s11||S==s12||S==s1B||S==s1C||S==s1L||S==s1M);
+(S==s1h&&A==a9)->X(S==s1C||S==s1D||S==s1E||S==s1M||S==s1N||S==s1O||S==s1W||S==s1X||S==s1Y);
+(S==s1i&&A==a9)->X(S==s1N||S==s1O||S==s1P||S==s1X||S==s1Y||S==s1Z||S==s1h||S==s1i||S==s1j);
+(S==s1j&&A==a9)->X(S==s1Y||S==s1Z||S==s1a||S==s1i||S==s1j||S==s1k||S==s1s||S==s1t||S==s1u);
+(S==s1k&&A==a9)->X(S==s1j||S==s1k||S==s1l||S==s1t||S==s1u||S==s1v);
+(S==s1l&&A==a9)->X(S==s1l||S==s1m||S==s1v||S==s1w||S==s25||S==s26);
+(S==s1m&&A==a9)->X(S==s3F);
+(S==s1n&&A==a9)->X(S==s3F);
+(S==s1o&&A==a9)->X(S==sz||S==s10||S==s11||S==s19||S==s1A||S==s1B||S==s1J||S==s1K||S==s1L);
+(S==s1p&&A==a9)->X(S==s10||S==s11||S==s12||S==s1A||S==s1B||S==s1C||S==s1K||S==s1L||S==s1M);
+(S==s1q&&A==a9)->X(S==s1B||S==s1C||S==s1D||S==s1L||S==s1M||S==s1N||S==s1V||S==s1W||S==s1X);
+(S==s1r&&A==a9)->X(S==s1M||S==s1N||S==s1O||S==s1W||S==s1X||S==s1Y||S==s1g||S==s1h||S==s1i);
+(S==s1s&&A==a9)->X(S==s1Y||S==s1Z||S==s1i||S==s1j||S==s1s||S==s1t);
+(S==s1t&&A==a9)->X(S==s1j||S==s1k||S==s1t||S==s1u||S==s23||S==s24);
+(S==s1u&&A==a9)->X(S==s1u||S==s1v||S==s24||S==s25);
+(S==s1v&&A==a9)->X(S==s1v||S==s1w||S==s25||S==s26||S==s2F||S==s2G);
+(S==s1w&&A==a9)->X(S==s3F);
+(S==s1x&&A==a9)->X(S==s3F);
+(S==s1y&&A==a9)->X(S==s19||S==s1A||S==s1B||S==s1J||S==s1K||S==s1L||S==s1T||S==s1U||S==s1V);
+(S==s1z&&A==a9)->X(S==s1L||S==s1M||S==s1V||S==s1W);
+(S==s20&&A==a9)->X(S==s1M||S==s1N||S==s1W||S==s1X||S==s1g||S==s1h);
+(S==s21&&A==a9)->X(S==s1X||S==s1Y||S==s1h||S==s1i||S==s1r||S==s1s);
+(S==s22&&A==a9)->X(S==s1i||S==s1j||S==s1s||S==s1t||S==s22||S==s23);
+(S==s23&&A==a9)->X(S==s1t||S==s1u||S==s23||S==s24||S==s2D||S==s2E);
+(S==s24&&A==a9)->X(S==s24||S==s25||S==s2E||S==s2F);
+(S==s25&&A==a9)->X(S==s25||S==s26||S==s2F||S==s2G||S==s2P||S==s2Q);
+(S==s26&&A==a9)->X(S==s3F);
+(S==s27&&A==a9)->X(S==s19||S==s1A||S==s1J||S==s1K||S==s1T||S==s1U);
+(S==s28&&A==a9)->X(S==s1K||S==s1L||S==s1U||S==s1V||S==s1e||S==s1f);
+(S==s29&&A==a9)->X(S==s1V||S==s1W||S==s1f||S==s1g);
+(S==s2A&&A==a9)->X(S==s1W||S==s1X||S==s1g||S==s1h||S==s1q||S==s1r);
+(S==s2B&&A==a9)->X(S==s1h||S==s1i||S==s1r||S==s1s||S==s21||S==s22);
+(S==s2C&&A==a9)->X(S==s1s||S==s1t||S==s22||S==s23||S==s2C||S==s2D);
+(S==s2D&&A==a9)->X(S==s23||S==s24||S==s2D||S==s2E||S==s2N||S==s2O);
+(S==s2E&&A==a9)->X(S==s2E||S==s2F||S==s2O||S==s2P);
+(S==s2F&&A==a9)->X(S==s2F||S==s2G||S==s2P||S==s2Q||S==s2Z||S==s2a);
+(S==s2G&&A==a9)->X(S==s3F);
+(S==s2H&&A==a9)->X(S==s1J||S==s1K||S==s1T||S==s1U||S==s1d||S==s1e);
+(S==s2I&&A==a9)->X(S==s1U||S==s1V||S==s1e||S==s1f||S==s1o||S==s1p);
+(S==s2J&&A==a9)->X(S==s1f||S==s1g||S==s1p||S==s1q);
+(S==s2K&&A==a9)->X(S==s1g||S==s1h||S==s1q||S==s1r||S==s20||S==s21);
+(S==s2L&&A==a9)->X(S==s1r||S==s1s||S==s21||S==s22||S==s2B||S==s2C);
+(S==s2M&&A==a9)->X(S==s22||S==s23||S==s2C||S==s2D||S==s2M||S==s2N);
+(S==s2N&&A==a9)->X(S==s2D||S==s2E||S==s2N||S==s2O||S==s2X||S==s2Y);
+(S==s2O&&A==a9)->X(S==s2O||S==s2P||S==s2Y||S==s2Z);
+(S==s2P&&A==a9)->X(S==s2P||S==s2Q||S==s2Z||S==s2a||S==s2j||S==s2k);
+(S==s2Q&&A==a9)->X(S==s3F);
+(S==s2R&&A==a9)->X(S==s1T||S==s1U||S==s1d||S==s1e||S==s1n||S==s1o);
+(S==s2S&&A==a9)->X(S==s1e||S==s1f||S==s1o||S==s1p||S==s1y||S==s1z);
+(S==s2T&&A==a9)->X(S==s1p||S==s1q||S==s1z||S==s20);
+(S==s2U&&A==a9)->X(S==s1q||S==s1r||S==s20||S==s21||S==s2A||S==s2B);
+(S==s2V&&A==a9)->X(S==s21||S==s22||S==s2B||S==s2C||S==s2L||S==s2M);
+(S==s2W&&A==a9)->X(S==s2C||S==s2D||S==s2M||S==s2N||S==s2W||S==s2X);
+(S==s2X&&A==a9)->X(S==s2N||S==s2O||S==s2X||S==s2Y||S==s2h||S==s2i);
+(S==s2Y&&A==a9)->X(S==s2Y||S==s2Z||S==s2i||S==s2j||S==s2s||S==s2t);
+(S==s2Z&&A==a9)->X(S==s2Z||S==s2a||S==s2j||S==s2k||S==s2t||S==s2u);
+(S==s2a&&A==a9)->X(S==s3F);
+(S==s2b&&A==a9)->X(S==s1d||S==s1e||S==s1n||S==s1o||S==s1x||S==s1y);
+(S==s2c&&A==a9)->X(S==s1o||S==s1p||S==s1y||S==s1z||S==s28||S==s29);
+(S==s2d&&A==a9)->X(S==s1z||S==s20||S==s29||S==s2A);
+(S==s2e&&A==a9)->X(S==s20||S==s21||S==s2A||S==s2B||S==s2K||S==s2L);
+(S==s2f&&A==a9)->X(S==s2B||S==s2C||S==s2L||S==s2M||S==s2V||S==s2W);
+(S==s2g&&A==a9)->X(S==s2M||S==s2N||S==s2W||S==s2X||S==s2g||S==s2h);
+(S==s2h&&A==a9)->X(S==s2X||S==s2Y||S==s2h||S==s2i||S==s2r||S==s2s);
+(S==s2i&&A==a9)->X(S==s2i||S==s2j||S==s2s||S==s2t||S==s32||S==s33);
+(S==s2j&&A==a9)->X(S==s2t||S==s2u||S==s33||S==s34);
+(S==s2k&&A==a9)->X(S==s3F);
+(S==s2l&&A==a9)->X(S==s1n||S==s1o||S==s1x||S==s1y||S==s27||S==s28);
+(S==s2m&&A==a9)->X(S==s1y||S==s1z||S==s28||S==s29||S==s2I||S==s2J);
+(S==s2n&&A==a9)->X(S==s29||S==s2A||S==s2J||S==s2K||S==s2T||S==s2U);
+(S==s2o&&A==a9)->X(S==s2A||S==s2B||S==s2K||S==s2L||S==s2U||S==s2V);
+(S==s2p&&A==a9)->X(S==s2L||S==s2M||S==s2V||S==s2W||S==s2f||S==s2g);
+(S==s2q&&A==a9)->X(S==s2W||S==s2X||S==s2g||S==s2h||S==s2q||S==s2r);
+(S==s2r&&A==a9)->X(S==s2h||S==s2i||S==s2r||S==s2s||S==s31||S==s32);
+(S==s2s&&A==a9)->X(S==s2s||S==s2t||S==s32||S==s33||S==s3C||S==s3D);
+(S==s2t&&A==a9)->X(S==s33||S==s34||S==s3D||S==s3E);
+(S==s2u&&A==a9)->X(S==s3F);
+(S==s2v&&A==a9)->X(S==s1x||S==s1y||S==s27||S==s28||S==s2H||S==s2I);
+(S==s2w&&A==a9)->X(S==s28||S==s29||S==s2I||S==s2J||S==s2S||S==s2T);
+(S==s2x&&A==a9)->X(S==s2J||S==s2K||S==s2T||S==s2U||S==s2d||S==s2e);
+(S==s2y&&A==a9)->X(S==s2U||S==s2V||S==s2e||S==s2f);
+(S==s2z&&A==a9)->X(S==s2V||S==s2W||S==s2f||S==s2g||S==s2p||S==s2q);
+(S==s30&&A==a9)->X(S==s2g||S==s2h||S==s2q||S==s2r||S==s30||S==s31);
+(S==s31&&A==a9)->X(S==s2r||S==s2s||S==s31||S==s32||S==s3B||S==s3C);
+(S==s32&&A==a9)->X(S==s3F);
+(S==s33&&A==a9)->X(S==s3F);
+(S==s34&&A==a9)->X(S==s3F);
+(S==s35&&A==a9)->X(S==s27||S==s28||S==s2H||S==s2I||S==s2R||S==s2S);
+(S==s36&&A==a9)->X(S==s2I||S==s2J||S==s2S||S==s2T||S==s2c||S==s2d);
+(S==s37&&A==a9)->X(S==s2T||S==s2U||S==s2d||S==s2e||S==s2n||S==s2o);
+(S==s38&&A==a9)->X(S==s2e||S==s2f||S==s2o||S==s2p);
+(S==s39&&A==a9)->X(S==s2f||S==s2g||S==s2p||S==s2q||S==s2z||S==s30);
+(S==s3A&&A==a9)->X(S==s2q||S==s2r||S==s30||S==s31||S==s3A||S==s3B);
+(S==s3B&&A==a9)->X(S==s3F);
+(S==s3C&&A==a9)->X(S==s3F);
+(S==s3D&&A==a9)->X(S==s3F);
+(S==s3E&&A==a9)->X(S==s3F);
+(S==s2&&A==aA)->X(S==s3F);
+(S==s3&&A==aA)->X(S==s3F);
+(S==s4&&A==aA)->X(S==s3F);
+(S==s5&&A==aA)->X(S==s3F);
+(S==s6&&A==aA)->X(S==s3F);
+(S==s7&&A==aA)->X(S==s3F);
+(S==s8&&A==aA)->X(S==s3F);
+(S==s9&&A==aA)->X(S==s3F);
+(S==sA&&A==aA)->X(S==s3F);
+(S==sC&&A==aA)->X(S==s3F);
+(S==sD&&A==aA)->X(S==s3F);
+(S==sE&&A==aA)->X(S==s3F);
+(S==sF&&A==aA)->X(S==s3F);
+(S==sG&&A==aA)->X(S==s3F);
+(S==sH&&A==aA)->X(S==s3F);
+(S==sI&&A==aA)->X(S==s3F);
+(S==sJ&&A==aA)->X(S==s3F);
+(S==sK&&A==aA)->X(S==s9||S==sA||S==sJ||S==sK||S==sT||S==sU);
+(S==sL&&A==aA)->X(S==s3F);
+(S==sM&&A==aA)->X(S==s3F);
+(S==sN&&A==aA)->X(S==s3F);
+(S==sO&&A==aA)->X(S==s3F);
+(S==sP&&A==aA)->X(S==s3F);
+(S==sQ&&A==aA)->X(S==s3F);
+(S==sR&&A==aA)->X(S==s3F);
+(S==sS&&A==aA)->X(S==s7||S==s8||S==sH||S==sI);
+(S==sT&&A==aA)->X(S==s8||S==s9||S==sI||S==sJ||S==sS||S==sT);
+(S==sU&&A==aA)->X(S==sJ||S==sK||S==sT||S==sU||S==sd||S==se);
+(S==sV&&A==aA)->X(S==s3F);
+(S==sW&&A==aA)->X(S==s3F);
+(S==sX&&A==aA)->X(S==s3F);
+(S==sY&&A==aA)->X(S==s3F);
+(S==sZ&&A==aA)->X(S==s3F);
+(S==sa&&A==aA)->X(S==s3F);
+(S==sb&&A==aA)->X(S==s6||S==s7||S==sG||S==sH||S==sQ||S==sR);
+(S==sc&&A==aA)->X(S==sH||S==sI||S==sR||S==sS);
+(S==sd&&A==aA)->X(S==sI||S==sJ||S==sS||S==sT||S==sc||S==sd);
+(S==se&&A==aA)->X(S==sT||S==sU||S==sd||S==se||S==sn||S==so);
+(S==sf&&A==aA)->X(S==s3F);
+(S==sg&&A==aA)->X(S==s3F);
+(S==sh&&A==aA)->X(S==s3F);
+(S==si&&A==aA)->X(S==s3F);
+(S==sj&&A==aA)->X(S==s3F);
+(S==sk&&A==aA)->X(S==s5||S==s6||S==sF||S==sG||S==sP||S==sQ);
+(S==sl&&A==aA)->X(S==sG||S==sH||S==sQ||S==sR||S==sa||S==sb);
+(S==sm&&A==aA)->X(S==sR||S==sS||S==sb||S==sc||S==sl||S==sm);
+(S==sn&&A==aA)->X(S==sS||S==sT||S==sc||S==sd||S==sm||S==sn);
+(S==so&&A==aA)->X(S==sd||S==se||S==sn||S==so||S==sx||S==sy);
+(S==sp&&A==aA)->X(S==s3F);
+(S==sq&&A==aA)->X(S==s3F);
+(S==sr&&A==aA)->X(S==s3F);
+(S==ss&&A==aA)->X(S==s3F);
+(S==st&&A==aA)->X(S==s4||S==s5||S==sE||S==sF||S==sO||S==sP);
+(S==su&&A==aA)->X(S==sF||S==sG||S==sP||S==sQ||S==sZ||S==sa);
+(S==sv&&A==aA)->X(S==sQ||S==sR||S==sa||S==sb||S==sk||S==sl);
+(S==sw&&A==aA)->X(S==sb||S==sc||S==sl||S==sm||S==sv||S==sw);
+(S==sx&&A==aA)->X(S==sm||S==sn||S==sw||S==sx);
+(S==sy&&A==aA)->X(S==sn||S==so||S==sx||S==sy||S==s17||S==s18);
+(S==sz&&A==aA)->X(S==s3F);
+(S==s10&&A==aA)->X(S==s3F);
+(S==s11&&A==aA)->X(S==s2||S==s3||S==sC||S==sD||S==sM||S==sN);
+(S==s12&&A==aA)->X(S==sD||S==sE||S==sN||S==sO);
+(S==s13&&A==aA)->X(S==sE||S==sF||S==sO||S==sP||S==sY||S==sZ);
+(S==s14&&A==aA)->X(S==sP||S==sQ||S==sZ||S==sa||S==sj||S==sk);
+(S==s15&&A==aA)->X(S==sa||S==sb||S==sk||S==sl||S==su||S==sv);
+(S==s16&&A==aA)->X(S==sl||S==sm||S==sv||S==sw||S==s15||S==s16);
+(S==s17&&A==aA)->X(S==sw||S==sx||S==s16||S==s17);
+(S==s18&&A==aA)->X(S==sx||S==sy||S==s17||S==s18||S==s1H||S==s1I);
+(S==s19&&A==aA)->X(S==s3F);
+(S==s1A&&A==aA)->X(S==s1||S==s2||S==sB||S==sC||S==sL||S==sM);
+(S==s1B&&A==aA)->X(S==sC||S==sD||S==sM||S==sN||S==sW||S==sX);
+(S==s1C&&A==aA)->X(S==sN||S==sO||S==sX||S==sY);
+(S==s1D&&A==aA)->X(S==sO||S==sP||S==sY||S==sZ||S==si||S==sj);
+(S==s1E&&A==aA)->X(S==sZ||S==sa||S==sj||S==sk||S==st||S==su);
+(S==s1F&&A==aA)->X(S==sk||S==sl||S==su||S==sv||S==s14||S==s15);
+(S==s1G&&A==aA)->X(S==sv||S==sw||S==s15||S==s16||S==s1F||S==s1G);
+(S==s1H&&A==aA)->X(S==s16||S==s17||S==s1G||S==s1H);
+(S==s1I&&A==aA)->X(S==s17||S==s18||S==s1H||S==s1I||S==s1R||S==s1S);
+(S==s1J&&A==aA)->X(S==s3F);
+(S==s1K&&A==aA)->X(S==sB||S==sC||S==sL||S==sM||S==sV||S==sW);
+(S==s1L&&A==aA)->X(S==sM||S==sN||S==sW||S==sX||S==sg||S==sh);
+(S==s1M&&A==aA)->X(S==sX||S==sY||S==sh||S==si);
+(S==s1N&&A==aA)->X(S==sY||S==sZ||S==si||S==sj||S==ss||S==st);
+(S==s1O&&A==aA)->X(S==sj||S==sk||S==st||S==su||S==s13||S==s14);
+(S==s1P&&A==aA)->X(S==su||S==sv||S==s14||S==s15||S==s1E||S==s1F);
+(S==s1Q&&A==aA)->X(S==s15||S==s16||S==s1F||S==s1G||S==s1P||S==s1Q);
+(S==s1R&&A==aA)->X(S==s1G||S==s1H||S==s1Q||S==s1R);
+(S==s1S&&A==aA)->X(S==s1H||S==s1I||S==s1R||S==s1S||S==s1b||S==s1c);
+(S==s1T&&A==aA)->X(S==s3F);
+(S==s1U&&A==aA)->X(S==sL||S==sM||S==sV||S==sW||S==sf||S==sg);
+(S==s1V&&A==aA)->X(S==sW||S==sX||S==sg||S==sh||S==sq||S==sr);
+(S==s1W&&A==aA)->X(S==sh||S==si||S==sr||S==ss);
+(S==s1X&&A==aA)->X(S==si||S==sj||S==ss||S==st||S==s12||S==s13);
+(S==s1Y&&A==aA)->X(S==st||S==su||S==s13||S==s14||S==s1D||S==s1E);
+(S==s1Z&&A==aA)->X(S==s14||S==s15||S==s1E||S==s1F||S==s1O||S==s1P);
+(S==s1a&&A==aA)->X(S==s1F||S==s1G||S==s1P||S==s1Q||S==s1Z||S==s1a);
+(S==s1b&&A==aA)->X(S==s1Q||S==s1R||S==s1S||S==s1a||S==s1b||S==s1c||S==s1k||S==s1l||S==s1m);
+(S==s1c&&A==aA)->X(S==s3F);
+(S==s1d&&A==aA)->X(S==s3F);
+(S==s1e&&A==aA)->X(S==sV||S==sW||S==sf||S==sg||S==sp||S==sq);
+(S==s1f&&A==aA)->X(S==sg||S==sh||S==sq||S==sr||S==s10||S==s11);
+(S==s1g&&A==aA)->X(S==sr||S==ss||S==s11||S==s12);
+(S==s1h&&A==aA)->X(S==ss||S==st||S==s12||S==s13||S==s1C||S==s1D);
+(S==s1i&&A==aA)->X(S==s13||S==s14||S==s1D||S==s1E||S==s1N||S==s1O);
+(S==s1j&&A==aA)->X(S==s1E||S==s1F||S==s1G||S==s1O||S==s1P||S==s1Q||S==s1Y||S==s1Z||S==s1a);
+(S==s1k&&A==aA)->X(S==s1P||S==s1Q||S==s1R||S==s1Z||S==s1a||S==s1b||S==s1j||S==s1k||S==s1l);
+(S==s1l&&A==aA)->X(S==s1a||S==s1b||S==s1c||S==s1k||S==s1l||S==s1m||S==s1u||S==s1v||S==s1w);
+(S==s1m&&A==aA)->X(S==s3F);
+(S==s1n&&A==aA)->X(S==s3F);
+(S==s1o&&A==aA)->X(S==sf||S==sg||S==sp||S==sq||S==sz||S==s10);
+(S==s1p&&A==aA)->X(S==sq||S==sr||S==s10||S==s11||S==s1A||S==s1B);
+(S==s1q&&A==aA)->X(S==s11||S==s12||S==s13||S==s1B||S==s1C||S==s1D||S==s1L||S==s1M||S==s1N);
+(S==s1r&&A==aA)->X(S==s12||S==s13||S==s14||S==s1C||S==s1D||S==s1E||S==s1M||S==s1N||S==s1O);
+(S==s1s&&A==aA)->X(S==s1D||S==s1E||S==s1F||S==s1N||S==s1O||S==s1P||S==s1X||S==s1Y||S==s1Z);
+(S==s1t&&A==aA)->X(S==s1O||S==s1P||S==s1Q||S==s1Y||S==s1Z||S==s1a||S==s1i||S==s1j||S==s1k);
+(S==s1u&&A==aA)->X(S==s1a||S==s1b||S==s1k||S==s1l||S==s1u||S==s1v);
+(S==s1v&&A==aA)->X(S==s1l||S==s1m||S==s1v||S==s1w||S==s25||S==s26);
+(S==s1w&&A==aA)->X(S==s3F);
+(S==s1x&&A==aA)->X(S==s3F);
+(S==s1y&&A==aA)->X(S==sp||S==sq||S==sr||S==sz||S==s10||S==s11||S==s19||S==s1A||S==s1B);
+(S==s1z&&A==aA)->X(S==s10||S==s11||S==s12||S==s1A||S==s1B||S==s1C||S==s1K||S==s1L||S==s1M);
+(S==s20&&A==aA)->X(S==s1B||S==s1C||S==s1D||S==s1L||S==s1M||S==s1N||S==s1V||S==s1W||S==s1X);
+(S==s21&&A==aA)->X(S==s1N||S==s1O||S==s1X||S==s1Y);
+(S==s22&&A==aA)->X(S==s1O||S==s1P||S==s1Y||S==s1Z||S==s1i||S==s1j);
+(S==s23&&A==aA)->X(S==s1Z||S==s1a||S==s1j||S==s1k||S==s1t||S==s1u);
+(S==s24&&A==aA)->X(S==s1k||S==s1l||S==s1u||S==s1v||S==s24||S==s25);
+(S==s25&&A==aA)->X(S==s1v||S==s1w||S==s25||S==s26||S==s2F||S==s2G);
+(S==s26&&A==aA)->X(S==s3F);
+(S==s27&&A==aA)->X(S==s3F);
+(S==s28&&A==aA)->X(S==sz||S==s10||S==s11||S==s19||S==s1A||S==s1B||S==s1J||S==s1K||S==s1L);
+(S==s29&&A==aA)->X(S==s1B||S==s1C||S==s1L||S==s1M||S==s1V||S==s1W);
+(S==s2A&&A==aA)->X(S==s1M||S==s1N||S==s1W||S==s1X||S==s1g||S==s1h);
+(S==s2B&&A==aA)->X(S==s1X||S==s1Y||S==s1h||S==s1i);
+(S==s2C&&A==aA)->X(S==s1Y||S==s1Z||S==s1i||S==s1j||S==s1s||S==s1t);
+(S==s2D&&A==aA)->X(S==s1j||S==s1k||S==s1t||S==s1u||S==s23||S==s24);
+(S==s2E&&A==aA)->X(S==s1u||S==s1v||S==s24||S==s25||S==s2E||S==s2F);
+(S==s2F&&A==aA)->X(S==s25||S==s26||S==s2F||S==s2G||S==s2P||S==s2Q);
+(S==s2G&&A==aA)->X(S==s3F);
+(S==s2H&&A==aA)->X(S==sz||S==s10||S==s19||S==s1A||S==s1J||S==s1K);
+(S==s2I&&A==aA)->X(S==s1A||S==s1B||S==s1K||S==s1L||S==s1U||S==s1V);
+(S==s2J&&A==aA)->X(S==s1L||S==s1M||S==s1V||S==s1W||S==s1f||S==s1g);
+(S==s2K&&A==aA)->X(S==s1W||S==s1X||S==s1g||S==s1h||S==s1q||S==s1r);
+(S==s2L&&A==aA)->X(S==s1h||S==s1i||S==s1r||S==s1s);
+(S==s2M&&A==aA)->X(S==s1i||S==s1j||S==s1s||S==s1t||S==s22||S==s23);
+(S==s2N&&A==aA)->X(S==s1t||S==s1u||S==s23||S==s24||S==s2D||S==s2E);
+(S==s2O&&A==aA)->X(S==s24||S==s25||S==s2E||S==s2F||S==s2O||S==s2P);
+(S==s2P&&A==aA)->X(S==s2F||S==s2G||S==s2P||S==s2Q||S==s2Z||S==s2a);
+(S==s2Q&&A==aA)->X(S==s3F);
+(S==s2R&&A==aA)->X(S==s19||S==s1A||S==s1J||S==s1K||S==s1T||S==s1U);
+(S==s2S&&A==aA)->X(S==s1K||S==s1L||S==s1U||S==s1V||S==s1e||S==s1f);
+(S==s2T&&A==aA)->X(S==s1V||S==s1W||S==s1f||S==s1g||S==s1p||S==s1q);
+(S==s2U&&A==aA)->X(S==s1g||S==s1h||S==s1q||S==s1r||S==s20||S==s21);
+(S==s2V&&A==aA)->X(S==s1r||S==s1s||S==s21||S==s22);
+(S==s2W&&A==aA)->X(S==s1s||S==s1t||S==s22||S==s23||S==s2C||S==s2D);
+(S==s2X&&A==aA)->X(S==s23||S==s24||S==s2D||S==s2E||S==s2N||S==s2O);
+(S==s2Y&&A==aA)->X(S==s2E||S==s2F||S==s2O||S==s2P||S==s2Y||S==s2Z);
+(S==s2Z&&A==aA)->X(S==s2P||S==s2Q||S==s2Z||S==s2a||S==s2j||S==s2k);
+(S==s2a&&A==aA)->X(S==s3F);
+(S==s2b&&A==aA)->X(S==s1J||S==s1K||S==s1T||S==s1U||S==s1d||S==s1e);
+(S==s2c&&A==aA)->X(S==s1U||S==s1V||S==s1e||S==s1f||S==s1o||S==s1p);
+(S==s2d&&A==aA)->X(S==s1f||S==s1g||S==s1p||S==s1q||S==s1z||S==s20);
+(S==s2e&&A==aA)->X(S==s1q||S==s1r||S==s20||S==s21||S==s2A||S==s2B);
+(S==s2f&&A==aA)->X(S==s21||S==s22||S==s2B||S==s2C);
+(S==s2g&&A==aA)->X(S==s22||S==s23||S==s2C||S==s2D||S==s2M||S==s2N);
+(S==s2h&&A==aA)->X(S==s2D||S==s2E||S==s2N||S==s2O||S==s2X||S==s2Y);
+(S==s2i&&A==aA)->X(S==s2O||S==s2P||S==s2Y||S==s2Z||S==s2i||S==s2j);
+(S==s2j&&A==aA)->X(S==s2Z||S==s2a||S==s2j||S==s2k||S==s2t||S==s2u);
+(S==s2k&&A==aA)->X(S==s3F);
+(S==s2l&&A==aA)->X(S==s1T||S==s1U||S==s1d||S==s1e||S==s1n||S==s1o);
+(S==s2m&&A==aA)->X(S==s1e||S==s1f||S==s1o||S==s1p||S==s1y||S==s1z);
+(S==s2n&&A==aA)->X(S==s1p||S==s1q||S==s1z||S==s20||S==s29||S==s2A);
+(S==s2o&&A==aA)->X(S==s20||S==s21||S==s2A||S==s2B||S==s2K||S==s2L);
+(S==s2p&&A==aA)->X(S==s2B||S==s2C||S==s2L||S==s2M||S==s2V||S==s2W);
+(S==s2q&&A==aA)->X(S==s2C||S==s2D||S==s2M||S==s2N||S==s2W||S==s2X);
+(S==s2r&&A==aA)->X(S==s2N||S==s2O||S==s2X||S==s2Y||S==s2h||S==s2i);
+(S==s2s&&A==aA)->X(S==s2Y||S==s2Z||S==s2i||S==s2j||S==s2s||S==s2t);
+(S==s2t&&A==aA)->X(S==s2j||S==s2k||S==s2t||S==s2u||S==s33||S==s34);
+(S==s2u&&A==aA)->X(S==s3F);
+(S==s2v&&A==aA)->X(S==s1d||S==s1e||S==s1n||S==s1o||S==s1x||S==s1y);
+(S==s2w&&A==aA)->X(S==s1o||S==s1p||S==s1y||S==s1z||S==s28||S==s29);
+(S==s2x&&A==aA)->X(S==s1z||S==s20||S==s29||S==s2A||S==s2J||S==s2K);
+(S==s2y&&A==aA)->X(S==s2A||S==s2B||S==s2K||S==s2L||S==s2U||S==s2V);
+(S==s2z&&A==aA)->X(S==s2L||S==s2M||S==s2V||S==s2W||S==s2f||S==s2g);
+(S==s30&&A==aA)->X(S==s2W||S==s2X||S==s2g||S==s2h);
+(S==s31&&A==aA)->X(S==s2X||S==s2Y||S==s2h||S==s2i||S==s2r||S==s2s);
+(S==s32&&A==aA)->X(S==s2i||S==s2j||S==s2s||S==s2t||S==s32||S==s33);
+(S==s33&&A==aA)->X(S==s2t||S==s2u||S==s33||S==s34||S==s3D||S==s3E);
+(S==s34&&A==aA)->X(S==s3F);
+(S==s35&&A==aA)->X(S==s1x||S==s1y||S==s27||S==s28);
+(S==s36&&A==aA)->X(S==s1y||S==s1z||S==s28||S==s29||S==s2I||S==s2J);
+(S==s37&&A==aA)->X(S==s29||S==s2A||S==s2J||S==s2K||S==s2T||S==s2U);
+(S==s38&&A==aA)->X(S==s2K||S==s2L||S==s2U||S==s2V||S==s2e||S==s2f);
+(S==s39&&A==aA)->X(S==s2V||S==s2W||S==s2f||S==s2g||S==s2p||S==s2q);
+(S==s3A&&A==aA)->X(S==s2g||S==s2h||S==s2q||S==s2r);
+(S==s3B&&A==aA)->X(S==s2h||S==s2i||S==s2r||S==s2s||S==s31||S==s32);
+(S==s3C&&A==aA)->X(S==s2s||S==s2t||S==s32||S==s33||S==s3C||S==s3D);
+(S==s3D&&A==aA)->X(S==s3F);
+(S==s3E&&A==aA)->X(S==s3F);
+(S==s4&&A==aB)->X(S==s3F);
+(S==s5&&A==aB)->X(S==s3F);
+(S==s6&&A==aB)->X(S==s3F);
+(S==s7&&A==aB)->X(S==s3F);
+(S==s8&&A==aB)->X(S==s3F);
+(S==s9&&A==aB)->X(S==s3F);
+(S==sA&&A==aB)->X(S==s3F);
+(S==sE&&A==aB)->X(S==s3F);
+(S==sF&&A==aB)->X(S==s3F);
+(S==sG&&A==aB)->X(S==s3F);
+(S==sH&&A==aB)->X(S==s3F);
+(S==sI&&A==aB)->X(S==s3F);
+(S==sJ&&A==aB)->X(S==s3F);
+(S==sK&&A==aB)->X(S==s3F);
+(S==sN&&A==aB)->X(S==s3F);
+(S==sO&&A==aB)->X(S==s3F);
+(S==sP&&A==aB)->X(S==s3F);
+(S==sQ&&A==aB)->X(S==s3F);
+(S==sR&&A==aB)->X(S==s3F);
+(S==sS&&A==aB)->X(S==s3F);
+(S==sT&&A==aB)->X(S==s3F);
+(S==sU&&A==aB)->X(S==s9||S==sA||S==sJ||S==sK);
+(S==sX&&A==aB)->X(S==s3F);
+(S==sY&&A==aB)->X(S==s3F);
+(S==sZ&&A==aB)->X(S==s3F);
+(S==sa&&A==aB)->X(S==s3F);
+(S==sb&&A==aB)->X(S==s3F);
+(S==sc&&A==aB)->X(S==s3F);
+(S==sd&&A==aB)->X(S==s8||S==s9||S==sI||S==sJ||S==sS||S==sT);
+(S==se&&A==aB)->X(S==sJ||S==sK||S==sT||S==sU);
+(S==sh&&A==aB)->X(S==s3F);
+(S==si&&A==aB)->X(S==s3F);
+(S==sj&&A==aB)->X(S==s3F);
+(S==sk&&A==aB)->X(S==s3F);
+(S==sl&&A==aB)->X(S==s3F);
+(S==sm&&A==aB)->X(S==s7||S==s8||S==sH||S==sI||S==sR||S==sS);
+(S==sn&&A==aB)->X(S==sI||S==sJ||S==sS||S==sT||S==sc||S==sd);
+(S==so&&A==aB)->X(S==sT||S==sU||S==sd||S==se||S==sn||S==so);
+(S==sr&&A==aB)->X(S==s3F);
+(S==ss&&A==aB)->X(S==s3F);
+(S==st&&A==aB)->X(S==s3F);
+(S==su&&A==aB)->X(S==s3F);
+(S==sv&&A==aB)->X(S==s6||S==s7||S==sG||S==sH||S==sQ||S==sR);
+(S==sw&&A==aB)->X(S==sH||S==sI||S==sR||S==sS||S==sb||S==sc);
+(S==sx&&A==aB)->X(S==sS||S==sT||S==sc||S==sd||S==sm||S==sn);
+(S==sy&&A==aB)->X(S==sd||S==se||S==sn||S==so||S==sx||S==sy);
+(S==s11&&A==aB)->X(S==s3F);
+(S==s12&&A==aB)->X(S==s3F);
+(S==s13&&A==aB)->X(S==s4||S==s5||S==sE||S==sF||S==sO||S==sP);
+(S==s14&&A==aB)->X(S==sF||S==sG||S==sP||S==sQ);
+(S==s15&&A==aB)->X(S==sG||S==sH||S==sQ||S==sR||S==sa||S==sb);
+(S==s16&&A==aB)->X(S==sR||S==sS||S==sb||S==sc||S==sl||S==sm);
+(S==s17&&A==aB)->X(S==sc||S==sd||S==sm||S==sn||S==sw||S==sx);
+(S==s18&&A==aB)->X(S==sn||S==so||S==sx||S==sy||S==s17||S==s18);
+(S==s1B&&A==aB)->X(S==s3F);
+(S==s1C&&A==aB)->X(S==s3||S==s4||S==sD||S==sE||S==sN||S==sO);
+(S==s1D&&A==aB)->X(S==sE||S==sF||S==sO||S==sP||S==sY||S==sZ);
+(S==s1E&&A==aB)->X(S==sP||S==sQ||S==sZ||S==sa);
+(S==s1F&&A==aB)->X(S==sQ||S==sR||S==sa||S==sb||S==sk||S==sl);
+(S==s1G&&A==aB)->X(S==sb||S==sc||S==sl||S==sm||S==sv||S==sw);
+(S==s1H&&A==aB)->X(S==sm||S==sn||S==sw||S==sx||S==s16||S==s17);
+(S==s1I&&A==aB)->X(S==sx||S==sy||S==s17||S==s18||S==s1H||S==s1I);
+(S==s1L&&A==aB)->X(S==s2||S==s3||S==sC||S==sD||S==sM||S==sN);
+(S==s1M&&A==aB)->X(S==sD||S==sE||S==sN||S==sO||S==sX||S==sY);
+(S==s1N&&A==aB)->X(S==sO||S==sP||S==sY||S==sZ||S==si||S==sj);
+(S==s1O&&A==aB)->X(S==sZ||S==sa||S==sj||S==sk);
+(S==s1P&&A==aB)->X(S==sa||S==sb||S==sk||S==sl||S==su||S==sv);
+(S==s1Q&&A==aB)->X(S==sl||S==sm||S==sv||S==sw||S==s15||S==s16);
+(S==s1R&&A==aB)->X(S==sw||S==sx||S==s16||S==s17||S==s1G||S==s1H);
+(S==s1S&&A==aB)->X(S==s17||S==s18||S==s1H||S==s1I||S==s1R||S==s1S);
+(S==s1V&&A==aB)->X(S==sC||S==sD||S==sM||S==sN||S==sW||S==sX);
+(S==s1W&&A==aB)->X(S==sN||S==sO||S==sX||S==sY||S==sh||S==si);
+(S==s1X&&A==aB)->X(S==sY||S==sZ||S==si||S==sj||S==ss||S==st);
+(S==s1Y&&A==aB)->X(S==sj||S==sk||S==st||S==su);
+(S==s1Z&&A==aB)->X(S==sk||S==sl||S==su||S==sv||S==s14||S==s15);
+(S==s1a&&A==aB)->X(S==sv||S==sw||S==s15||S==s16||S==s1F||S==s1G);
+(S==s1b&&A==aB)->X(S==s16||S==s17||S==s1G||S==s1H||S==s1Q||S==s1R);
+(S==s1c&&A==aB)->X(S==s1H||S==s1I||S==s1R||S==s1S||S==s1b||S==s1c);
+(S==s1f&&A==aB)->X(S==sM||S==sN||S==sW||S==sX||S==sg||S==sh);
+(S==s1g&&A==aB)->X(S==sX||S==sY||S==sh||S==si||S==sr||S==ss);
+(S==s1h&&A==aB)->X(S==si||S==sj||S==ss||S==st||S==s12||S==s13);
+(S==s1i&&A==aB)->X(S==st||S==su||S==s13||S==s14);
+(S==s1j&&A==aB)->X(S==su||S==sv||S==s14||S==s15||S==s1E||S==s1F);
+(S==s1k&&A==aB)->X(S==s15||S==s16||S==s1F||S==s1G||S==s1P||S==s1Q);
+(S==s1l&&A==aB)->X(S==s1G||S==s1H||S==s1I||S==s1Q||S==s1R||S==s1S||S==s1a||S==s1b||S==s1c);
+(S==s1m&&A==aB)->X(S==s3F);
+(S==s1p&&A==aB)->X(S==sW||S==sX||S==sg||S==sh||S==sq||S==sr);
+(S==s1q&&A==aB)->X(S==sh||S==si||S==sr||S==ss||S==s11||S==s12);
+(S==s1r&&A==aB)->X(S==ss||S==st||S==s12||S==s13||S==s1C||S==s1D);
+(S==s1s&&A==aB)->X(S==s13||S==s14||S==s15||S==s1D||S==s1E||S==s1F||S==s1N||S==s1O||S==s1P);
+(S==s1t&&A==aB)->X(S==s14||S==s15||S==s16||S==s1E||S==s1F||S==s1G||S==s1O||S==s1P||S==s1Q);
+(S==s1u&&A==aB)->X(S==s1F||S==s1G||S==s1H||S==s1P||S==s1Q||S==s1R||S==s1Z||S==s1a||S==s1b);
+(S==s1v&&A==aB)->X(S==s1Q||S==s1R||S==s1S||S==s1a||S==s1b||S==s1c||S==s1k||S==s1l||S==s1m);
+(S==s1w&&A==aB)->X(S==s3F);
+(S==s1z&&A==aB)->X(S==sg||S==sh||S==sq||S==sr||S==s10||S==s11);
+(S==s20&&A==aB)->X(S==sr||S==ss||S==st||S==s11||S==s12||S==s13||S==s1B||S==s1C||S==s1D);
+(S==s21&&A==aB)->X(S==s12||S==s13||S==s14||S==s1C||S==s1D||S==s1E||S==s1M||S==s1N||S==s1O);
+(S==s22&&A==aB)->X(S==s1D||S==s1E||S==s1F||S==s1N||S==s1O||S==s1P||S==s1X||S==s1Y||S==s1Z);
+(S==s23&&A==aB)->X(S==s1P||S==s1Q||S==s1Z||S==s1a);
+(S==s24&&A==aB)->X(S==s1Q||S==s1R||S==s1a||S==s1b||S==s1k||S==s1l);
+(S==s25&&A==aB)->X(S==s1b||S==s1c||S==s1l||S==s1m||S==s1v||S==s1w);
+(S==s26&&A==aB)->X(S==s3F);
+(S==s29&&A==aB)->X(S==sq||S==sr||S==ss||S==s10||S==s11||S==s12||S==s1A||S==s1B||S==s1C);
+(S==s2A&&A==aB)->X(S==s11||S==s12||S==s13||S==s1B||S==s1C||S==s1D||S==s1L||S==s1M||S==s1N);
+(S==s2B&&A==aB)->X(S==s1D||S==s1E||S==s1N||S==s1O||S==s1X||S==s1Y);
+(S==s2C&&A==aB)->X(S==s1O||S==s1P||S==s1Y||S==s1Z||S==s1i||S==s1j);
+(S==s2D&&A==aB)->X(S==s1Z||S==s1a||S==s1j||S==s1k);
+(S==s2E&&A==aB)->X(S==s1a||S==s1b||S==s1k||S==s1l||S==s1u||S==s1v);
+(S==s2F&&A==aB)->X(S==s1l||S==s1m||S==s1v||S==s1w||S==s25||S==s26);
+(S==s2G&&A==aB)->X(S==s3F);
+(S==s2I&&A==aB)->X(S==s10||S==s11||S==s1A||S==s1B);
+(S==s2J&&A==aB)->X(S==s11||S==s12||S==s1B||S==s1C||S==s1L||S==s1M);
+(S==s2K&&A==aB)->X(S==s1C||S==s1D||S==s1M||S==s1N||S==s1W||S==s1X);
+(S==s2L&&A==aB)->X(S==s1N||S==s1O||S==s1X||S==s1Y||S==s1h||S==s1i);
+(S==s2M&&A==aB)->X(S==s1Y||S==s1Z||S==s1i||S==s1j||S==s1s||S==s1t);
+(S==s2N&&A==aB)->X(S==s1j||S==s1k||S==s1t||S==s1u);
+(S==s2O&&A==aB)->X(S==s1k||S==s1l||S==s1u||S==s1v||S==s24||S==s25);
+(S==s2P&&A==aB)->X(S==s1v||S==s1w||S==s25||S==s26||S==s2F||S==s2G);
+(S==s2Q&&A==aB)->X(S==s3F);
+(S==s2S&&A==aB)->X(S==s1A||S==s1B||S==s1K||S==s1L);
+(S==s2T&&A==aB)->X(S==s1B||S==s1C||S==s1L||S==s1M||S==s1V||S==s1W);
+(S==s2U&&A==aB)->X(S==s1M||S==s1N||S==s1W||S==s1X||S==s1g||S==s1h);
+(S==s2V&&A==aB)->X(S==s1X||S==s1Y||S==s1h||S==s1i||S==s1r||S==s1s);
+(S==s2W&&A==aB)->X(S==s1i||S==s1j||S==s1s||S==s1t||S==s22||S==s23);
+(S==s2X&&A==aB)->X(S==s1t||S==s1u||S==s23||S==s24);
+(S==s2Y&&A==aB)->X(S==s1u||S==s1v||S==s24||S==s25||S==s2E||S==s2F);
+(S==s2Z&&A==aB)->X(S==s25||S==s26||S==s2F||S==s2G||S==s2P||S==s2Q);
+(S==s2a&&A==aB)->X(S==s3F);
+(S==s2c&&A==aB)->X(S==s1K||S==s1L||S==s1U||S==s1V);
+(S==s2d&&A==aB)->X(S==s1L||S==s1M||S==s1V||S==s1W||S==s1f||S==s1g);
+(S==s2e&&A==aB)->X(S==s1W||S==s1X||S==s1g||S==s1h||S==s1q||S==s1r);
+(S==s2f&&A==aB)->X(S==s1h||S==s1i||S==s1r||S==s1s||S==s21||S==s22);
+(S==s2g&&A==aB)->X(S==s1s||S==s1t||S==s22||S==s23||S==s2C||S==s2D);
+(S==s2h&&A==aB)->X(S==s23||S==s24||S==s2D||S==s2E);
+(S==s2i&&A==aB)->X(S==s24||S==s25||S==s2E||S==s2F||S==s2O||S==s2P);
+(S==s2j&&A==aB)->X(S==s2F||S==s2G||S==s2P||S==s2Q||S==s2Z||S==s2a);
+(S==s2k&&A==aB)->X(S==s3F);
+(S==s2m&&A==aB)->X(S==s1U||S==s1V||S==s1e||S==s1f);
+(S==s2n&&A==aB)->X(S==s1V||S==s1W||S==s1f||S==s1g||S==s1p||S==s1q);
+(S==s2o&&A==aB)->X(S==s1g||S==s1h||S==s1q||S==s1r||S==s20||S==s21);
+(S==s2p&&A==aB)->X(S==s1r||S==s1s||S==s21||S==s22||S==s2B||S==s2C);
+(S==s2q&&A==aB)->X(S==s22||S==s23||S==s2C||S==s2D||S==s2M||S==s2N);
+(S==s2r&&A==aB)->X(S==s2D||S==s2E||S==s2N||S==s2O||S==s2X||S==s2Y);
+(S==s2s&&A==aB)->X(S==s2E||S==s2F||S==s2O||S==s2P||S==s2Y||S==s2Z);
+(S==s2t&&A==aB)->X(S==s2P||S==s2Q||S==s2Z||S==s2a||S==s2j||S==s2k);
+(S==s2u&&A==aB)->X(S==s3F);
+(S==s2w&&A==aB)->X(S==s1e||S==s1f||S==s1o||S==s1p||S==s1y||S==s1z);
+(S==s2x&&A==aB)->X(S==s1f||S==s1g||S==s1p||S==s1q||S==s1z||S==s20);
+(S==s2y&&A==aB)->X(S==s1q||S==s1r||S==s20||S==s21||S==s2A||S==s2B);
+(S==s2z&&A==aB)->X(S==s21||S==s22||S==s2B||S==s2C||S==s2L||S==s2M);
+(S==s30&&A==aB)->X(S==s2C||S==s2D||S==s2M||S==s2N||S==s2W||S==s2X);
+(S==s31&&A==aB)->X(S==s2N||S==s2O||S==s2X||S==s2Y||S==s2h||S==s2i);
+(S==s32&&A==aB)->X(S==s2Y||S==s2Z||S==s2i||S==s2j);
+(S==s33&&A==aB)->X(S==s2Z||S==s2a||S==s2j||S==s2k||S==s2t||S==s2u);
+(S==s34&&A==aB)->X(S==s3F);
+(S==s36&&A==aB)->X(S==s1o||S==s1p||S==s1y||S==s1z||S==s28||S==s29);
+(S==s37&&A==aB)->X(S==s1z||S==s20||S==s29||S==s2A);
+(S==s38&&A==aB)->X(S==s20||S==s21||S==s2A||S==s2B||S==s2K||S==s2L);
+(S==s39&&A==aB)->X(S==s2B||S==s2C||S==s2L||S==s2M||S==s2V||S==s2W);
+(S==s3A&&A==aB)->X(S==s2M||S==s2N||S==s2W||S==s2X||S==s2g||S==s2h);
+(S==s3B&&A==aB)->X(S==s2X||S==s2Y||S==s2h||S==s2i||S==s2r||S==s2s);
+(S==s3C&&A==aB)->X(S==s2i||S==s2j||S==s2s||S==s2t);
+(S==s3D&&A==aB)->X(S==s2j||S==s2k||S==s2t||S==s2u||S==s33||S==s34);
+(S==s3E&&A==aB)->X(S==s3F);
+(S==s6&&A==aC)->X(S==s3F);
+(S==s7&&A==aC)->X(S==s3F);
+(S==s8&&A==aC)->X(S==s3F);
+(S==s9&&A==aC)->X(S==s3F);
+(S==sA&&A==aC)->X(S==s3F);
+(S==sG&&A==aC)->X(S==s3F);
+(S==sH&&A==aC)->X(S==s3F);
+(S==sI&&A==aC)->X(S==s3F);
+(S==sJ&&A==aC)->X(S==s3F);
+(S==sK&&A==aC)->X(S==s3F);
+(S==sP&&A==aC)->X(S==s3F);
+(S==sQ&&A==aC)->X(S==s3F);
+(S==sR&&A==aC)->X(S==s3F);
+(S==sS&&A==aC)->X(S==s3F);
+(S==sT&&A==aC)->X(S==s3F);
+(S==sU&&A==aC)->X(S==s3F);
+(S==sZ&&A==aC)->X(S==s3F);
+(S==sa&&A==aC)->X(S==s3F);
+(S==sb&&A==aC)->X(S==s3F);
+(S==sc&&A==aC)->X(S==s3F);
+(S==sd&&A==aC)->X(S==s3F);
+(S==se&&A==aC)->X(S==s3F);
+(S==sj&&A==aC)->X(S==s3F);
+(S==sk&&A==aC)->X(S==s3F);
+(S==sl&&A==aC)->X(S==s3F);
+(S==sm&&A==aC)->X(S==s3F);
+(S==sn&&A==aC)->X(S==s3F);
+(S==so&&A==aC)->X(S==s9||S==sA||S==sJ||S==sK||S==sT||S==sU);
+(S==st&&A==aC)->X(S==s3F);
+(S==su&&A==aC)->X(S==s3F);
+(S==sv&&A==aC)->X(S==s3F);
+(S==sw&&A==aC)->X(S==s3F);
+(S==sx&&A==aC)->X(S==s8||S==s9||S==sI||S==sJ||S==sS||S==sT);
+(S==sy&&A==aC)->X(S==sJ||S==sK||S==sT||S==sU||S==sd||S==se);
+(S==s13&&A==aC)->X(S==s3F);
+(S==s14&&A==aC)->X(S==s3F);
+(S==s15&&A==aC)->X(S==s6||S==s7||S==sG||S==sH||S==sQ||S==sR);
+(S==s16&&A==aC)->X(S==sH||S==sI||S==sR||S==sS);
+(S==s17&&A==aC)->X(S==sI||S==sJ||S==sS||S==sT||S==sc||S==sd);
+(S==s18&&A==aC)->X(S==sT||S==sU||S==sd||S==se||S==sn||S==so);
+(S==s1D&&A==aC)->X(S==s3F);
+(S==s1E&&A==aC)->X(S==s5||S==s6||S==sF||S==sG||S==sP||S==sQ);
+(S==s1F&&A==aC)->X(S==sG||S==sH||S==sQ||S==sR||S==sa||S==sb);
+(S==s1G&&A==aC)->X(S==sR||S==sS||S==sb||S==sc);
+(S==s1H&&A==aC)->X(S==sS||S==sT||S==sc||S==sd||S==sm||S==sn);
+(S==s1I&&A==aC)->X(S==sd||S==se||S==sn||S==so||S==sx||S==sy);
+(S==s1N&&A==aC)->X(S==s4||S==s5||S==sE||S==sF||S==sO||S==sP);
+(S==s1O&&A==aC)->X(S==sF||S==sG||S==sP||S==sQ||S==sZ||S==sa);
+(S==s1P&&A==aC)->X(S==sQ||S==sR||S==sa||S==sb||S==sk||S==sl);
+(S==s1Q&&A==aC)->X(S==sb||S==sc||S==sl||S==sm);
+(S==s1R&&A==aC)->X(S==sc||S==sd||S==sm||S==sn||S==sw||S==sx);
+(S==s1S&&A==aC)->X(S==sn||S==so||S==sx||S==sy||S==s17||S==s18);
+(S==s1X&&A==aC)->X(S==sE||S==sF||S==sO||S==sP||S==sY||S==sZ);
+(S==s1Y&&A==aC)->X(S==sP||S==sQ||S==sZ||S==sa||S==sj||S==sk);
+(S==s1Z&&A==aC)->X(S==sa||S==sb||S==sk||S==sl||S==su||S==sv);
+(S==s1a&&A==aC)->X(S==sl||S==sm||S==sv||S==sw);
+(S==s1b&&A==aC)->X(S==sm||S==sn||S==sw||S==sx||S==s16||S==s17);
+(S==s1c&&A==aC)->X(S==sx||S==sy||S==s17||S==s18||S==s1H||S==s1I);
+(S==s1h&&A==aC)->X(S==sO||S==sP||S==sY||S==sZ||S==si||S==sj);
+(S==s1i&&A==aC)->X(S==sZ||S==sa||S==sj||S==sk||S==st||S==su);
+(S==s1j&&A==aC)->X(S==sk||S==sl||S==su||S==sv||S==s14||S==s15);
+(S==s1k&&A==aC)->X(S==sv||S==sw||S==s15||S==s16);
+(S==s1l&&A==aC)->X(S==sw||S==sx||S==s16||S==s17||S==s1G||S==s1H);
+(S==s1m&&A==aC)->X(S==s17||S==s18||S==s1H||S==s1I||S==s1R||S==s1S);
+(S==s1r&&A==aC)->X(S==sY||S==sZ||S==si||S==sj||S==ss||S==st);
+(S==s1s&&A==aC)->X(S==sj||S==sk||S==st||S==su||S==s13||S==s14);
+(S==s1t&&A==aC)->X(S==su||S==sv||S==s14||S==s15||S==s1E||S==s1F);
+(S==s1u&&A==aC)->X(S==s15||S==s16||S==s17||S==s1F||S==s1G||S==s1H||S==s1P||S==s1Q||S==s1R);
+(S==s1v&&A==aC)->X(S==s16||S==s17||S==s18||S==s1G||S==s1H||S==s1I||S==s1Q||S==s1R||S==s1S);
+(S==s1w&&A==aC)->X(S==s3F);
+(S==s21&&A==aC)->X(S==si||S==sj||S==ss||S==st||S==s12||S==s13);
+(S==s22&&A==aC)->X(S==st||S==su||S==sv||S==s13||S==s14||S==s15||S==s1D||S==s1E||S==s1F);
+(S==s23&&A==aC)->X(S==s14||S==s15||S==s16||S==s1E||S==s1F||S==s1G||S==s1O||S==s1P||S==s1Q);
+(S==s24&&A==aC)->X(S==s1F||S==s1G||S==s1H||S==s1P||S==s1Q||S==s1R||S==s1Z||S==s1a||S==s1b);
+(S==s25&&A==aC)->X(S==s1R||S==s1S||S==s1b||S==s1c);
+(S==s26&&A==aC)->X(S==s3F);
+(S==s2B&&A==aC)->X(S==ss||S==st||S==su||S==s12||S==s13||S==s14||S==s1C||S==s1D||S==s1E);
+(S==s2C&&A==aC)->X(S==s13||S==s14||S==s15||S==s1D||S==s1E||S==s1F||S==s1N||S==s1O||S==s1P);
+(S==s2D&&A==aC)->X(S==s1F||S==s1G||S==s1P||S==s1Q||S==s1Z||S==s1a);
+(S==s2E&&A==aC)->X(S==s1Q||S==s1R||S==s1a||S==s1b||S==s1k||S==s1l);
+(S==s2F&&A==aC)->X(S==s1b||S==s1c||S==s1l||S==s1m);
+(S==s2G&&A==aC)->X(S==s3F);
+(S==s2K&&A==aC)->X(S==s12||S==s13||S==s1C||S==s1D);
+(S==s2L&&A==aC)->X(S==s13||S==s14||S==s1D||S==s1E||S==s1N||S==s1O);
+(S==s2M&&A==aC)->X(S==s1E||S==s1F||S==s1O||S==s1P||S==s1Y||S==s1Z);
+(S==s2N&&A==aC)->X(S==s1P||S==s1Q||S==s1Z||S==s1a||S==s1j||S==s1k);
+(S==s2O&&A==aC)->X(S==s1a||S==s1b||S==s1k||S==s1l||S==s1u||S==s1v);
+(S==s2P&&A==aC)->X(S==s1l||S==s1m||S==s1v||S==s1w);
+(S==s2Q&&A==aC)->X(S==s3F);
+(S==s2U&&A==aC)->X(S==s1C||S==s1D||S==s1M||S==s1N);
+(S==s2V&&A==aC)->X(S==s1D||S==s1E||S==s1N||S==s1O||S==s1X||S==s1Y);
+(S==s2W&&A==aC)->X(S==s1O||S==s1P||S==s1Y||S==s1Z||S==s1i||S==s1j);
+(S==s2X&&A==aC)->X(S==s1Z||S==s1a||S==s1j||S==s1k||S==s1t||S==s1u);
+(S==s2Y&&A==aC)->X(S==s1k||S==s1l||S==s1u||S==s1v||S==s24||S==s25);
+(S==s2Z&&A==aC)->X(S==s1v||S==s1w||S==s25||S==s26);
+(S==s2a&&A==aC)->X(S==s3F);
+(S==s2e&&A==aC)->X(S==s1M||S==s1N||S==s1W||S==s1X);
+(S==s2f&&A==aC)->X(S==s1N||S==s1O||S==s1X||S==s1Y||S==s1h||S==s1i);
+(S==s2g&&A==aC)->X(S==s1Y||S==s1Z||S==s1i||S==s1j||S==s1s||S==s1t);
+(S==s2h&&A==aC)->X(S==s1j||S==s1k||S==s1t||S==s1u||S==s23||S==s24);
+(S==s2i&&A==aC)->X(S==s1u||S==s1v||S==s24||S==s25||S==s2E||S==s2F);
+(S==s2j&&A==aC)->X(S==s25||S==s26||S==s2F||S==s2G);
+(S==s2k&&A==aC)->X(S==s3F);
+(S==s2o&&A==aC)->X(S==s1W||S==s1X||S==s1g||S==s1h);
+(S==s2p&&A==aC)->X(S==s1X||S==s1Y||S==s1h||S==s1i||S==s1r||S==s1s);
+(S==s2q&&A==aC)->X(S==s1i||S==s1j||S==s1s||S==s1t||S==s22||S==s23);
+(S==s2r&&A==aC)->X(S==s1t||S==s1u||S==s23||S==s24||S==s2D||S==s2E);
+(S==s2s&&A==aC)->X(S==s24||S==s25||S==s2E||S==s2F||S==s2O||S==s2P);
+(S==s2t&&A==aC)->X(S==s2F||S==s2G||S==s2P||S==s2Q||S==s2Z||S==s2a);
+(S==s2u&&A==aC)->X(S==s3F);
+(S==s2y&&A==aC)->X(S==s1g||S==s1h||S==s1q||S==s1r||S==s20||S==s21);
+(S==s2z&&A==aC)->X(S==s1h||S==s1i||S==s1r||S==s1s||S==s21||S==s22);
+(S==s30&&A==aC)->X(S==s1s||S==s1t||S==s22||S==s23||S==s2C||S==s2D);
+(S==s31&&A==aC)->X(S==s23||S==s24||S==s2D||S==s2E||S==s2N||S==s2O);
+(S==s32&&A==aC)->X(S==s2E||S==s2F||S==s2O||S==s2P||S==s2Y||S==s2Z);
+(S==s33&&A==aC)->X(S==s2P||S==s2Q||S==s2Z||S==s2a||S==s2j||S==s2k);
+(S==s34&&A==aC)->X(S==s3F);
+(S==s38&&A==aC)->X(S==s1q||S==s1r||S==s20||S==s21||S==s2A||S==s2B);
+(S==s39&&A==aC)->X(S==s21||S==s22||S==s2B||S==s2C);
+(S==s3A&&A==aC)->X(S==s22||S==s23||S==s2C||S==s2D||S==s2M||S==s2N);
+(S==s3B&&A==aC)->X(S==s2D||S==s2E||S==s2N||S==s2O||S==s2X||S==s2Y);
+(S==s3C&&A==aC)->X(S==s2O||S==s2P||S==s2Y||S==s2Z||S==s2i||S==s2j);
+(S==s3D&&A==aC)->X(S==s2Z||S==s2a||S==s2j||S==s2k||S==s2t||S==s2u);
+(S==s3E&&A==aC)->X(S==s3F);
+(S==s8&&A==aD)->X(S==s3F);
+(S==s9&&A==aD)->X(S==s3F);
+(S==sA&&A==aD)->X(S==s3F);
+(S==sI&&A==aD)->X(S==s3F);
+(S==sJ&&A==aD)->X(S==s3F);
+(S==sK&&A==aD)->X(S==s3F);
+(S==sR&&A==aD)->X(S==s3F);
+(S==sS&&A==aD)->X(S==s3F);
+(S==sT&&A==aD)->X(S==s3F);
+(S==sU&&A==aD)->X(S==s3F);
+(S==sb&&A==aD)->X(S==s3F);
+(S==sc&&A==aD)->X(S==s3F);
+(S==sd&&A==aD)->X(S==s3F);
+(S==se&&A==aD)->X(S==s3F);
+(S==sl&&A==aD)->X(S==s3F);
+(S==sm&&A==aD)->X(S==s3F);
+(S==sn&&A==aD)->X(S==s3F);
+(S==so&&A==aD)->X(S==s3F);
+(S==sv&&A==aD)->X(S==s3F);
+(S==sw&&A==aD)->X(S==s3F);
+(S==sx&&A==aD)->X(S==s3F);
+(S==sy&&A==aD)->X(S==s3F);
+(S==s15&&A==aD)->X(S==s3F);
+(S==s16&&A==aD)->X(S==s3F);
+(S==s17&&A==aD)->X(S==s8||S==s9||S==sI||S==sJ||S==sS||S==sT);
+(S==s18&&A==aD)->X(S==sJ||S==sK||S==sT||S==sU);
+(S==s1F&&A==aD)->X(S==s3F);
+(S==s1G&&A==aD)->X(S==s7||S==s8||S==sH||S==sI||S==sR||S==sS);
+(S==s1H&&A==aD)->X(S==sI||S==sJ||S==sS||S==sT||S==sc||S==sd);
+(S==s1I&&A==aD)->X(S==sT||S==sU||S==sd||S==se);
+(S==s1P&&A==aD)->X(S==s6||S==s7||S==sG||S==sH||S==sQ||S==sR);
+(S==s1Q&&A==aD)->X(S==sH||S==sI||S==sR||S==sS||S==sb||S==sc);
+(S==s1R&&A==aD)->X(S==sS||S==sT||S==sc||S==sd||S==sm||S==sn);
+(S==s1S&&A==aD)->X(S==sd||S==se||S==sn||S==so);
+(S==s1Z&&A==aD)->X(S==sG||S==sH||S==sQ||S==sR||S==sa||S==sb);
+(S==s1a&&A==aD)->X(S==sR||S==sS||S==sb||S==sc||S==sl||S==sm);
+(S==s1b&&A==aD)->X(S==sc||S==sd||S==sm||S==sn||S==sw||S==sx);
+(S==s1c&&A==aD)->X(S==sn||S==so||S==sx||S==sy);
+(S==s1j&&A==aD)->X(S==sQ||S==sR||S==sa||S==sb||S==sk||S==sl);
+(S==s1k&&A==aD)->X(S==sb||S==sc||S==sl||S==sm||S==sv||S==sw);
+(S==s1l&&A==aD)->X(S==sm||S==sn||S==sw||S==sx||S==s16||S==s17);
+(S==s1m&&A==aD)->X(S==sx||S==sy||S==s17||S==s18);
+(S==s1t&&A==aD)->X(S==sa||S==sb||S==sk||S==sl||S==su||S==sv);
+(S==s1u&&A==aD)->X(S==sl||S==sm||S==sv||S==sw||S==s15||S==s16);
+(S==s1v&&A==aD)->X(S==sw||S==sx||S==s16||S==s17||S==s1G||S==s1H);
+(S==s1w&&A==aD)->X(S==s3F);
+(S==s23&&A==aD)->X(S==sk||S==sl||S==su||S==sv||S==s14||S==s15);
+(S==s24&&A==aD)->X(S==sv||S==sw||S==sx||S==s15||S==s16||S==s17||S==s1F||S==s1G||S==s1H);
+(S==s25&&A==aD)->X(S==s16||S==s17||S==s18||S==s1G||S==s1H||S==s1I||S==s1Q||S==s1R||S==s1S);
+(S==s26&&A==aD)->X(S==s3F);
+(S==s2D&&A==aD)->X(S==su||S==sv||S==sw||S==s14||S==s15||S==s16||S==s1E||S==s1F||S==s1G);
+(S==s2E&&A==aD)->X(S==s15||S==s16||S==s17||S==s1F||S==s1G||S==s1H||S==s1P||S==s1Q||S==s1R);
+(S==s2F&&A==aD)->X(S==s1H||S==s1I||S==s1R||S==s1S||S==s1b||S==s1c);
+(S==s2G&&A==aD)->X(S==s3F);
+(S==s2N&&A==aD)->X(S==s15||S==s16||S==s1F||S==s1G||S==s1P||S==s1Q);
+(S==s2O&&A==aD)->X(S==s1G||S==s1H||S==s1Q||S==s1R||S==s1a||S==s1b);
+(S==s2P&&A==aD)->X(S==s1R||S==s1S||S==s1b||S==s1c||S==s1l||S==s1m);
+(S==s2Q&&A==aD)->X(S==s3F);
+(S==s2X&&A==aD)->X(S==s1F||S==s1G||S==s1P||S==s1Q||S==s1Z||S==s1a);
+(S==s2Y&&A==aD)->X(S==s1Q||S==s1R||S==s1a||S==s1b||S==s1k||S==s1l);
+(S==s2Z&&A==aD)->X(S==s1b||S==s1c||S==s1l||S==s1m||S==s1v||S==s1w);
+(S==s2a&&A==aD)->X(S==s3F);
+(S==s2h&&A==aD)->X(S==s1P||S==s1Q||S==s1Z||S==s1a||S==s1j||S==s1k);
+(S==s2i&&A==aD)->X(S==s1a||S==s1b||S==s1k||S==s1l||S==s1u||S==s1v);
+(S==s2j&&A==aD)->X(S==s1l||S==s1m||S==s1v||S==s1w||S==s25||S==s26);
+(S==s2k&&A==aD)->X(S==s3F);
+(S==s2r&&A==aD)->X(S==s1Z||S==s1a||S==s1j||S==s1k||S==s1t||S==s1u);
+(S==s2s&&A==aD)->X(S==s1k||S==s1l||S==s1u||S==s1v||S==s24||S==s25);
+(S==s2t&&A==aD)->X(S==s1v||S==s1w||S==s25||S==s26||S==s2F||S==s2G);
+(S==s2u&&A==aD)->X(S==s3F);
+(S==s31&&A==aD)->X(S==s1j||S==s1k||S==s1t||S==s1u||S==s23||S==s24);
+(S==s32&&A==aD)->X(S==s1u||S==s1v||S==s24||S==s25||S==s2E||S==s2F);
+(S==s33&&A==aD)->X(S==s25||S==s26||S==s2F||S==s2G||S==s2P||S==s2Q);
+(S==s34&&A==aD)->X(S==s3F);
+(S==s3B&&A==aD)->X(S==s23||S==s24||S==s2D||S==s2E);
+(S==s3C&&A==aD)->X(S==s24||S==s25||S==s2E||S==s2F||S==s2O||S==s2P);
+(S==s3D&&A==aD)->X(S==s2F||S==s2G||S==s2P||S==s2Q||S==s2Z||S==s2a);
+(S==s3E&&A==aD)->X(S==s3F);
+(S==sA&&A==aE)->X(S==s3F);
+(S==sK&&A==aE)->X(S==s3F);
+(S==sT&&A==aE)->X(S==s3F);
+(S==sU&&A==aE)->X(S==s3F);
+(S==sd&&A==aE)->X(S==s3F);
+(S==se&&A==aE)->X(S==s3F);
+(S==sn&&A==aE)->X(S==s3F);
+(S==so&&A==aE)->X(S==s3F);
+(S==sx&&A==aE)->X(S==s3F);
+(S==sy&&A==aE)->X(S==s3F);
+(S==s17&&A==aE)->X(S==s3F);
+(S==s18&&A==aE)->X(S==s3F);
+(S==s1H&&A==aE)->X(S==s3F);
+(S==s1I&&A==aE)->X(S==s9||S==sA||S==sJ||S==sK||S==sT||S==sU);
+(S==s1R&&A==aE)->X(S==s8||S==s9||S==sI||S==sJ||S==sS||S==sT);
+(S==s1S&&A==aE)->X(S==sJ||S==sK||S==sT||S==sU||S==sd||S==se);
+(S==s1b&&A==aE)->X(S==sI||S==sJ||S==sS||S==sT||S==sc||S==sd);
+(S==s1c&&A==aE)->X(S==sT||S==sU||S==sd||S==se||S==sn||S==so);
+(S==s1l&&A==aE)->X(S==sS||S==sT||S==sc||S==sd||S==sm||S==sn);
+(S==s1m&&A==aE)->X(S==sd||S==se||S==sn||S==so||S==sx||S==sy);
+(S==s1v&&A==aE)->X(S==sc||S==sd||S==sm||S==sn||S==sw||S==sx);
+(S==s1w&&A==aE)->X(S==sn||S==so||S==sx||S==sy||S==s17||S==s18);
+(S==s25&&A==aE)->X(S==sm||S==sn||S==sw||S==sx||S==s16||S==s17);
+(S==s26&&A==aE)->X(S==s3F);
+(S==s2F&&A==aE)->X(S==sw||S==sx||S==sy||S==s16||S==s17||S==s18||S==s1G||S==s1H||S==s1I);
+(S==s2G&&A==aE)->X(S==s3F);
+(S==s2O&&A==aE)->X(S==s16||S==s17||S==s1G||S==s1H);
+(S==s2P&&A==aE)->X(S==s17||S==s18||S==s1H||S==s1I||S==s1R||S==s1S);
+(S==s2Q&&A==aE)->X(S==s3F);
+(S==s2Y&&A==aE)->X(S==s1G||S==s1H||S==s1Q||S==s1R);
+(S==s2Z&&A==aE)->X(S==s1H||S==s1I||S==s1R||S==s1S||S==s1b||S==s1c);
+(S==s2a&&A==aE)->X(S==s3F);
+(S==s2i&&A==aE)->X(S==s1Q||S==s1R||S==s1a||S==s1b);
+(S==s2j&&A==aE)->X(S==s1R||S==s1S||S==s1b||S==s1c||S==s1l||S==s1m);
+(S==s2k&&A==aE)->X(S==s3F);
+(S==s2s&&A==aE)->X(S==s1a||S==s1b||S==s1k||S==s1l);
+(S==s2t&&A==aE)->X(S==s1b||S==s1c||S==s1l||S==s1m||S==s1v||S==s1w);
+(S==s2u&&A==aE)->X(S==s3F);
+(S==s32&&A==aE)->X(S==s1k||S==s1l||S==s1u||S==s1v||S==s24||S==s25);
+(S==s33&&A==aE)->X(S==s1l||S==s1m||S==s1v||S==s1w||S==s25||S==s26);
+(S==s34&&A==aE)->X(S==s3F);
+(S==s3C&&A==aE)->X(S==s1u||S==s1v||S==s24||S==s25||S==s2E||S==s2F);
+(S==s3D&&A==aE)->X(S==s25||S==s26||S==s2F||S==s2G);
+(S==s3E&&A==aE)->X(S==s3F);
+}
+ASSUME {
+G F (!(S==s1||S==s2||S==sB||S==sC||S==sL||S==sM||S==sV||S==sW||S==sf||S==sg||S==sp||S==sq||S==sz||S==s10||S==s19||S==s1A||S==s1J||S==s1K||S==s1T||S==s1U||S==s1d||S==s1e||S==s1n||S==s1o||S==s1x||S==s1y||S==s27||S==s28||S==s2H||S==s2I||S==s2R||S==s2S||S==s2b||S==s2c||S==s2l||S==s2m||S==s2v||S==s35)|| !(A==a2));
+G F (!(S==s1||S==s2||S==s3||S==s4||S==s5||S==sB||S==sC||S==sD||S==sE||S==sF||S==sL||S==sM||S==sN||S==sO||S==sP||S==sV||S==sW||S==sX||S==sY||S==sZ||S==sf||S==sg||S==sh||S==si||S==sj||S==sp||S==sq||S==sr||S==ss||S==st||S==sz||S==s10||S==s11||S==s12||S==s19||S==s1A||S==s1B||S==s1C||S==s1J||S==s1K||S==s1L||S==s1M||S==s1T||S==s1U||S==s1V||S==s1W||S==s1d||S==s1e||S==s1f||S==s1g||S==s1n||S==s1o||S==s1p||S==s1q||S==s1x||S==s1y||S==s1z||S==s20||S==s27||S==s28||S==s29||S==s2A||S==s2H||S==s2I||S==s2J||S==s2K||S==s2R||S==s2S||S==s2T||S==s2U||S==s2b||S==s2c||S==s2d||S==s2e||S==s2l||S==s2m||S==s2n||S==s2o||S==s2v||S==s2w||S==s2x||S==s35||S==s36||S==s37)|| !(A==a3));
+G F (!(S==s1||S==s2||S==s3||S==s4||S==s5||S==s6||S==sB||S==sC||S==sD||S==sE||S==sF||S==sG||S==sL||S==sM||S==sN||S==sO||S==sP||S==sQ||S==sV||S==sW||S==sX||S==sY||S==sZ||S==sa||S==sf||S==sg||S==sh||S==si||S==sj||S==sk||S==sp||S==sq||S==sr||S==ss||S==st||S==su||S==sz||S==s10||S==s11||S==s12||S==s13||S==s14||S==s19||S==s1A||S==s1B||S==s1C||S==s1D||S==s1E||S==s1J||S==s1K||S==s1L||S==s1M||S==s1N||S==s1O||S==s1T||S==s1U||S==s1V||S==s1W||S==s1X||S==s1Y||S==s1d||S==s1e||S==s1f||S==s1g||S==s1h||S==s1i||S==s1n||S==s1o||S==s1p||S==s1q||S==s1r||S==s1s||S==s1x||S==s1y||S==s1z||S==s20||S==s21||S==s22||S==s27||S==s28||S==s29||S==s2A||S==s2B||S==s2C||S==s2H||S==s2I||S==s2J||S==s2K||S==s2L||S==s2M||S==s2R||S==s2S||S==s2T||S==s2U||S==s2V||S==s2W||S==s2b||S==s2c||S==s2d||S==s2e||S==s2f||S==s2g||S==s2l||S==s2m||S==s2n||S==s2o||S==s2p||S==s2q||S==s2v||S==s2w||S==s2x||S==s2y||S==s2z||S==s35||S==s36||S==s37||S==s38||S==s39)|| !(A==a4));
+G F (!(S==s1||S==s2||S==s3||S==s4||S==s5||S==s6||S==s7||S==s8||S==sB||S==sC||S==sD||S==sE||S==sF||S==sG||S==sH||S==sI||S==sL||S==sM||S==sN||S==sO||S==sP||S==sQ||S==sR||S==sS||S==sV||S==sW||S==sX||S==sY||S==sZ||S==sa||S==sb||S==sc||S==sf||S==sg||S==sh||S==si||S==sj||S==sk||S==sl||S==sm||S==sp||S==sq||S==sr||S==ss||S==st||S==su||S==sv||S==sw||S==sz||S==s10||S==s11||S==s12||S==s13||S==s14||S==s15||S==s16||S==s19||S==s1A||S==s1B||S==s1C||S==s1D||S==s1E||S==s1F||S==s1G||S==s1J||S==s1K||S==s1L||S==s1M||S==s1N||S==s1O||S==s1P||S==s1Q||S==s1T||S==s1U||S==s1V||S==s1W||S==s1X||S==s1Y||S==s1Z||S==s1a||S==s1d||S==s1e||S==s1f||S==s1g||S==s1h||S==s1i||S==s1j||S==s1k||S==s1n||S==s1o||S==s1p||S==s1q||S==s1r||S==s1s||S==s1t||S==s1u||S==s1x||S==s1y||S==s1z||S==s20||S==s21||S==s22||S==s23||S==s24||S==s27||S==s28||S==s29||S==s2A||S==s2B||S==s2C||S==s2D||S==s2E||S==s2H||S==s2I||S==s2J||S==s2K||S==s2L||S==s2M||S==s2N||S==s2O||S==s2R||S==s2S||S==s2T||S==s2U||S==s2V||S==s2W||S==s2X||S==s2Y||S==s2b||S==s2c||S==s2d||S==s2e||S==s2f||S==s2g||S==s2h||S==s2i||S==s2l||S==s2m||S==s2n||S==s2o||S==s2p||S==s2q||S==s2r||S==s2s||S==s2v||S==s2w||S==s2x||S==s2y||S==s2z||S==s30||S==s31||S==s35||S==s36||S==s37||S==s38||S==s39||S==s3A||S==s3B)|| !(A==a5));
+G F (!(S==s1||S==s2||S==s3||S==s4||S==s5||S==s6||S==s7||S==s8||S==s9||S==sA||S==sB||S==sC||S==sD||S==sE||S==sF||S==sG||S==sH||S==sI||S==sJ||S==sK||S==sL||S==sM||S==sN||S==sO||S==sP||S==sQ||S==sR||S==sS||S==sT||S==sU||S==sV||S==sW||S==sX||S==sY||S==sZ||S==sa||S==sb||S==sc||S==sd||S==se||S==sf||S==sg||S==sh||S==si||S==sj||S==sk||S==sl||S==sm||S==sn||S==so||S==sp||S==sq||S==sr||S==ss||S==st||S==su||S==sv||S==sw||S==sx||S==sy||S==sz||S==s10||S==s11||S==s12||S==s13||S==s14||S==s15||S==s16||S==s17||S==s18||S==s19||S==s1A||S==s1B||S==s1C||S==s1D||S==s1E||S==s1F||S==s1G||S==s1H||S==s1I||S==s1J||S==s1K||S==s1L||S==s1M||S==s1N||S==s1O||S==s1P||S==s1Q||S==s1R||S==s1S||S==s1V||S==s1W||S==s1X||S==s1Y||S==s1Z||S==s1a||S==s1b||S==s1c||S==s1f||S==s1g||S==s1h||S==s1i||S==s1j||S==s1k||S==s1l||S==s1m||S==s1n||S==s1o||S==s1p||S==s1q||S==s1r||S==s1s||S==s1t||S==s1u||S==s1v||S==s1w||S==s1x||S==s1y||S==s1z||S==s20||S==s21||S==s22||S==s23||S==s24||S==s25||S==s26||S==s27||S==s28||S==s29||S==s2A||S==s2B||S==s2C||S==s2D||S==s2E||S==s2F||S==s2G||S==s2H||S==s2I||S==s2J||S==s2K||S==s2L||S==s2M||S==s2N||S==s2O||S==s2P||S==s2Q||S==s2R||S==s2S||S==s2T||S==s2U||S==s2V||S==s2W||S==s2X||S==s2Y||S==s2Z||S==s2a||S==s2b||S==s2c||S==s2d||S==s2e||S==s2f||S==s2g||S==s2h||S==s2i||S==s2j||S==s2k||S==s2l||S==s2m||S==s2n||S==s2o||S==s2p||S==s2q||S==s2r||S==s2s||S==s2t||S==s2u||S==s2v||S==s2w||S==s2x||S==s2y||S==s2z||S==s30||S==s31||S==s32||S==s33||S==s35||S==s36||S==s37||S==s38||S==s39||S==s3A||S==s3B||S==s3C||S==s3D)|| !(A==a6));
+G F (!(S==s1||S==s2||S==s3||S==s4||S==s5||S==s6||S==s7||S==s8||S==s9||S==sA||S==sB||S==sC||S==sD||S==sE||S==sF||S==sG||S==sH||S==sI||S==sJ||S==sK||S==sL||S==sM||S==sN||S==sO||S==sP||S==sQ||S==sR||S==sS||S==sT||S==sU||S==sV||S==sW||S==sX||S==sY||S==sZ||S==sa||S==sb||S==sc||S==sd||S==se||S==sf||S==sg||S==sh||S==si||S==sj||S==sk||S==sl||S==sm||S==sn||S==so||S==sp||S==sq||S==sr||S==ss||S==st||S==su||S==sv||S==sw||S==sx||S==sy||S==sz||S==s10||S==s11||S==s12||S==s13||S==s14||S==s15||S==s16||S==s17||S==s18||S==s19||S==s1A||S==s1B||S==s1C||S==s1D||S==s1E||S==s1F||S==s1G||S==s1H||S==s1I||S==s1J||S==s1K||S==s1L||S==s1M||S==s1N||S==s1O||S==s1P||S==s1Q||S==s1R||S==s1S||S==s1T||S==s1U||S==s1X||S==s1Y||S==s1Z||S==s1a||S==s1b||S==s1c||S==s1d||S==s1e||S==s1h||S==s1i||S==s1j||S==s1k||S==s1l||S==s1m||S==s1n||S==s1o||S==s1p||S==s1q||S==s1r||S==s1s||S==s1t||S==s1u||S==s1v||S==s1w||S==s1x||S==s1y||S==s1z||S==s20||S==s21||S==s22||S==s23||S==s24||S==s25||S==s26||S==s27||S==s28||S==s29||S==s2A||S==s2B||S==s2C||S==s2D||S==s2E||S==s2F||S==s2G||S==s2H||S==s2I||S==s2J||S==s2K||S==s2L||S==s2M||S==s2N||S==s2O||S==s2P||S==s2Q||S==s2R||S==s2S||S==s2T||S==s2U||S==s2V||S==s2W||S==s2X||S==s2Y||S==s2Z||S==s2a||S==s2b||S==s2c||S==s2d||S==s2e||S==s2f||S==s2g||S==s2h||S==s2i||S==s2j||S==s2k||S==s2l||S==s2m||S==s2n||S==s2o||S==s2p||S==s2q||S==s2r||S==s2s||S==s2t||S==s2u||S==s2v||S==s2w||S==s2x||S==s2y||S==s2z||S==s30||S==s31||S==s32||S==s33||S==s34||S==s35||S==s36||S==s37||S==s38||S==s39||S==s3A||S==s3B||S==s3C||S==s3D||S==s3E)|| !(A==a7));
+G F (!(S==s1||S==s2||S==s3||S==s4||S==s5||S==s6||S==s7||S==s8||S==s9||S==sA||S==sB||S==sC||S==sD||S==sE||S==sF||S==sG||S==sH||S==sI||S==sJ||S==sK||S==sL||S==sM||S==sN||S==sO||S==sP||S==sQ||S==sR||S==sS||S==sT||S==sU||S==sV||S==sW||S==sX||S==sY||S==sZ||S==sa||S==sb||S==sc||S==sd||S==se||S==sf||S==sg||S==sh||S==si||S==sj||S==sk||S==sl||S==sm||S==sn||S==so||S==sp||S==sq||S==sr||S==ss||S==st||S==su||S==sv||S==sw||S==sx||S==sy||S==sz||S==s10||S==s11||S==s12||S==s13||S==s14||S==s15||S==s16||S==s17||S==s18||S==s19||S==s1A||S==s1B||S==s1C||S==s1D||S==s1E||S==s1F||S==s1G||S==s1H||S==s1I||S==s1J||S==s1K||S==s1L||S==s1M||S==s1N||S==s1O||S==s1P||S==s1Q||S==s1R||S==s1S||S==s1T||S==s1U||S==s1V||S==s1W||S==s1Z||S==s1a||S==s1b||S==s1c||S==s1d||S==s1e||S==s1f||S==s1g||S==s1j||S==s1k||S==s1l||S==s1m||S==s1n||S==s1o||S==s1p||S==s1q||S==s1r||S==s1s||S==s1t||S==s1u||S==s1v||S==s1w||S==s1x||S==s1y||S==s1z||S==s20||S==s21||S==s22||S==s23||S==s24||S==s25||S==s26||S==s27||S==s28||S==s29||S==s2A||S==s2B||S==s2C||S==s2D||S==s2E||S==s2F||S==s2G||S==s2H||S==s2I||S==s2J||S==s2K||S==s2L||S==s2M||S==s2N||S==s2O||S==s2P||S==s2Q||S==s2R||S==s2S||S==s2T||S==s2U||S==s2V||S==s2W||S==s2X||S==s2Y||S==s2Z||S==s2a||S==s2b||S==s2c||S==s2d||S==s2e||S==s2f||S==s2g||S==s2h||S==s2i||S==s2j||S==s2k||S==s2l||S==s2m||S==s2n||S==s2o||S==s2p||S==s2q||S==s2r||S==s2s||S==s2t||S==s2u||S==s2v||S==s2w||S==s2x||S==s2y||S==s2z||S==s30||S==s31||S==s32||S==s33||S==s34||S==s35||S==s36||S==s37||S==s38||S==s39||S==s3A||S==s3B||S==s3C||S==s3D||S==s3E)|| !(A==a8));
+G F (!(S==s1||S==s2||S==s3||S==s4||S==s5||S==s6||S==s7||S==s8||S==s9||S==sA||S==sB||S==sC||S==sD||S==sE||S==sF||S==sG||S==sH||S==sI||S==sJ||S==sK||S==sL||S==sM||S==sN||S==sO||S==sP||S==sQ||S==sR||S==sS||S==sT||S==sU||S==sV||S==sW||S==sX||S==sY||S==sZ||S==sa||S==sb||S==sc||S==sd||S==se||S==sf||S==sg||S==sh||S==si||S==sj||S==sk||S==sl||S==sm||S==sn||S==so||S==sp||S==sq||S==sr||S==ss||S==st||S==su||S==sv||S==sw||S==sx||S==sy||S==sz||S==s10||S==s11||S==s12||S==s13||S==s14||S==s15||S==s16||S==s17||S==s18||S==s19||S==s1A||S==s1B||S==s1C||S==s1D||S==s1E||S==s1F||S==s1G||S==s1H||S==s1I||S==s1J||S==s1K||S==s1L||S==s1M||S==s1N||S==s1O||S==s1P||S==s1Q||S==s1R||S==s1S||S==s1T||S==s1U||S==s1V||S==s1W||S==s1X||S==s1Y||S==s1b||S==s1c||S==s1d||S==s1e||S==s1f||S==s1g||S==s1h||S==s1i||S==s1l||S==s1m||S==s1n||S==s1o||S==s1p||S==s1q||S==s1r||S==s1s||S==s1t||S==s1u||S==s1v||S==s1w||S==s1x||S==s1y||S==s1z||S==s20||S==s21||S==s22||S==s23||S==s24||S==s25||S==s26||S==s27||S==s28||S==s29||S==s2A||S==s2B||S==s2C||S==s2D||S==s2E||S==s2F||S==s2G||S==s2H||S==s2I||S==s2J||S==s2K||S==s2L||S==s2M||S==s2N||S==s2O||S==s2P||S==s2Q||S==s2R||S==s2S||S==s2T||S==s2U||S==s2V||S==s2W||S==s2X||S==s2Y||S==s2Z||S==s2a||S==s2b||S==s2c||S==s2d||S==s2e||S==s2f||S==s2g||S==s2h||S==s2i||S==s2j||S==s2k||S==s2l||S==s2m||S==s2n||S==s2o||S==s2p||S==s2q||S==s2r||S==s2s||S==s2t||S==s2u||S==s2v||S==s2w||S==s2x||S==s2y||S==s2z||S==s30||S==s31||S==s32||S==s33||S==s34||S==s35||S==s36||S==s37||S==s38||S==s39||S==s3A||S==s3B||S==s3C||S==s3D||S==s3E)|| !(A==a9));
+G F (!(S==s2||S==s3||S==s4||S==s5||S==s6||S==s7||S==s8||S==s9||S==sA||S==sC||S==sD||S==sE||S==sF||S==sG||S==sH||S==sI||S==sJ||S==sK||S==sL||S==sM||S==sN||S==sO||S==sP||S==sQ||S==sR||S==sS||S==sT||S==sU||S==sV||S==sW||S==sX||S==sY||S==sZ||S==sa||S==sb||S==sc||S==sd||S==se||S==sf||S==sg||S==sh||S==si||S==sj||S==sk||S==sl||S==sm||S==sn||S==so||S==sp||S==sq||S==sr||S==ss||S==st||S==su||S==sv||S==sw||S==sx||S==sy||S==sz||S==s10||S==s11||S==s12||S==s13||S==s14||S==s15||S==s16||S==s17||S==s18||S==s19||S==s1A||S==s1B||S==s1C||S==s1D||S==s1E||S==s1F||S==s1G||S==s1H||S==s1I||S==s1J||S==s1K||S==s1L||S==s1M||S==s1N||S==s1O||S==s1P||S==s1Q||S==s1R||S==s1S||S==s1T||S==s1U||S==s1V||S==s1W||S==s1X||S==s1Y||S==s1Z||S==s1a||S==s1d||S==s1e||S==s1f||S==s1g||S==s1h||S==s1i||S==s1j||S==s1k||S==s1n||S==s1o||S==s1p||S==s1q||S==s1r||S==s1s||S==s1t||S==s1u||S==s1v||S==s1w||S==s1x||S==s1y||S==s1z||S==s20||S==s21||S==s22||S==s23||S==s24||S==s25||S==s26||S==s27||S==s28||S==s29||S==s2A||S==s2B||S==s2C||S==s2D||S==s2E||S==s2F||S==s2G||S==s2H||S==s2I||S==s2J||S==s2K||S==s2L||S==s2M||S==s2N||S==s2O||S==s2P||S==s2Q||S==s2R||S==s2S||S==s2T||S==s2U||S==s2V||S==s2W||S==s2X||S==s2Y||S==s2Z||S==s2a||S==s2b||S==s2c||S==s2d||S==s2e||S==s2f||S==s2g||S==s2h||S==s2i||S==s2j||S==s2k||S==s2l||S==s2m||S==s2n||S==s2o||S==s2p||S==s2q||S==s2r||S==s2s||S==s2t||S==s2u||S==s2v||S==s2w||S==s2x||S==s2y||S==s2z||S==s30||S==s31||S==s32||S==s33||S==s34||S==s35||S==s36||S==s37||S==s38||S==s39||S==s3A||S==s3B||S==s3C||S==s3D||S==s3E)|| !(A==aA));
+G F (!(S==s4||S==s5||S==s6||S==s7||S==s8||S==s9||S==sA||S==sE||S==sF||S==sG||S==sH||S==sI||S==sJ||S==sK||S==sN||S==sO||S==sP||S==sQ||S==sR||S==sS||S==sT||S==sU||S==sX||S==sY||S==sZ||S==sa||S==sb||S==sc||S==sd||S==se||S==sh||S==si||S==sj||S==sk||S==sl||S==sm||S==sn||S==so||S==sr||S==ss||S==st||S==su||S==sv||S==sw||S==sx||S==sy||S==s11||S==s12||S==s13||S==s14||S==s15||S==s16||S==s17||S==s18||S==s1B||S==s1C||S==s1D||S==s1E||S==s1F||S==s1G||S==s1H||S==s1I||S==s1L||S==s1M||S==s1N||S==s1O||S==s1P||S==s1Q||S==s1R||S==s1S||S==s1V||S==s1W||S==s1X||S==s1Y||S==s1Z||S==s1a||S==s1b||S==s1c||S==s1f||S==s1g||S==s1h||S==s1i||S==s1j||S==s1k||S==s1l||S==s1m||S==s1p||S==s1q||S==s1r||S==s1s||S==s1t||S==s1u||S==s1v||S==s1w||S==s1z||S==s20||S==s21||S==s22||S==s23||S==s24||S==s25||S==s26||S==s29||S==s2A||S==s2B||S==s2C||S==s2D||S==s2E||S==s2F||S==s2G||S==s2I||S==s2J||S==s2K||S==s2L||S==s2M||S==s2N||S==s2O||S==s2P||S==s2Q||S==s2S||S==s2T||S==s2U||S==s2V||S==s2W||S==s2X||S==s2Y||S==s2Z||S==s2a||S==s2c||S==s2d||S==s2e||S==s2f||S==s2g||S==s2h||S==s2i||S==s2j||S==s2k||S==s2m||S==s2n||S==s2o||S==s2p||S==s2q||S==s2r||S==s2s||S==s2t||S==s2u||S==s2w||S==s2x||S==s2y||S==s2z||S==s30||S==s31||S==s32||S==s33||S==s34||S==s36||S==s37||S==s38||S==s39||S==s3A||S==s3B||S==s3C||S==s3D||S==s3E)|| !(A==aB));
+G F (!(S==s6||S==s7||S==s8||S==s9||S==sA||S==sG||S==sH||S==sI||S==sJ||S==sK||S==sP||S==sQ||S==sR||S==sS||S==sT||S==sU||S==sZ||S==sa||S==sb||S==sc||S==sd||S==se||S==sj||S==sk||S==sl||S==sm||S==sn||S==so||S==st||S==su||S==sv||S==sw||S==sx||S==sy||S==s13||S==s14||S==s15||S==s16||S==s17||S==s18||S==s1D||S==s1E||S==s1F||S==s1G||S==s1H||S==s1I||S==s1N||S==s1O||S==s1P||S==s1Q||S==s1R||S==s1S||S==s1X||S==s1Y||S==s1Z||S==s1a||S==s1b||S==s1c||S==s1h||S==s1i||S==s1j||S==s1k||S==s1l||S==s1m||S==s1r||S==s1s||S==s1t||S==s1u||S==s1v||S==s1w||S==s21||S==s22||S==s23||S==s24||S==s25||S==s26||S==s2B||S==s2C||S==s2D||S==s2E||S==s2F||S==s2G||S==s2K||S==s2L||S==s2M||S==s2N||S==s2O||S==s2P||S==s2Q||S==s2U||S==s2V||S==s2W||S==s2X||S==s2Y||S==s2Z||S==s2a||S==s2e||S==s2f||S==s2g||S==s2h||S==s2i||S==s2j||S==s2k||S==s2o||S==s2p||S==s2q||S==s2r||S==s2s||S==s2t||S==s2u||S==s2y||S==s2z||S==s30||S==s31||S==s32||S==s33||S==s34||S==s38||S==s39||S==s3A||S==s3B||S==s3C||S==s3D||S==s3E)|| !(A==aC));
+G F (!(S==s8||S==s9||S==sA||S==sI||S==sJ||S==sK||S==sR||S==sS||S==sT||S==sU||S==sb||S==sc||S==sd||S==se||S==sl||S==sm||S==sn||S==so||S==sv||S==sw||S==sx||S==sy||S==s15||S==s16||S==s17||S==s18||S==s1F||S==s1G||S==s1H||S==s1I||S==s1P||S==s1Q||S==s1R||S==s1S||S==s1Z||S==s1a||S==s1b||S==s1c||S==s1j||S==s1k||S==s1l||S==s1m||S==s1t||S==s1u||S==s1v||S==s1w||S==s23||S==s24||S==s25||S==s26||S==s2D||S==s2E||S==s2F||S==s2G||S==s2N||S==s2O||S==s2P||S==s2Q||S==s2X||S==s2Y||S==s2Z||S==s2a||S==s2h||S==s2i||S==s2j||S==s2k||S==s2r||S==s2s||S==s2t||S==s2u||S==s31||S==s32||S==s33||S==s34||S==s3B||S==s3C||S==s3D||S==s3E)|| !(A==aD));
+G F (!(S==sA||S==sK||S==sT||S==sU||S==sd||S==se||S==sn||S==so||S==sx||S==sy||S==s17||S==s18||S==s1H||S==s1I||S==s1R||S==s1S||S==s1b||S==s1c||S==s1l||S==s1m||S==s1v||S==s1w||S==s25||S==s26||S==s2F||S==s2G||S==s2O||S==s2P||S==s2Q||S==s2Y||S==s2Z||S==s2a||S==s2i||S==s2j||S==s2k||S==s2s||S==s2t||S==s2u||S==s32||S==s33||S==s34||S==s3C||S==s3D||S==s3E)|| !(A==aE));
+}
+ASSERT {
+S==s1-> !(A==a1||A==aA||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s2-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s3-> !(A==a1||A==a2||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s4-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s5-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s6-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s7-> !(A==a1||A==a2||A==a3||A==a4||A==aD||A==aE||A==aF);
+S==s8-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s9-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aE||A==aF);
+S==sA-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==sB-> !(A==a1||A==aA||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sC-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sD-> !(A==a1||A==a2||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sE-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==sF-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==sG-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==sH-> !(A==a1||A==a2||A==a3||A==a4||A==aD||A==aE||A==aF);
+S==sI-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==sJ-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aE||A==aF);
+S==sK-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==sL-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sM-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sN-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==sO-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==sP-> !(A==a1||A==a2||A==aD||A==aE||A==aF);
+S==sQ-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==sR-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==sS-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==sT-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==sU-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==sV-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sW-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sX-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==sY-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==sZ-> !(A==a1||A==a2||A==aD||A==aE||A==aF);
+S==sa-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==sb-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==sc-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==sd-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==se-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==sf-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sg-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sh-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==si-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==sj-> !(A==a1||A==a2||A==aD||A==aE||A==aF);
+S==sk-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==sl-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==sm-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==sn-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==so-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==sp-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sq-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==sr-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==ss-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==st-> !(A==a1||A==a2||A==aD||A==aE||A==aF);
+S==su-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==sv-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==sw-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==sx-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==sy-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==sz-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s10-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s11-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s12-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s13-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s14-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s15-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s16-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s17-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s18-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s19-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1A-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1B-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1C-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1D-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1E-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1F-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1G-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1H-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1I-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1J-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1K-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1L-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1M-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1N-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1O-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1P-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1Q-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1R-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1S-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1T-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1U-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1V-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1W-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1X-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1Y-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1Z-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1a-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1b-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1c-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1d-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1e-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1f-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1g-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1h-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1i-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1j-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1k-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1l-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1m-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1n-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1o-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1p-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1q-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s1r-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1s-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s1t-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1u-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s1v-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1w-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s1x-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1y-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s1z-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s20-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s21-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s22-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s23-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s24-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s25-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s26-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s27-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s28-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s29-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s2A-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s2B-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2C-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2D-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s2E-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s2F-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2G-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2H-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s2I-> !(A==a1||A==aC||A==aD||A==aE||A==aF);
+S==s2J-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s2K-> !(A==a1||A==a2||A==aD||A==aE||A==aF);
+S==s2L-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2M-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2N-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s2O-> !(A==a1||A==a2||A==a3||A==a4||A==aF);
+S==s2P-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2Q-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2R-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s2S-> !(A==a1||A==aC||A==aD||A==aE||A==aF);
+S==s2T-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s2U-> !(A==a1||A==a2||A==aD||A==aE||A==aF);
+S==s2V-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2W-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2X-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s2Y-> !(A==a1||A==a2||A==a3||A==a4||A==aF);
+S==s2Z-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2a-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2b-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s2c-> !(A==a1||A==aC||A==aD||A==aE||A==aF);
+S==s2d-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s2e-> !(A==a1||A==a2||A==aD||A==aE||A==aF);
+S==s2f-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2g-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2h-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s2i-> !(A==a1||A==a2||A==a3||A==a4||A==aF);
+S==s2j-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2k-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2l-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s2m-> !(A==a1||A==aC||A==aD||A==aE||A==aF);
+S==s2n-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s2o-> !(A==a1||A==a2||A==aD||A==aE||A==aF);
+S==s2p-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2q-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2r-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s2s-> !(A==a1||A==a2||A==a3||A==a4||A==aF);
+S==s2t-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2u-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s2v-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s2w-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s2x-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s2y-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s2z-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s30-> !(A==a1||A==a2||A==a3||A==a4||A==aD||A==aE||A==aF);
+S==s31-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s32-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s33-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s34-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==a6||A==aF);
+S==s35-> !(A==a1||A==aB||A==aC||A==aD||A==aE||A==aF);
+S==s36-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s37-> !(A==a1||A==a2||A==aC||A==aD||A==aE||A==aF);
+S==s38-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s39-> !(A==a1||A==a2||A==a3||A==aD||A==aE||A==aF);
+S==s3A-> !(A==a1||A==a2||A==a3||A==a4||A==aD||A==aE||A==aF);
+S==s3B-> !(A==a1||A==a2||A==a3||A==a4||A==aE||A==aF);
+S==s3C-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s3D-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==aF);
+S==s3E-> !(A==a1||A==a2||A==a3||A==a4||A==a5||A==a6||A==aF);
+}
+GUARANTEE {
+G F (S==sp||S==sq||S==sr||S==ss||S==st||S==su||S==sv||S==sw||S==sx||S==sy||S==sz||S==s10||S==s11||S==s12||S==s13||S==s14||S==s15||S==s16||S==s17||S==s18||S==s19||S==s1A||S==s1B||S==s1C||S==s1D||S==s1E||S==s1F||S==s1G||S==s1H||S==s1I||S==s1J||S==s1K||S==s1L||S==s1M||S==s1N||S==s1O||S==s1P||S==s1Q||S==s1R||S==s1S||S==s1T||S==s1U||S==s1V||S==s1W||S==s1X||S==s1Y||S==s1Z||S==s1a||S==s1b||S==s1c||S==s1d||S==s1e||S==s1f||S==s1g||S==s1h||S==s1i||S==s1j||S==s1k||S==s1l||S==s1m||S==s1n||S==s1o||S==s1p||S==s1q||S==s1r||S==s1s||S==s1t||S==s1u||S==s1v||S==s1w);
+G F (S==s1c||S==s1d||S==s1e||S==s1f||S==s1g||S==s1h||S==s1i||S==s1j||S==s1k||S==s1l||S==s1m||S==s1n||S==s1o||S==s1p||S==s1q||S==s1r||S==s1s||S==s1t||S==s1u||S==s1v||S==s1w||S==s1x||S==s1y||S==s1z||S==s20||S==s21||S==s22||S==s23||S==s24||S==s25||S==s26||S==s27||S==s28||S==s29||S==s2A||S==s2B||S==s2C||S==s2D||S==s2E||S==s2F||S==s2G||S==s2H||S==s2I||S==s2J||S==s2K||S==s2L||S==s2M||S==s2N||S==s2O||S==s2P||S==s2Q);
+}
+}

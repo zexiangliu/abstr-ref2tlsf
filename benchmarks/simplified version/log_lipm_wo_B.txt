@@ -1,0 +1,16 @@
+This file is to log the time used for syfco to convert lipm_wo_B.tlsf to 15 different format
+the rumtime for converting to full is 740 milliseconds
+the rumtime for converting to basic is 880 milliseconds
+the rumtime for converting to utf8 is 950 milliseconds
+the rumtime for converting to wring is 1050 milliseconds
+the rumtime for converting to lily is 1030 milliseconds
+the rumtime for converting to acacia is 1050 milliseconds
+the rumtime for converting to acacia-specs is 6660 milliseconds
+the rumtime for converting to ltlxba is 1530 milliseconds
+the rumtime for converting to promela is 950 milliseconds
+the rumtime for converting to unbeast is 7850 milliseconds
+the rumtime for converting to psl is 1000 milliseconds
+the rumtime for converting to smv is 1000 milliseconds
+the rumtime for converting to bosy is 970 milliseconds
+the rumtime for converting to slugs is 1430 milliseconds
+the rumtime for converting to slugsin is 1120 milliseconds
